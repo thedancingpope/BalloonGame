@@ -69,6 +69,7 @@ boolean balloonMove = false;
 boolean upTrue, downTrue;
 boolean leftTrue = false;
 boolean rightTrue = false;
+boolean gotPowerUp = false;
 
 PImage woods;
 PImage lol;
