@@ -72,4 +72,22 @@ class PowerUp
     else if (PowerY - size >= 1500)
       PowerY = -size;
   }
+  
+  void PowerGrab() 
+  {
+  //Play sound
+  //Disappear
+  //Send indicator to BadGuys to cause BadGuy to drop y value.
+  print(balX);
+  print(", ");
+  print(balX+180);
+  print(", ");
+  println(map(PowerX, 0, 1000, -500, 500));
+    if(PowerY >= 450 && PowerY <= 500)
+         {
+          if(map(PowerX, 0, 1000, -500, 500) >= balX && map(PowerX, 0, 1000, -500, 500) <= balX + 180)
+
+            println("HIT");
+         }
+  }
 }
