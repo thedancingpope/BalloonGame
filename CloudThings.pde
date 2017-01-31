@@ -58,28 +58,14 @@ class CloudThings
     popMatrix();
  }
 
-
-  //void move()
-  //{
-
-  //  if (downTrue) y-=speed;
-  //  else if (upTrue) y += speed;
-
-  //  if (y+size <= 0) y = height + size;
-  //  else if (y-size >= height) y = -size;
-  //}
-  
   void move()
-    {
-   if (y >= height + 100)
-      x = random(width);
-   // if(upTrue) 
-   y+=speed;                            // auto movement of the clouds
-   // else if(downTrue) x +=speed;
+    {  
+      y+=speed;                            // auto movement of the clouds
 
-    if(y+size <= 0)                     //min and max distances for the clouds
-      y =  size;
-    else if(y-size >= height + 100)
-      y = -size;
+      if(y + size > height + 400)        // if reaching the bottom of the panel
+        {
+          y = -500+size;                // go to the top  
+          x = random(width);          // generate a new x value to start at
+        }
   } 
 } 
