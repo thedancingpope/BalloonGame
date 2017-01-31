@@ -1,21 +1,18 @@
 class BadGuy
 {
-  float bx;//Balloon xpos
-  float balY = 250;//Balloon ypos
-  float ex =0;//Enemy xpos
-  float ey =0;//Enemy ypos
-  float size;
+  float bx;            //Balloon xpos
+  float balY = 250.0;  //Balloon ypos
+  float ex;            //Enemy xpos
+  float ey;            //Enemy ypos
   float speed;
   PImage badCloud;
   
   
   BadGuy() 
   {
-    
-    x = random(width);
-    y = random(height);
-    size = random(25, 45);
-    speed = random(0.2, 0.6);
+    ex = 0;
+    ey = 1000;
+    speed = 1;
     badCloud = loadImage("EvilCloud.png");
   }
 
@@ -23,37 +20,28 @@ class BadGuy
   {
     noStroke();
     fill(170, 184, 185);
-    image(badCloud, ex, ey + 1000);
+    ambient(255);
+    image(badCloud, ex, ey);
   }
 
   void move()
   {
     //Follow the Balloon's xpos
-    print(ex);
     if (ex != balX)
-    {
-      if ((balX -ex) > 0)
       {
-        ex = ex + speed;
+        if ((balX + 80 - ex) > 0)
+          {
+            ex = ex + speed;
+          }
+        else if ((balX + 80 - ex) < 0) 
+          {
+            ex = ex - speed;
+          }
       }
-      else if ((balX - ex) < 0) 
-      {
-        ex = ex - speed;
-      }
-      println(ex);
-    
-    }
     //Follow the Balloon's ypos
-    if (ex != balY)
-    {
-      if((balY - ex) > 0)
+    if (ey != balY)
       {
-        ey = ey -(speed/2);
+          ey = ey - speed;       
       }
-      if((balY - ey) < 0)
-      {
-        ey = ey + speed;
-      }
-    }
   }
 }
