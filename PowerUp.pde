@@ -59,18 +59,15 @@ class PowerUp
   }
 
   void PowerMove()
-  {
-    
-    PowerY +=speed;                            // auto movement of the power up
-    println(PowerY);
-    
-    if(PowerY >= 1500)
-      PowerX = random(width*2.5);
-    
-    if (PowerY + size <= 0)                     //min and max distances for the power up
-      PowerY = size;
-    else if (PowerY - size >= 1500)
-      PowerY = -size;
+  { 
+     PowerY +=speed;                            // auto movement of the power up
+     //println(PowerY);
+     
+     if (PowerY - size >= height + 800)
+       {
+         PowerY = -500 + size;
+         PowerX = random(width*2.5);
+       }
   }
   
   void PowerGrab() 
@@ -78,16 +75,20 @@ class PowerUp
   //Play sound
   //Disappear
   //Send indicator to BadGuys to cause BadGuy to drop y value.
-  print(balX);
-  print(", ");
-  print(balX+180);
-  print(", ");
-  println(map(PowerX, 0, 1000, -500, 500));
-    if(PowerY >= 450 && PowerY <= 500)
+  //print(PowerY);
+  //print(", ");
+  //print(balX+180);
+  //print(", ");
+  //println(map(PowerX, 0, 1000, -500, 500));
+    if(PowerY >= 500 && PowerY <= 700)
          {
-          if(map(PowerX, 0, 1000, -500, 500) >= balX && map(PowerX, 0, 1000, -500, 500) <= balX + 180)
-
-            println("HIT");
+           if(map(PowerX, 0, 1000, -500, 500) >= balX && map(PowerX, 0, 1000, -500, 500) <= balX + 180)
+           {
+             gotPowerUp = true;
+           }
+         } else {
+           gotPowerUp = false;
          }
+        // println(gotPowerUp);
   }
 }
