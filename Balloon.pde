@@ -23,8 +23,12 @@ class Balloon
         directionalLight(205, 205, 205, 1, 1, -2);      // directional light facing the balloon
         specular(180, 180, 180);                        // removes the this color when lit up
         shininess(9.0);                                  // the larger the number the smaller the shiny circle
-        ambient(150, 150, 0);                          //light the balloon this color
-                
+       if(gotPowerUp)
+          ambient(180, 100, 20);
+        else 
+          ambient(150, 150, 0);                          //light the balloon this color
+         
+                     
          translate(balX,0, 40);                         //move the whole balloon as one object, based on the input from user
          rotateZ(map(rotZ, -15, 15, -1, 1));              //rotate the whole balloon on the Z-axis when moving side to side
                                                         //other wise it is upright
