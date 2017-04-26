@@ -72,7 +72,7 @@ GamePhases Phases;
 void setup()               //Fun note, if you put background in setup, you get infinite balloon madness
   {
     size(500, 500, P3D);
-    frameRate(20);
+    frameRate(45);
     font = loadFont("ArialRoundedMTBold-36.vlw");
     textFont(font);
     textureMode(NORMAL);   
