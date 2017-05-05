@@ -53,7 +53,10 @@ class CloudThings
         if(phase != 4 && phase != 3)
           {
             y += speed;                            // auto movement of the clouds
-           
+            if (gotPowerUp)   
+            {
+              y+= speed * 0.7f;
+            }        
             if(y + size > height + 400)        // if reaching the bottom of the panel
               {
                 y = -500 + size;                // go to the top  

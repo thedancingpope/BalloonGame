@@ -1,24 +1,41 @@
 class Balloon
   {    
-    int rotZ=0;
-    int lastZ=0;
+    int rotZ = 0;
+    int lastZ = 0;
                
-    float angle = 0f;
+    float angle = 0.0f;
     float angleIncrement = TWO_PI / 90;                 //to draw the sides of the cone     
-   
+    float balloonScale = 1.0f;
+    float ballInc = .02f;
     BalloonString BalloonString;    
         
     void drawBalloon()
       {      
          BalloonString = new BalloonString();
-           
+         if (gotPowerUp) 
+          {
+            if(balloonScale < 1.14)
+            {
+              balloonScale += ballInc;  
+            }
+          } else 
+            {
+              if(balloonScale > 1.0)
+              {
+                balloonScale -= ballInc; 
+              }
+            }
+         
+         // 
          noStroke();                                      //draw no edges
          fill(50,50,0);                                 //color the whole balloon
          ambientLight(205, 205, 205);                    // the color put out by the light on everything
          // pushMatrix();
          translate(width/2, height/2, 0);                 //the center of the screen coordinates are (0 , 0, 0)
            scale(.4);
-           pushMatrix();                               //draw as one matrix together
+           
+           pushMatrix();                        //draw as one matrix together
+             scale(balloonScale);  
              lightSpecular(205, 205, 205);                    //the light that will be removed on shiny parts
              directionalLight(205, 205, 205, 1, 1, -2);      // directional light facing the balloon
              specular(180, 180, 180);                        // removes the this color when lit up
@@ -40,7 +57,10 @@ class Balloon
                    line(-6, 136, 9, 6, 135, 8);          //draw the lines around the bottom of the balloon
                    line(-6, 135, 8, -10, 135, 0);              //to look like it is tied around
                    line(6, 135, 8, 10, 135, 0);                //the bottom of the balloon, used 3 lines  
-           popMatrix();                                  //close the matrix and draw the next part separate from
+                   scale(1.0);
+           popMatrix();            //close the matrix and draw the next part separate from
+           
+           //popMatrix();
            lineX = balX + (rotZ * -4) + (map(balX, -500, 500, -15, 15));   //draws the start of the string based on where the bottom of the balloons cone is 
            lineY = 100 - abs(rotZ*3);                  // it moves the line with the balloon based on the rotZ value 
           

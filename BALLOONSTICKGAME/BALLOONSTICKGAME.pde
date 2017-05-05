@@ -1,33 +1,23 @@
-//Balloon goes above the screen, the screen follows it, and then the balloon 
-//reaches space and pops.
-/** phase0 will be the section in which the balloon
- is on the stick/string . It is the intro phase.
- phase1 will be the section in which the balloon is
- Seemingly propelled upwards. This will be accomplished by
- scrolling the background as a parallax behind the balloon,
- which will detach from the string and the stick when a 
- counter condition is met. I will have the counter condition
- look for the player pressing the "w" key 1 time. 
- Phase 2 is the final phase. This phase is instantiated 
- when the balloon reaches a certain height of pixels. The 
- balloon, having met this condition, will then fall towards the
- ground. The player will only have right/left control over the 
- balloon at this point.
+/** Current Info: We're looking at adding several new features to the game, in order to move it closer to completion.
+With the main body of the game's code now finished, the remaining changes are mostly cosmetic, and in keeping with
+certain visual themes and patterns already established. Here are some changes we're floating around:
+-A quick balloon animation, such as a swelling or wiggle when a helium atom is caught.*
+-The parallax of the clouds during the main phase moving faster when a helium atom is caught.*
+-Stratosphere animation:
+    -Extended background.
+    -Balloon popping animation.
+    -Confetti.
+-Music
+-Balloon hitting ground (animation).
+
+Sincerely, 
+
+TheDancingPope
  */
 /**
 @TheDancingPope
 @MeeeMooo
 */
-/**
- Phase Zero Pseudo:
- -Draw background(It's larger than the screen   0 minus image height, then add screen height.
- It offsets the background so you start and the bottom and can scroll it down.
- -Draw image of balloon on a mouse coordinate.
- -Draw an image of the stick which is a tethering point for the moving line of the string.
- -To leave this state and enter phase one, the player must press "up" or the "w" key. There 
- will be a counter looking for this condition
- */
-
 import processing.serial.*;
 
 Serial port;
@@ -72,7 +62,7 @@ GamePhases Phases;
 void setup()               //Fun note, if you put background in setup, you get infinite balloon madness
   {
     size(500, 500, P3D);
-    frameRate(45);
+    frameRate(30);
     font = loadFont("ArialRoundedMTBold-36.vlw");
     textFont(font);
     textureMode(NORMAL);   
