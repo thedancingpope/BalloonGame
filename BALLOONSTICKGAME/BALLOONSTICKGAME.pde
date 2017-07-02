@@ -21,11 +21,13 @@ TheDancingPope
 import processing.serial.*;
 
 Serial port;
-
+ 
 String data;
 
 float lineX;
 float lineY;
+float lineZ;
+float BGy;  //Background Y 
 
 int fadeImage;
 int val[];
@@ -51,18 +53,18 @@ PFont font;
 
 Balloon Balloon;
 BalloonString BalloonString;
-Spring2D s1, s2, s3, s4, s5, s6;
+Spring2D s1, s2, s3, s4;
 CloudThings[] cloudList;
-BadGuy[] enemiesList;
+BadGuy [] enemiesList;
 PowerUp [] PowerUpList;
 GameOverSuccess Win;
 GameOverFail Loose;
-GamePhases Phases;
+GamePhases GamePhases;
 
 void setup()               //Fun note, if you put background in setup, you get infinite balloon madness
   {
     size(500, 500, P3D);
-    frameRate(30);
+    frameRate(25);
     font = loadFont("ArialRoundedMTBold-36.vlw");
     textFont(font);
     textureMode(NORMAL);   
@@ -75,20 +77,21 @@ void setup()               //Fun note, if you put background in setup, you get i
     
     Win = new GameOverSuccess();
     Loose = new GameOverFail();
-    Phases = new GamePhases();
+    GamePhases = new GamePhases();
     
     cloudList = new CloudThings[10];
     for (int i=0; i <cloudList.length; i++) 
       {
         cloudList[i]=new CloudThings();
       }
+    
     enemiesList = new BadGuy[1];
     for (int i=0; i <enemiesList.length; i++) 
       {
         enemiesList[i]=new BadGuy();
       }
       
-     PowerUpList = new PowerUp[1];
+    PowerUpList = new PowerUp[1];
     for (int i=0; i <PowerUpList.length; i++) 
       {
         PowerUpList[i]=new PowerUp();
@@ -106,33 +109,16 @@ void setup()               //Fun note, if you put background in setup, you get i
     s2 = new Spring2D(0.0, width);
     s3 = new Spring2D(0.0, width/2);
     s4 = new Spring2D(0.0, width/2);
-    s5 = new Spring2D(0.0, width/2);
-    s6 = new Spring2D(0.0, width/2);
     
     phase = 0; 
     balX = 0;
     fadeImage = 0;
+    lineZ = 10;
   }
 
 void draw()
   {
-    if(phase == 0)    
-     Phases.phase00();  
-      
-    if(phase == 1)    
-     Phases.phase01();
-      
-    if(phase == 2)    
-      Phases.phase02();      
-      
-    if(phase == 3)       
-      Phases.phase03();      
-      
-    if(phase == 4)    
-      Phases.phase04();
-     
-    if(phase == 5)    
-      Phases.phase05();    
+      GamePhases.RunPhases();  
   }
 
 void serialEvent(Serial port)
@@ -147,10 +133,13 @@ void serialEvent(Serial port)
 
 void keyPressed()
   {
-    if(key == 'a' || key == 'A')      
-      leftTrue = true;        
-    else if(key == 'd' || key == 'D') 
-      rightTrue = true; 
+    if(phase != 1)
+      {
+        if(key == 'a' || key == 'A')       
+          leftTrue = true;        
+        else if(key == 'd' || key == 'D') 
+          rightTrue = true; 
+      }
   }
 
 void keyReleased()
@@ -164,8 +153,12 @@ void keyReleased()
       {
         if(phase == 0)    // only sets if it is phase 0 
           {  
-            phase = 1;    // sets to phase 1
-            floatingTime = int(millis()/1000);        
+            phase = 1;    // sets to phase 1                  
+          }
+        else if(phase != 0)
+          {
+            phase = 0;
+            BGy = 0;
           }
       }
       

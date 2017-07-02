@@ -10,18 +10,18 @@ class GameOverSuccess extends GameOverAbstractClass
     
     void GameOverRender() 
       {
-        flyingCloth();   
-        
-        fill(0);
-        textSize(60);
         pushMatrix();
+          flyingCloth();   
+          
+          fill(0);
+          textSize(60);
           ambient(R, G, B);
-          text("You Win!", 140, height/2);
+          text("You Win!", 140, height/2);       
+          if (frameCount % 3 == 0)
+            {
+              textColorChange();
+            }
         popMatrix();
-        if (frameCount % 3 == 0)
-          {
-            textColorChange();
-          }
       }
       
     void textColorChange()

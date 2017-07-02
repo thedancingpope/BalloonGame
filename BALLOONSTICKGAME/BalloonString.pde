@@ -13,9 +13,5 @@ class BalloonString
         s3.display(s2.springX, s2.springY);
         s4.update(s3.springX, s3.springY);
         s4.display(s3.springX, s3.springY);
-        s5.update(s4.springX, s4.springY);
-        s5.display(s4.springX, s4.springY);
-        s6.update(s5.springX, s5.springY);
-        s6.display(s5.springX, s5.springY);
      }
    }

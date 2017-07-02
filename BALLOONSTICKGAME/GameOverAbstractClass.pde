@@ -13,7 +13,7 @@ public abstract class GameOverAbstractClass
     
     public void initialGameOver()
       {
-        scale = 20;
+        scale = 25;
         d = 5;
         inc = 0.1f;
         flying = 0;
@@ -28,19 +28,19 @@ public abstract class GameOverAbstractClass
     
     public void flyingCloth()
       {
-        noStroke();                                      //draw no edges
-        fill(50, 50, 0);                                 //color the whole cloth
-        ambientLight(205, 205, 205);                    // the color put out by the light on everything
-        lightSpecular(205, 205, 205);                    //the light that will be removed on shiny parts
-        directionalLight(205, 205, 205, 1, 1, -2);      // directional light facing the balloon
-        specular(180, 180, 180);                        // removes the this color when lit up
-        shininess(9.0);                                  // the larger the number the smaller the shiny circle
-        ambient(150, 150, 0);
         pushMatrix();
-          translate(clothX, clothY);              //X coord key control
-            rotateX(flying*6);
-            rotateY(1.5);
-              translate(-w/4, -h/4);   
+          noStroke();                                      //draw no edges
+          fill(50, 50, 0);                                 //color the whole cloth
+          ambientLight(205, 205, 205);                    // the color put out by the light on everything
+          lightSpecular(205, 205, 205);                    //the light that will be removed on shiny parts
+          directionalLight(205, 205, 205, 1, 1, -2);      // directional light facing the balloon
+          specular(180, 180, 180);                        // removes the this color when lit up
+          shininess(9.0);                                  // the larger the number the smaller the shiny circle
+          ambient(150, 150, 0);
+          translate(clothX, clothY, 30);              //X coord key control
+            rotateX(flying);
+            rotateY(1.6);
+              translate(-w/4, -h/4);  
               for (int y=d; y<rows -d-1; y++) 
                 {
                   beginShape(TRIANGLE_STRIP);
