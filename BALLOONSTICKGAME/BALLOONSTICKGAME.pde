@@ -21,13 +21,11 @@ TheDancingPope
 import processing.serial.*;
 
 Serial port;
- 
+
 String data;
 
 float lineX;
 float lineY;
-float lineZ;
-float BGy;  //Background Y 
 
 int fadeImage;
 int val[];
@@ -53,18 +51,18 @@ PFont font;
 
 Balloon Balloon;
 BalloonString BalloonString;
-Spring2D s1, s2, s3, s4;
+Spring2D s1, s2, s3, s4, s5, s6;
 CloudThings[] cloudList;
-BadGuy [] enemiesList;
+BadGuy[] enemiesList;
 PowerUp [] PowerUpList;
 GameOverSuccess Win;
 GameOverFail Loose;
-GamePhases GamePhases;
+GamePhases Phases;
 
 void setup()               //Fun note, if you put background in setup, you get infinite balloon madness
   {
     size(500, 500, P3D);
-    frameRate(25);
+    frameRate(30);
     font = loadFont("ArialRoundedMTBold-36.vlw");
     textFont(font);
     textureMode(NORMAL);   
@@ -77,21 +75,20 @@ void setup()               //Fun note, if you put background in setup, you get i
     
     Win = new GameOverSuccess();
     Loose = new GameOverFail();
-    GamePhases = new GamePhases();
+    Phases = new GamePhases();
     
     cloudList = new CloudThings[10];
     for (int i=0; i <cloudList.length; i++) 
       {
         cloudList[i]=new CloudThings();
       }
-    
     enemiesList = new BadGuy[1];
     for (int i=0; i <enemiesList.length; i++) 
       {
         enemiesList[i]=new BadGuy();
       }
       
-    PowerUpList = new PowerUp[1];
+     PowerUpList = new PowerUp[1];
     for (int i=0; i <PowerUpList.length; i++) 
       {
         PowerUpList[i]=new PowerUp();
@@ -109,16 +106,33 @@ void setup()               //Fun note, if you put background in setup, you get i
     s2 = new Spring2D(0.0, width);
     s3 = new Spring2D(0.0, width/2);
     s4 = new Spring2D(0.0, width/2);
+    s5 = new Spring2D(0.0, width/2);
+    s6 = new Spring2D(0.0, width/2);
     
     phase = 0; 
     balX = 0;
     fadeImage = 0;
-    lineZ = 10;
   }
 
 void draw()
   {
-      GamePhases.RunPhases();  
+    if(phase == 0)    
+     Phases.phase00();  
+      
+    if(phase == 1)    
+     Phases.phase01();
+      
+    if(phase == 2)    
+      Phases.phase02();      
+      
+    if(phase == 3)       
+      Phases.phase03();      
+      
+    if(phase == 4)    
+      Phases.phase04();
+     
+    if(phase == 5)    
+      Phases.phase05();    
   }
 
 void serialEvent(Serial port)
@@ -133,13 +147,10 @@ void serialEvent(Serial port)
 
 void keyPressed()
   {
-    if(phase != 1)
-      {
-        if(key == 'a' || key == 'A')       
-          leftTrue = true;        
-        else if(key == 'd' || key == 'D') 
-          rightTrue = true; 
-      }
+    if(key == 'a' || key == 'A')      
+      leftTrue = true;        
+    else if(key == 'd' || key == 'D') 
+      rightTrue = true; 
   }
 
 void keyReleased()
@@ -151,8 +162,11 @@ void keyReleased()
       
     if(key == 'q' || key == 'Q')    
       {
-        if(phase == 0)
-            phase = 1;       
+        if(phase == 0)    // only sets if it is phase 0 
+          {  
+            phase = 1;    // sets to phase 1
+            floatingTime = int(millis()/1000);        
+          }
       }
       
     if(key == 'p' || key == 'P')
@@ -160,26 +174,4 @@ void keyReleased()
       
     if(key == 'l' || key == 'L')
       phase = 4;
-  }
-  
-void BalloonLighting()
-  {
-     pushMatrix();
-       ambientLight(205, 205, 205);                    // the color put out by the light on everything
-       lightSpecular(205, 205, 205);                    //the light that will be removed on shiny parts
-       directionalLight(205, 205, 205, 1, 1, -2);      // directional light facing the balloon
-       specular(180, 180, 180);                        // removes the this color when lit up
-       shininess(9.0);
-       if(phase == 2)
-         { 
-            if(gotPowerUp)
-              ambient(244, 255, 126);
-            else 
-              ambient(150, 150, 0);                          //light the balloon this color
-         }
-       else 
-         {
-            ambient(150, 150, 0);
-         }
-     popMatrix();
   }

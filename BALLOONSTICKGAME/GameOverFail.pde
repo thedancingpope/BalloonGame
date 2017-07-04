@@ -1,12 +1,12 @@
 class GameOverFail extends GameOverAbstractClass 
   {    
-     GameOverFail()
-       {  
-          initialGameOver();
-       }
+    GameOverFail()
+      {  
+        initialGameOver();
+      }
     
-     void GameOverRender() 
-       {   
-          flyingCloth();
-       }
+    void GameOverRender() 
+      {   
+        flyingCloth();
+      }
   }

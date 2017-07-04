@@ -36,7 +36,7 @@ class Spring2D
       {
         pushMatrix();
           strokeWeight(3);
-          line(springX, springY, lineZ, nx, ny, lineZ);
+          line(springX, springY, nx, ny);
         popMatrix();
       }
   }
