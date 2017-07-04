@@ -151,15 +151,8 @@ void keyReleased()
       
     if(key == 'q' || key == 'Q')    
       {
-        if(phase == 0)    // only sets if it is phase 0 
-          {  
-            phase = 1;    // sets to phase 1                  
-          }
-        else if(phase != 0)
-          {
-            phase = 0;
-            BGy = 0;
-          }
+        if(phase == 0)
+            phase = 1;       
       }
       
     if(key == 'p' || key == 'P')
@@ -167,4 +160,26 @@ void keyReleased()
       
     if(key == 'l' || key == 'L')
       phase = 4;
+  }
+  
+void BalloonLighting()
+  {
+     pushMatrix();
+       ambientLight(205, 205, 205);                    // the color put out by the light on everything
+       lightSpecular(205, 205, 205);                    //the light that will be removed on shiny parts
+       directionalLight(205, 205, 205, 1, 1, -2);      // directional light facing the balloon
+       specular(180, 180, 180);                        // removes the this color when lit up
+       shininess(9.0);
+       if(phase == 2)
+         { 
+            if(gotPowerUp)
+              ambient(244, 255, 126);
+            else 
+              ambient(150, 150, 0);                          //light the balloon this color
+         }
+       else 
+         {
+            ambient(150, 150, 0);
+         }
+     popMatrix();
   }

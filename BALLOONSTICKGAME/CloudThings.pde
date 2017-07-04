@@ -10,7 +10,7 @@ class CloudThings
     
     CloudThings() 
       {
-        newCloudPos();        
+         newCloudPos();        
       }
   
     void render()
@@ -42,33 +42,33 @@ class CloudThings
   
     void move()
       { 
-        if(phase != 4 && phase != 3)
-          {
-            y += speed;           // movement of the clouds
-            if (gotPowerUp)   
-              y+= speed * 0.7f;        //speed up if you have the power up
+         if(phase != 4 && phase != 3)
+           {
+              y += speed;           // movement of the clouds
+              if (gotPowerUp)   
+              y+= speed * 1.1f;        //speed up if you have the power up
                    
-            if(y - size > height)        // if reaching the bottom of the panel
-              newCloudPos();              
-          }  
-        else
-          {
-            y -= speed;         // movement of the clouds
-            if(y < -cloudBottom)        // if reaching the top of the panel
-              newCloudPos();
-          }
-    } 
+              if(y - size > height)        // if reaching the bottom of the panel
+                newCloudPos();              
+           }  
+         else
+           {
+              y -= speed;         // movement of the clouds
+              if(y < -cloudBottom)        // if reaching the top of the panel
+                newCloudPos();
+           }
+      } 
     
     void newCloudPos()
       {
-        size = random(15, 35);
-        speed = random(3, 6);
-        sizeCloud = int(random(0, 2));
-        x = random(30, 480);          
-        z = random(0, -80);
-        if(phase != 4 && phase != 3)
-          y = - cloudBottom - size;           // go to the top
-        else
-          y = height + cloudBottom + size;      // go to the bottom 
+         size = random(15, 35);
+         speed = random(3, 6);
+         sizeCloud = int(random(0, 2));
+         x = random(30, 480);          
+         z = random(0, -80);
+         if(phase != 4 && phase != 3)
+           y = - cloudBottom - size;           // go to the top
+         else
+           y = height + cloudBottom + size;      // go to the bottom 
       }
 } 
