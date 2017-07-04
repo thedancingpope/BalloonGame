@@ -1,81 +1,75 @@
 class PowerUp 
   {
-     float PowerY = 0;
-     float electronSpeed = 0.7f;
-     float nucleusSpin = 0.4f;
-    
-     int speed = 7;     
-     int PowerX;
-    
-     color protonColor = color(22, 128, 130);
-     color neutronColor = color(23, 84, 55);
+    float PowerX;
+    float PowerY;
+    int speed;
   
-     PowerUp()
-       {
-          PowerX = -250;
-       }
-  
-     void ActualPowerUp()
-       {
-          pushMatrix();
-            translate(width/2, 0, 25);
-            ambient(150, 150, 150);         
-            noStroke();
-            translate(PowerX/2, PowerY);
-              scale(.4);
-              pushMatrix();              //draws the nucleus
-                rotateY(frameCount * nucleusSpin);
-                translate(10, -20, -10);
-                  drawNucleus(neutronColor);           
-                  translate(-18, 0);
-                    drawNucleus(protonColor);  
-                    translate(0, 17, 17);
-                      drawNucleus(neutronColor); 
-                      translate(18, 0);
-                        drawNucleus(protonColor); 
-              popMatrix();  
-              drawElectron(-1, 10);
-              drawElectron(1, -10);              
-          popMatrix();
-       }    
-     
-    void drawNucleus(color nucleusColor)
+    PowerUp()
       {
-         pushMatrix(); 
-           fill(nucleusColor);  
-           sphere(20);
-         popMatrix();
+        PowerX = random(width);
+        PowerY = 0;
+        speed = 10;
       }
   
-    void drawElectron(int dir, int x)
+    void ActualPowerUp()
       {
-         pushMatrix();              //draws the electron                            
-           translate(x, -12);
-             rotateX(1);
-             rotateY(dir);
-             translate(0, sin(frameCount*electronSpeed) * -120, cos(frameCount*electronSpeed) * 120);
-               fill(0);
-               sphere(5);
-         popMatrix();    
-      }
-    
+        pushMatrix();
+          fill(150);
+          ambient(150, 150, 0); 
+          noStroke();
+          translate(PowerX, PowerY);
+            pushMatrix();              //draws the nucleus
+              rotateY(frameCount*.1);
+              translate(10, -20, -10);
+                sphere(20);                  
+                translate(-18, 0);
+                  fill(212, 114, 114);
+                  sphere(20);
+                  translate(0, 17, 17);
+                    fill(150);
+                    sphere(20);
+                    translate(18, 0);
+                      fill(212, 114, 114);
+                      sphere(20);
+            popMatrix();  
+            pushMatrix();              //draws the electron
+              fill(0);              
+              translate(10, -12, 0);
+                rotateX(1);
+                rotateY(-1);
+                translate(0, sin(frameCount*.2)*-120, cos(frameCount*.2)*120);
+                  sphere(5);
+            popMatrix();      
+            pushMatrix();                //draws the electron
+              translate(-10, -12, 0);
+                rotateX(1);
+                rotateY(1);
+                translate(0, sin(frameCount*.2)*-120, cos(frameCount*.2)*120);
+                  sphere(5);
+            popMatrix();
+        popMatrix();
+      }    
+  
     void PowerMove()
       { 
-         PowerY += speed;                            // auto movement of the power up
-         if (PowerY >= height + 30)
-           {
-              PowerY = -450;
-              PowerX = int(random(-500, 500));
-           }
+        PowerY += speed;                            // auto movement of the power up
+        
+        if (PowerY >= height + 800)
+          {
+            PowerY = -500;
+            PowerX = random(width*2.5);
+          }
       }
     
     void PowerGrab() 
       {
-         int balloonTolerance = 78;
-         if(PowerY >= 180 && PowerY <= 300)
+         //Play sound
+         //Send indicator to BadGuys to cause BadGuy to drop y value.
+         
+         if(PowerY >= 500 && PowerY <= 700)
            {
-              if(PowerX >= (balX - balloonTolerance) && PowerX <= balX + balloonTolerance)
-                gotPowerUp = true;         
+             if(map(PowerX, 0, 1000, -500, 500) >= balX && map(PowerX, 0, 1000, -500, 500) <= balX + 180)
+               gotPowerUp = true;         
            } 
          else 
            gotPowerUp = false;         
