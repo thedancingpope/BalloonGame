@@ -166,8 +166,11 @@ void BalloonLighting()
   {
      pushMatrix();
        ambientLight(205, 205, 205);                    // the color put out by the light on everything
-       lightSpecular(205, 205, 205);                    //the light that will be removed on shiny parts
-       directionalLight(205, 205, 205, 1, 1, -2);      // directional light facing the balloon
+       if(phase < 3)
+         {
+            lightSpecular(205, 205, 205);                    //the light that will be removed on shiny parts
+            directionalLight(205, 205, 205, 1, 1, -2);      // directional light facing the balloon
+         }
        specular(180, 180, 180);                        // removes the this color when lit up
        shininess(9.0);
        if(phase == 2)

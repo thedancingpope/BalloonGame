@@ -74,7 +74,7 @@ class PowerUp
          int balloonTolerance = 78;
          if(PowerY >= 180 && PowerY <= 300)
            {
-              if(PowerX >= (balX - balloonTolerance) && PowerX <= balX + balloonTolerance)
+              if(PowerX >= (balX - balloonTolerance) && PowerX <= (balX + balloonTolerance))
                 gotPowerUp = true;         
            } 
          else 

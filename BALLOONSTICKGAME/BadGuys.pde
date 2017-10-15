@@ -53,20 +53,12 @@ class BadGuy
             } 
           else
             {
-               if (ex != balPos)                 //Follow the Balloon's xpos
-                 {
-                    if ((ex + speed) <= balPos)
-                      ex = ex + 3;
-                    else if ((ex - speed) > balPos) 
-                      ex = ex - 3;
-                 }          
+              ex = lerp(ex, balPos, .2);
+                    
                if (ey >= balY - balloonTolerance)       //Follow the Balloon's ypos
                  {
-                    if (closeToBalloon)
-                      ey = ey - speed;
-                    else
-                      ey = ey - speed;
-                 }                
+                    ey = ey - speed;
+                 }               
                if (ey <= balY - balloonTolerance)    // dont go over the balloon height
                  {
                     ey = balY - balloonTolerance;

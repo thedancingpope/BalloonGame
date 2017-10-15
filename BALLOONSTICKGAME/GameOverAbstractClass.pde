@@ -24,15 +24,14 @@ public abstract class GameOverAbstractClass
           cols = w/40+1;
           rows = h/40+1;
           level = new float[cols][rows];
-       }  
-    
+       } 
+       
      public void flyingCloth()
        {
           pushMatrix();
             noStroke();                                      //draw no edges
             fill(50, 50, 0);                                 //color the whole cloth
             BalloonLighting();
-            ambient(150, 150, 0);
             translate(clothX, clothY, 30);              //X coord key control
               rotateX(flying);
               rotateY(1.6);
@@ -71,7 +70,7 @@ public abstract class GameOverAbstractClass
           if (clothX <= -1) 
             clothX = 1;            // dont go past the edge of the screen on the left
       
-          else if (rightTrue == true && leftTrue == false) 
+          if (rightTrue == true && leftTrue == false) 
             clothX += 8;                                   // move right
         
           if ( clothX >= 501) 
