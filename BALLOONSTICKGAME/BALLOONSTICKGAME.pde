@@ -28,6 +28,9 @@ float lineX;
 float lineY;
 float lineZ;
 float BGy;  //Background Y 
+float ex;            //Enemy xpos
+float ey;            //Enemy ypos
+float PowerY = 0;
 
 int fadeImage;
 int val[];
@@ -37,17 +40,21 @@ int phase;
 int timeSurvived;
 int endTime;
 int floatingTime;
+int PowerX;
 
 boolean leftTrue = false;
 boolean rightTrue = false;
 boolean gotPowerUp = false;
 boolean caught = false;
+boolean reset = false;
 
 PImage woods;
 PImage lol;
 PImage balloon;
 PImage cloudSky;
 PImage nightSky;
+PImage bgCloud1;
+PImage bgCloud2;
 
 PFont font;
 
@@ -97,18 +104,21 @@ void setup()               //Fun note, if you put background in setup, you get i
         PowerUpList[i]=new PowerUp();
       }
   
-    woods=loadImage("ForestBackgroundOne.jpg");
-    lol=loadImage("Wood-Grain-Web-2.jpg");
-    balloon=loadImage("Balloon Up_Down.png");
-    cloudSky=loadImage("CloudBackgroundReg.jpg");
-    nightSky=loadImage("nightTime.jpg");
+    woods = loadImage("ForestBackgroundOne.jpg");
+    lol = loadImage("Wood-Grain-Web-2.jpg");
+    balloon = loadImage("Balloon Up_Down.png");
+    cloudSky = loadImage("CloudBackgroundReg.jpg");
+    nightSky = loadImage("nightTime.jpg");
+    bgCloud1 = loadImage("BlueSky2.jpg");
+    bgCloud2 = loadImage("BlueSky2.jpg");
       
     Balloon = new Balloon();
     BalloonString = new BalloonString();
-    s1 = new Spring2D(0.0, width);
-    s2 = new Spring2D(0.0, width);
-    s3 = new Spring2D(0.0, width/2);
-    s4 = new Spring2D(0.0, width/2);
+    
+    s1 = new Spring2D(width/2, height/2);
+    s2 = new Spring2D(width/2, height/2);
+    s3 = new Spring2D(width/2, height/2);
+    s4 = new Spring2D(width/2, height/2);
     
     phase = 0; 
     balX = 0;
@@ -140,6 +150,8 @@ void keyPressed()
         else if(key == 'd' || key == 'D') 
           rightTrue = true; 
       }
+    if(key == 'r' || key == 'R')
+      reset = true;
   }
 
 void keyReleased()
@@ -148,6 +160,9 @@ void keyReleased()
       leftTrue = false;
     else if(key == 'd' || key == 'D') 
       rightTrue = false;
+      
+    if(key == 'r' || key == 'R')
+      reset = false;  
       
     if(key == 'q' || key == 'Q')    
       {

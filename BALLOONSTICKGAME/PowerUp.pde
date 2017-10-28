@@ -1,12 +1,10 @@
 class PowerUp 
   {
-     float PowerY = 0;
      float electronSpeed = 0.7f;
      float nucleusSpin = 0.4f;
     
-     int speed = 7;     
-     int PowerX;
-    
+     int speed = 7;  
+     
      color protonColor = color(22, 128, 130);
      color neutronColor = color(23, 84, 55);
   

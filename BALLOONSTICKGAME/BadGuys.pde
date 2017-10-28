@@ -1,9 +1,7 @@
 class BadGuy
   {
      float balY;          //Balloon ypos
-     float ex;            //Enemy xpos
-     float ey;            //Enemy ypos
-    
+         
      int speed;
     
      PImage badCloud;
