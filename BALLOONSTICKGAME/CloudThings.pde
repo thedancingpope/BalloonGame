@@ -65,7 +65,7 @@ class CloudThings
          speed = random(3, 6);
          sizeCloud = int(random(0, 2));
          x = random(30, 480);          
-         z = random(0, -80);
+         z = random(0, -75);
          if(phase != 4 && phase != 3)
            y = - cloudBottom - size;           // go to the top
          else

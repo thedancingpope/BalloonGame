@@ -2,8 +2,10 @@ class GamePhases
   { 
      String qButton;
      String controls;
-     
+     boolean BGparallax = true;
+     boolean beginParallax = false;
      int countDownTime = 0;
+     float BGspeed = 2;
      
      GamePhases()
        { 
@@ -22,9 +24,7 @@ class GamePhases
                BalloonString.drawBalloonString(); 
             }
           if(phase > 1)
-            {
-               TimeStamp();  
-              
+            { 
                for (int i=0; i <cloudList.length; i++)
                  {
                     cloudList[i].render();
@@ -46,6 +46,35 @@ class GamePhases
             
           if(phase == 4)    
             phase04();
+          
+          if(phase >= 3)  
+            {
+              if(reset)
+                {
+                   phase = 0;
+                   BGy = 0;
+                   countDownTime = 0;
+                   balX = 0;
+                   lineZ = 10;
+                   BGparallax = true;
+                   beginParallax = false;
+                   caught = false;
+                   leftTrue = false;
+                   rightTrue = false;
+                   ex = 125f;
+                   ey = 900f;
+                   PowerX = -250;
+                   PowerY = 0;
+                   for (int i=0; i <cloudList.length; i++) 
+                     {
+                       cloudList[i]=new CloudThings();
+                     }
+                }
+            }
+            if(phase > 1)
+            {
+               TimeStamp(); 
+            }
        }    
      /**--------------------------[Phase System Begin]----------------------------------------------------------*/
       
@@ -53,6 +82,7 @@ class GamePhases
        {     
           pushMatrix();
             fill(255);
+            textSize(20);
             text(qButton, 50, 100);
             text(controls, 50, 50);  
           popMatrix();
@@ -87,12 +117,24 @@ class GamePhases
                floatingTime = int(millis()/1000);  
                balX = 0;
                leftTrue = false;
+               BGy = 0;
+               beginParallax = false;
+               BGparallax = true;
             }
       }
     /**--------------------------[Phase 2]----------------------------------------------------------*/
       
      void phase02()
        {  
+          BGy += BGspeed;
+          if(BGy >= 500)
+            {
+               BGy = 0;
+               if(beginParallax) 
+                 BGparallax = !BGparallax;
+               else
+                 beginParallax = true;                 
+            }
           for (int i=0; i <PowerUpList.length; i++)
             {   
                PowerUpList[i].ActualPowerUp();
@@ -109,24 +151,30 @@ class GamePhases
             {  
                endTime = timeSurvived;  
                phase = 3;      // if the time played is reached then change phase
+               BGparallax = true;
             }
           if(caught == true) 
             {
                endTime = timeSurvived;
                phase = 4;
+               BGparallax = true;               
             }
        }
      /**--------------------------[Phase 3]----------------------------------------------------------*/
       
      void phase03()
-       {
+       {  
+          beginParallax = true;
+          bgParallax();
           Win.GameOverMove();
           Win.GameOverRender();  
        }
      /**--------------------------[Phase 4]----------------------------------------------------------*/    
       
      void phase04()
-       {
+       {         
+          beginParallax = true;
+          bgParallax();
           Loose.GameOverMove();  
           Loose.GameOverRender();     
        }
@@ -139,14 +187,49 @@ class GamePhases
         }
       /**--------------------------[Phase End]--------------------------------------------------------*/
       
+      void bgParallax()
+        {
+          BGy -= BGspeed;
+          if(BGy <= -500)
+            {
+               BGy = 0; 
+               BGparallax = !BGparallax;
+            } 
+        }
+      
       void backgroundPhaseDisplay()
         {
-           if(phase != 0 && phase != 1)
+          if(phase != 0 || phase != 1)
              {                       
-                drawBG(cloudSky, true);
+                pushMatrix();   
+                  translate(0, BGy, 0);                  //moves both images together as 1
+                    pushMatrix();
+                      if(beginParallax == false)
+                        {
+                          drawBG(cloudSky, true);
+                          drawBG(bgCloud1, false);
+                        }
+                      else
+                        {
+                           if(BGparallax)
+                             {
+                                drawBG(bgCloud1, true);
+                                drawBG(bgCloud2, false);
+                             }
+                           else
+                             {
+                                drawBG(bgCloud1, false);
+                                drawBG(bgCloud2, true);
+                             }
+                        }
+                    popMatrix();
+                popMatrix();                
+                //code used with ardunio
+                /*
                 tint(255, 255, 255, fadeImage);      //Transitions from day time to night time
                 drawBG(nightSky, true);
-                noTint();                //End night fade    
+                noTint();                //End night fade
+                */
              }  
            if(phase == 0 || phase == 1)
              {         
@@ -167,18 +250,19 @@ class GamePhases
              fill(0, 0, 0);
              ambient(0, 0, 0);
              textSize(20);
-             translate (10, 470);             
+             translate (50, 430, 80);             
                text("Survived: ", 0, 0);
                if(phase == 2)
-                 {                   timeSurvived = int((millis()/1000) - floatingTime);
-                   text(timeSurvived,  100, 0);                  
+                 {                   
+                    timeSurvived = int((millis()/1000) - floatingTime);
+                    text(timeSurvived,  100, 0);                  
                  }
                else
                  {
-                   countDownTime = int((endTime * 2) - ((millis()/1000) - floatingTime));          
-                   text(countDownTime, 100, 0);         
-                   fill(200, 25, 25);
-                   text(endTime, 100, 17);
+                    countDownTime = int((endTime * 2) - ((millis()/1000) - floatingTime));          
+                    text(countDownTime, 100, 0);         
+                    fill(200, 25, 25);
+                    text(endTime, 100, 17);
                  }
            popMatrix();
        }
@@ -197,7 +281,16 @@ class GamePhases
             {
                bgHeight1 = -height;
                bgHeight2 = 0;
-            }          
+             
+              if(phase == 3 || phase == 4)
+                {
+                   if(BGy <= 0)
+                     {
+                        bgHeight1 = height;
+                        bgHeight2 = height + height;
+                     }
+                }
+            }
           pushMatrix();       
             noStroke();
             textureWrap(NORMAL);

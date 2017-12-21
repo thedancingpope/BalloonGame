@@ -1,9 +1,7 @@
 class BadGuy
   {
      float balY;          //Balloon ypos
-     float ex;            //Enemy xpos
-     float ey;            //Enemy ypos
-    
+         
      int speed;
     
      PImage badCloud;
@@ -16,7 +14,7 @@ class BadGuy
           ex = 125f;
           ey = 900f;
           balY = 250.0f;
-          speed = 4;
+          speed = 3;
           badCloud = loadImage("EvilCloud.png");
           angryCloud = loadImage("EvilCloudSPrite copy.png");
        }
