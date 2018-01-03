@@ -1,42 +1,39 @@
 class Spring2D 
-  {      
-    float vx, vy; // The x- and y-axis velocities
-    float springX, springY; // The x- and y-coordinates
-    float gravity = 9.0;
+{      
+  float x, y, addX, addY;
+  
+  Spring2D(float _x, float _y) 
+  {
+    x = _x;
+    y = _y;
+  }
+
+  void update(float targetX, float targetY) 
+  {
     float mass = 2.0;
-    float radius = 30;
     float stiffness = 0.2;
     float damping = 0.5;
+    float forceX = (targetX - x) * stiffness;
+    float ax = forceX / mass;
 
-    Spring2D(float xpos, float ypos) 
-      {
-        springX = xpos;
-        springY = ypos;     
-      }
+    addX = damping * (addX + ax);
+    x += addX;
 
-    void update(float targetX, float targetY) 
-      {
-        float forceX = (targetX - springX) * stiffness;
-        float ax = forceX / mass;
-        
-        vx = damping * (vx + ax);
-        springX += vx;
-        
-        float forceY = (targetY - springY) * stiffness;
-        
-        forceY += gravity;
-        
-        float ay = forceY / mass;
-        
-        vy = damping * (vy + ay);
-        springY += vy;
-      }
+    float forceY = (targetY - y) * stiffness;
 
-    void display(float nx, float ny) 
-      {
-        pushMatrix();
-          strokeWeight(3);
-          line(springX, springY, lineZ, nx, ny, lineZ);
-        popMatrix();
-      }
+    forceY += 9f;
+
+    float ay = forceY / mass;
+
+    addY = damping * (addY + ay);
+    y += addY;
   }
+
+  void display(float _x, float _y, float _z) 
+  {
+    pushMatrix();
+    strokeWeight(3);
+    line(x, y, _z, _x, _y, _z);
+    popMatrix();
+  }
+}

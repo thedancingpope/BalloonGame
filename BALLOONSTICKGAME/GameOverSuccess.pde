@@ -1,129 +1,76 @@
 class GameOverSuccess extends GameOverAbstractClass
-  {
-     int R, G, B;
-     int clothCount = 5;
-     int limit = 60;
-     int speed = 3;
-     int changeTime = 30;
-     int circles = 10;
-     float[] x = new float[circles];
-     float[] y = new float[circles];
-     float[] dx = new float[circles];
-     float[] dy = new float[circles];
-     float[] csize = new float[circles];
-     float[] clothSpeed = new float[clothCount];
-     float newX;
-     float newY;
-     PVector [] clothPos = new PVector[clothCount];
-     boolean leftRight = true;
-     
-     GameOverSuccess()
-       {  
-          textColorChange();
-          initialGameOver();
-          clothPos[0] = new PVector(0, 0);
-          clothPos[1] = new PVector(0, -20);
-          clothPos[2] = new PVector(0, -30);
-          clothPos[3] = new PVector(0, -40);
-          clothPos[4] = new PVector(0, -50);
-          clothSpeed[0] = 0f;
-          clothSpeed[1] = 0.1f;
-          clothSpeed[2] = 0.2f;
-          clothSpeed[3] = 0.5f;
-          clothSpeed[4] = 0.3f;
-          for (int i = 0; i < circles; i++)
-            {
-               x[i] = width / 2;
-               y[i] = width / 2;
-               dx[i] = random(-speed, speed);
-               dy[i] = random(-speed, speed);
-               csize[i] = random(5, 20);
-            }
-          newX = random(-width / 4, width / 4);
-          newY = random(-height / 4, height / 4); 
-       }  
-    
-     void GameOverRender() 
-       {
-          pushMatrix();            
-            fill(0);
-            for(int i = 0; i < clothCount; i++)
-              {
-                 pushMatrix();
-                   translate(clothPos[i].x, clothPos[i].y);
-                   flyingCloth();   
-                 popMatrix();
-              }
-            fireWorks();
-            textSize(60);
-            ambient(R, G, B);        
-            text("You Win!", 140, height / 2, 80);                   
-            if (frameCount % 3 == 0)
-              {
-                textColorChange();
-              }
-          popMatrix();
-          movePieces();
-       }
-      
-     void fireWorks()
-       {
-          pushMatrix();
-            translate(newX, newY, 40);
-              for (int i = 0; i < circles; i++) 
-                {
-                   fill(R, G, B);                  
-                   ellipse(x[i], y[i], csize[i], csize[i]);
-                  
-                   x[i] = x[i] + dx[i];
-                   y[i] = y[i] + dy[i];
-              
-                  if(x[i] < width / 2 - limit || x[i] > width / 2 + limit || y[i] < height / 2 - limit || y[i] > height / 2 + limit)
-                    {
-                       x[i] = width / 2;
-                       y[i] = height / 2;
-                       dx[i] = random(-speed, speed);
-                       dy[i] = random(-speed, speed);
-                    }
-                  if(frameCount % changeTime == 0)
-                    {
-                       newX = random(-width/4, width/4);
-                       newY = random(-height/4, height/4); 
-                    }
-                }
-            popMatrix();
-       }
-      
-     void movePieces()
-       {
-          int range = 23;               
-          for(int i = 1; i < clothPos.length; i++)
-            {
-               if(leftRight)
-                 {
-                    if(i % 2 == 0)
-                      clothPos[i].x -= lerp(0, range, clothSpeed[i]);
-                    else
-                      clothPos[i].x += lerp(0, range, clothSpeed[i]);                       
-                    if(clothPos[1].x > range)
-                      leftRight = false;
-                 }
-               else
-                 {
-                    if(i % 2 == 0)
-                      clothPos[i].x += lerp(0, range, clothSpeed[i]);
-                    else
-                      clothPos[i].x -= lerp(0, range, clothSpeed[i]);    
-                    if(clothPos[1].x < -range)
-                      leftRight = true;                      
-                 }
-            }
-       }
-      
-     void textColorChange()
-       {
-           R = int(random(255));
-           G = int(random(255));
-           B = int(random(255));
-       }
+{
+  int R, G, B; 
+  int clothCount = 5;
+
+  boolean leftRight = true;
+
+  FireWorks FW;
+  Clothes [] Clothes;
+
+  GameOverSuccess()
+  {  
+    textColorChange();
+    initialGameOver();
+    FW = new FireWorks();
+    Clothes = new Clothes [clothCount];
+    Clothes[0] = new Clothes(0f, 0f, 0f);
+    Clothes[1] = new Clothes(0f, -20f, 0.1f);
+    Clothes[2] = new Clothes(0f, -30f, 0.2f);
+    Clothes[3] = new Clothes(0f, -40f, 0.5f);
+    Clothes[4] = new Clothes(0f, -50f, 0.3f);
+  }  
+
+  void GameOverRender() 
+  {           
+    fill(0);
+    textSize(60);
+    ambient(R, G, B);
+    fill(R, G, B); 
+    text("You Win!", 140, height / 2);       
+    FW.renderFireWorks();
+    if (frameCount % 3 == 0)
+      textColorChange();    
+    for (int i = 0; i < clothCount; i++)
+    {
+      pushMatrix();
+      translate(Clothes[i].x, Clothes[i].y);
+      flyingCloth();   
+      popMatrix();
+    }            
+    movePieces();
+    resetText();
   }
+
+  void movePieces()
+  {
+    int range = 23;               
+    for (int i = 1; i < clothCount; i++)
+    {
+      if (leftRight)
+      {
+        if (i % 2 == 0)
+          Clothes[i].x -= lerp(0, range, Clothes[i].speed);
+        else
+          Clothes[i].x += lerp(0, range, Clothes[i].speed);                       
+        if (Clothes[1].x > range)
+          leftRight = false;
+      } else
+      {
+        if (i % 2 == 0)
+          Clothes[i].x += lerp(0, range, Clothes[i].speed);
+        else
+          Clothes[i].x -= lerp(0, range, Clothes[i].speed);    
+        if (Clothes[1].x < -range)
+          leftRight = true;
+      }
+    }
+  }
+
+  void textColorChange()
+  {
+    R = int(random(255));
+    G = int(random(255));
+    B = int(random(255));
+  }
+}

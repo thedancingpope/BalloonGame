@@ -1,17 +1,27 @@
 class BalloonString
+{  
+  int springCount = 4;  
+
+  Spring2D [] springs;
+
+  BalloonString()
   {  
-     void stringSetup()
-       {  }
-  
-     void drawBalloonString() 
-       {      
-          s1.update(lineX, lineY);
-          s1.display(lineX, lineY);
-          s2.update(s1.springX, s1.springY);
-          s2.display(s1.springX, s1.springY);
-          s3.update(s2.springX, s2.springY);
-          s3.display(s2.springX, s2.springY);
-          s4.update(s3.springX, s3.springY);
-          s4.display(s3.springX, s3.springY);
-       }
-   }
+    springs = new Spring2D [springCount];
+    for (int i = 0; i < springCount; i++)
+      springs[i] = new Spring2D(width / 2, height / 2);
+  }
+
+  void drawBalloonString(float x, float y, float z) 
+  {    
+    pushMatrix();
+    strokeWeight(3);
+    springs[0].update(x, y);
+    line(x, y, z, springs[0].x, springs[0].y, z);
+    for (int i = 1; i < springCount; i++)
+    {    
+      springs[i].update(springs[i - 1].x, springs[i - 1].y);
+      line(springs[i - 1].x, springs[i - 1].y, z, springs[i].x, springs[i].y, z);
+    }
+    popMatrix();
+  }
+}
