@@ -5,6 +5,8 @@ class CloudThings
   int cloudType;  //large or small cloud type
   int cloudBottom = 70;
 
+  boolean phaseOut;
+  
   CloudThings() 
   {
     newCloudPos();
@@ -39,17 +41,19 @@ class CloudThings
 
   void move()
   { 
-    if (phase != 5 && phase !=4)
+    if (phase != 5 && phase != 4)
     {
       y += speed;   
       if (gotPowerUp)   
         y += speed * 1.1f;        //speed up if you have the power up
       if (y - size > height)        // if reaching the bottom of the panel
-        newCloudPos();
-    } else
+        if(!phaseOut)
+          newCloudPos();
+    } 
+    else
     {
       y -= speed; 
-      if ((y + size) < -cloudBottom)        // if reaching the top of the panel
+      if ((y + size) < -cloudBottom)        // if reaching the top of the panel        
         newCloudPos();
     }
   } 
@@ -62,8 +66,8 @@ class CloudThings
     x = random(30, 480);          
     z = random(0, -80);
     if (phase != 5 && phase != 4)
-      y = - cloudBottom - size;           // go to the top
-    else
+      y = - cloudBottom - size;           // go to the top    
+    else    
       y = height + cloudBottom + size;      // go to the bottom
   }
 } 

@@ -16,28 +16,26 @@ class BadGuy
     balY = 250.0f;
     speed = 4;
     badCloud = loadImage("EvilCloud.png");
-    angryCloud = loadImage("EvilCloudSPrite copy.png");
+    angryCloud = loadImage("EvilCloudSPrite copy.png");    
   }
 
   void render()
   {
-    if (phase == 2)
+    pushMatrix();
+    noStroke();
+    translate(x, y);
+    noLights();        
+    if (closeToBalloon)
+    { 
+      scale(.6);
+      image(angryCloud, 5, -38);
+    } 
+    else
     {
-      pushMatrix();
-      noStroke();
-      translate(x, y);
-      noLights();
-      if (closeToBalloon)
-      { 
-        scale(.6);
-        image(angryCloud, 5, -38);
-      } else
-      {
-        scale(.4);
-        image(badCloud.get(183, 239, 700, 300), 0, 0);
-      }
-      popMatrix();
+      scale(.4);
+      image(badCloud.get(183, 239, 700, 300), 0, 0);
     }
+    popMatrix();
   }
 
   void move()
@@ -53,7 +51,8 @@ class BadGuy
       if (gotPowerUp)
       {
         y += 23;
-      } else
+      } 
+      else
       {
         x = lerp(x, balPos, .2);
         if (y >= balY - balloonTolerance)       //Follow the Balloon's ypos

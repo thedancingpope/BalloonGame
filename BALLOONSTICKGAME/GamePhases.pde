@@ -2,11 +2,11 @@ class GamePhases
 { 
   float BGy, BGspeed;
 
-  int cloudCount, timeSurvived, endTime, floatingTime, countDownTime;
+  int cloudCount, phaseOutCloud, timeSurvived, endTime, floatingTime, countDownTime, winTime;
 
   String qButton, controls;
 
-  boolean BGparallax, beginParallax;
+  boolean BGparallax, beginParallax, spaceTransition;
 
   Balloon Balloon;  
   CloudThings [] cloudList;
@@ -26,14 +26,12 @@ class GamePhases
 
   void RunPhases()
   {
-    backgroundPhaseDisplay();
+    backgroundRender();
     if (phase < 4)
     {      
       Balloon.drawBalloon();
       Balloon.moveBalloon();
-    }
-    Enemy.render();
-    Enemy.move();
+    }    
     if (phase > 1)
     {        
       for (int i = 0; i < cloudCount; i++)
@@ -84,12 +82,14 @@ class GamePhases
     {
       balX = int(map(BGy, 0, 200, 0, -250));
       leftTrue = true;
-    } else if (BGy < 400)
+    } 
+    else if (BGy < 400)
     {
       balX = int(map(BGy, 200, 400, -250, 100));
       leftTrue = false;
       rightTrue = true;
-    } else if (BGy < 500)
+    } 
+    else if (BGy < 500)
     {
       balX = int(map(BGy, 400, 500, 100, 0));
       rightTrue = false;
@@ -120,41 +120,62 @@ class GamePhases
       else
         beginParallax = true;
     }
-
+    Enemy.render();
+    Enemy.move();
     PowerUp.ActualPowerUp();
     PowerUp.PowerMove();
     gotPowerUp = PowerUp.PowerGrab();
 
     if (timeSurvived >= 80) 
+    {
       phase = changePhase(3);
+      BGy = 0;
+      
+    }
     if (caught) 
       phase = changePhase(5);
   }  
   /**--------------------------[Phase 3]----------------------------------------------------------*/
 
   void phase03()
-  {     
-      //parallax into space
-      pushMatrix();       
-      noStroke();
-      textureWrap(NORMAL);
-      beginShape(QUADS);
-      texture(cloudsToSpace);                  
-      vertex(0, 0, 0, 0);
-      vertex(width, 0, 1, 0);
-      vertex(width, cloudsToSpace.height, 1, 1);
-      vertex(0, cloudsToSpace.height, 0, 1);
-      endShape();
-      popMatrix();
-      //phase = 4;
+  {  
+    float waitLong = 60000f;
+    if(!spaceTransition)
+    {
+      winTime = millis();
+      phaseOutCloud = 0;
+      spaceTransition = true;
+      BGy = height - cloudsToSpace.height; 
+    }
+    //move bg up to space first
+    if(BGy < 0)
+      BGy += BGspeed;    
+      
+    if(millis() > winTime + 10000f && millis() < winTime + waitLong)
+    {           
+      cloudList[phaseOutCloud].phaseOut = true;
+      if(frameCount % 20 == 0)
+        if(phaseOutCloud < cloudCount - 1)
+          phaseOutCloud ++;
+    }
+    else if(millis() > winTime + waitLong)
+    {
+      cloudList[phaseOutCloud].phaseOut = false;
+      if(frameCount % 20 == 0)
+        if(phaseOutCloud > 0)
+          phaseOutCloud --;
+    }
+    //reverse the bg movement back to earth
+    
+    //phase = 4;
   }
   /**--------------------------[Phase 4]----------------------------------------------------------*/
 
   void phase04()
-  {          
+  {        
     parallaxBg();
     Win.GameOverMove();
-    Win.GameOverRender();      
+    Win.GameOverRender();
   }
   /**--------------------------[Phase 5]----------------------------------------------------------*/
 
@@ -163,6 +184,8 @@ class GamePhases
     parallaxBg();
     Loose.GameOverMove();  
     Loose.GameOverRender();
+    //if (countDownTime < 0)
+      //resetComponents();
   }
   /**--------------------------[Phase 5]----------------------------------------------------------*/
 
@@ -189,28 +212,39 @@ class GamePhases
     }
   }
 
-  void backgroundPhaseDisplay()
+  void backgroundRender()
   {
-    if (phase != 0 || phase != 1  || phase != 3)
-    {                       
-      pushMatrix();   
-      translate(0, BGy, 0);
+
+    if (phase != 0 || phase != 1 || phase != 3)
+    {   
+      PImage BG1;
+      PImage BG2;
+      boolean switchBG;
       if (!beginParallax)
       {
-        drawBG(cloudSky, true);
-        drawBG(bgCloud1, false);
-      } else
+        BG1 = cloudSky;
+        BG2 = bgCloud1;
+        switchBG = true;
+      } 
+      else
       {
         if (BGparallax)
         {
-          drawBG(bgCloud1, true);
-          drawBG(bgCloud2, false);
-        } else
+          BG1 = bgCloud1;
+          BG2 = bgCloud2;          
+          switchBG = true;
+        } 
+        else
         {
-          drawBG(bgCloud1, false);
-          drawBG(bgCloud2, true);
+          BG1 = bgCloud1;
+          BG2 = bgCloud2;          
+          switchBG = false;
         }
-      }
+      }      
+      pushMatrix();   
+      translate(0, BGy, 0);
+      drawBG(BG1, switchBG);
+      drawBG(BG2, !switchBG);
       popMatrix();
     }  
     if (phase == 0 || phase == 1)
@@ -219,6 +253,21 @@ class GamePhases
       translate(0, BGy, 0);
       drawBG(woods, true);
       drawBG(cloudSky, false);
+      popMatrix();
+    }
+    if (phase == 3)
+    {
+      pushMatrix();   
+      translate(0, BGy, 0);
+      noStroke();
+      textureWrap(NORMAL);
+      beginShape(QUADS);
+      texture(cloudsToSpace);                  
+      vertex(0, 0, 0, 0);
+      vertex(width, 0, 1, 0);
+      vertex(width, cloudsToSpace.height, 1, 1);
+      vertex(0, cloudsToSpace.height, 0, 1);
+      endShape();
       popMatrix();
     }
   }
@@ -236,7 +285,8 @@ class GamePhases
     {                   
       timeSurvived = int((millis() / 1000) - floatingTime);
       text(timeSurvived, 100, 0);
-    } else
+    } 
+    else
     {
       countDownTime = int((endTime * 2) - ((millis() / 1000) - floatingTime));          
       text(countDownTime, 100, 0);         
@@ -250,12 +300,12 @@ class GamePhases
   {
     int bgHeight1;
     int bgHeight2;
-
     if (heightPos)
     {
       bgHeight1 = 0;
       bgHeight2 = height;
-    } else
+    } 
+    else
     {
       bgHeight1 = -height;
       bgHeight2 = 0;
@@ -268,7 +318,7 @@ class GamePhases
           bgHeight2 = height + height;
         }
       }
-    }
+    }    
     pushMatrix();       
     noStroke();
     textureWrap(NORMAL);
@@ -302,5 +352,7 @@ class GamePhases
     rightTrue = false;
     gotPowerUp = false;
     caught = false;
+    reset = false;
+    spaceTransition = false;
   }
 }
