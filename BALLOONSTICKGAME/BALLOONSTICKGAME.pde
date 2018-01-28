@@ -19,7 +19,7 @@ int balX, phase;
 
 boolean leftTrue, rightTrue, gotPowerUp, caught, reset;
 
-PImage woods, cloudSky, bgCloud1, bgCloud2;
+PImage woods, cloudSky, bgCloud1, bgCloud2, cloudsToSpace;
 
 PFont font;
 
@@ -41,6 +41,7 @@ void setup()
   cloudSky = loadImage("CloudBackgroundReg.jpg");
   bgCloud1 = loadImage("BlueSky2.jpg");
   bgCloud2 = loadImage("BlueSky2.jpg");
+  cloudsToSpace = loadImage("TallHorizon.png");
 }
 
 void draw()
@@ -83,14 +84,14 @@ void keyReleased()
     phase = 3;
 
   if (key == 'l' || key == 'L')
-    phase = 4;
+    phase = 5;
 }
 
 void BalloonLighting()
 {
   pushMatrix();
   ambientLight(205, 205, 205);                    // the color put out by the light on everything
-  if (phase < 3)
+  if (phase < 4)
   {
     lightSpecular(205, 205, 205);                    //the light that will be removed on shiny parts
     directionalLight(205, 205, 205, 1, 1, -2);      // directional light facing the balloon

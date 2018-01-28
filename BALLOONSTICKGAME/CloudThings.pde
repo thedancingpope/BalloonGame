@@ -39,7 +39,7 @@ class CloudThings
 
   void move()
   { 
-    if (phase != 4 && phase != 3)
+    if (phase != 5 && phase !=4)
     {
       y += speed;   
       if (gotPowerUp)   
@@ -61,7 +61,7 @@ class CloudThings
     cloudType = int(random(0, 2));
     x = random(30, 480);          
     z = random(0, -80);
-    if (phase != 4 && phase != 3)
+    if (phase != 5 && phase != 4)
       y = - cloudBottom - size;           // go to the top
     else
       y = height + cloudBottom + size;      // go to the bottom

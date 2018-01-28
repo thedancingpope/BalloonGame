@@ -27,7 +27,7 @@ class GamePhases
   void RunPhases()
   {
     backgroundPhaseDisplay();
-    if (phase < 3)
+    if (phase < 4)
     {      
       Balloon.drawBalloon();
       Balloon.moveBalloon();
@@ -54,8 +54,10 @@ class GamePhases
       phase03(); 
     if (phase == 4)    
       phase04();
+    if (phase == 5)    
+      phase05();
 
-    if (phase >= 3)  
+    if (phase >= 4)  
     {
       if (reset)
         resetComponents();
@@ -126,27 +128,45 @@ class GamePhases
     if (timeSurvived >= 80) 
       phase = changePhase(3);
     if (caught) 
-      phase = changePhase(4);
+      phase = changePhase(5);
   }  
   /**--------------------------[Phase 3]----------------------------------------------------------*/
 
   void phase03()
-  {      
-    parallaxBg();
-    Win.GameOverMove();
-    Win.GameOverRender();
+  {     
+      //parallax into space
+      pushMatrix();       
+      noStroke();
+      textureWrap(NORMAL);
+      beginShape(QUADS);
+      texture(cloudsToSpace);                  
+      vertex(0, 0, 0, 0);
+      vertex(width, 0, 1, 0);
+      vertex(width, cloudsToSpace.height, 1, 1);
+      vertex(0, cloudsToSpace.height, 0, 1);
+      endShape();
+      popMatrix();
+      //phase = 4;
   }
   /**--------------------------[Phase 4]----------------------------------------------------------*/
 
   void phase04()
-  {         
+  {          
+    parallaxBg();
+    Win.GameOverMove();
+    Win.GameOverRender();      
+  }
+  /**--------------------------[Phase 5]----------------------------------------------------------*/
+
+  void phase05()
+  {
     parallaxBg();
     Loose.GameOverMove();  
     Loose.GameOverRender();
   }
   /**--------------------------[Phase 5]----------------------------------------------------------*/
 
-  void phase05()
+  void phase06()
   {
     //balloon cloth piece lands on the ground
   }
@@ -171,7 +191,7 @@ class GamePhases
 
   void backgroundPhaseDisplay()
   {
-    if (phase != 0 || phase != 1)
+    if (phase != 0 || phase != 1  || phase != 3)
     {                       
       pushMatrix();   
       translate(0, BGy, 0);
@@ -240,7 +260,7 @@ class GamePhases
       bgHeight1 = -height;
       bgHeight2 = 0;
 
-      if (phase == 3 || phase == 4)
+      if (phase == 4 || phase == 5)
       {
         if (BGy <= 0)
         {
