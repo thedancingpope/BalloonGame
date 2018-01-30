@@ -16,7 +16,7 @@ class PowerUp
     translate(width / 2, 0, 25);
     ambient(150, 150, 150);         
     noStroke();
-    translate(x, y);
+    translate(x / 2, y);
     scale(.4);
     pushMatrix(); 
     rotateY(frameCount * .4f);
@@ -42,13 +42,13 @@ class PowerUp
     popMatrix();
   }
 
-  void drawElectron(int dir, int _x)
+  void drawElectron(int dir, int x)
   {
     float electronSpeed = 0.7f;
     int inc = 120;
 
     pushMatrix();                         
-    translate(_x, -12);
+    translate(x, -12);
     rotateX(1);
     rotateY(dir);
     translate(0, sin(frameCount * electronSpeed) * -inc, cos(frameCount * electronSpeed) * inc);
@@ -67,16 +67,16 @@ class PowerUp
   void PowerSet()
   {
     y = -450;
-    x = int(random(-250, 250));
+    x = int(random(-500, 500));
   }
 
   boolean PowerGrab() 
   {
-    int balloonTolerance = 30;
+    int balloonTolerance = 78;
 
     if (y >= 180 && y <= 300)
     {
-      if (x >= ((balX / 2) - balloonTolerance) && x <= ((balX / 2) + balloonTolerance))
+      if (x >= (balX - balloonTolerance) && x <= (balX + balloonTolerance))
         return true;
     }
     return false;

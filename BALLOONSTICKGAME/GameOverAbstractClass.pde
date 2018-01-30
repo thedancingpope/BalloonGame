@@ -25,7 +25,7 @@ public abstract class GameOverAbstractClass
     pushMatrix();
     noStroke();
     fill(50, 50, 0);  
-    GamePhases.BalloonLighting();
+    BalloonLighting();
     translate(clothX, clothY, 30);
     rotateX(flying);
     rotateY(1.6);
@@ -65,9 +65,9 @@ public abstract class GameOverAbstractClass
     if (rightTrue && !leftTrue) 
       clothX += 8;        // move right
 
-    if (clothX < 0) 
+    if (clothX <= -1) 
       clothX = 2;            // dont go past the edge of the screen on the left   
-    if ( clothX > 500) 
+    if ( clothX >= 501) 
       clothX = 498;          // dont go past the edge of the screen on the right
   }
 
