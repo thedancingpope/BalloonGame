@@ -7,7 +7,9 @@ class GamePhases
   String qButton, controls;
 
   boolean BGparallax, beginParallax, spaceTransition;
-
+  
+  PImage woods, cloudSky, bgCloud1, bgCloud2, cloudsToSpace;
+  
   Balloon Balloon;  
   CloudThings [] cloudList;
   BadGuy Enemy;
@@ -22,6 +24,11 @@ class GamePhases
     BGspeed = 2;
     cloudCount = 10;
     resetComponents();
+    woods = loadImage("ForestBackgroundOne.jpg");
+    cloudSky = loadImage("CloudBackgroundReg.jpg");
+    bgCloud1 = loadImage("BlueSky2.jpg");
+    bgCloud2 = loadImage("BlueSky2.jpg");
+    cloudsToSpace = loadImage("TallHorizon.png");
   } 
 
   void RunPhases()
@@ -110,7 +117,12 @@ class GamePhases
   /**--------------------------[Phase 2]----------------------------------------------------------*/
 
   void phase02()
-  {  
+  { 
+    PowerUp.ActualPowerUp();
+    PowerUp.PowerMove();   
+    gotPowerUp = PowerUp.PowerGrab();
+    Enemy.render();
+    Enemy.move();
     BGy += BGspeed;
     if (BGy >= 500)
     {
@@ -120,19 +132,12 @@ class GamePhases
       else
         beginParallax = true;
     }
-    Enemy.render();
-    Enemy.move();
-    PowerUp.ActualPowerUp();
-    PowerUp.PowerMove();
-    gotPowerUp = PowerUp.PowerGrab();
-
     if (timeSurvived >= 80) 
     {
       phase = changePhase(3);
       BGy = 0;
-      
     }
-    if (caught) 
+    if (Enemy.caughtCheck()) 
       phase = changePhase(5);
   }  
   /**--------------------------[Phase 3]----------------------------------------------------------*/
@@ -351,8 +356,31 @@ class GamePhases
     leftTrue = false;
     rightTrue = false;
     gotPowerUp = false;
-    caught = false;
     reset = false;
     spaceTransition = false;
   }
+  
+  void BalloonLighting()
+  {
+    pushMatrix();
+    ambientLight(205, 205, 205);                    // the color put out by the light on everything
+    if (phase < 4)
+    {
+      lightSpecular(205, 205, 205);                    //the light that will be removed on shiny parts
+      directionalLight(205, 205, 205, 1, 1, -2);      // directional light facing the balloon
+    }
+    specular(180, 180, 180);                        // removes the this color when lit up
+    shininess(9.0);
+    if (phase == 2)
+    { 
+      if (gotPowerUp)
+        ambient(244, 255, 126);
+      else 
+      ambient(150, 150, 0);                          //light the balloon this color
+    } else 
+    {
+      ambient(150, 150, 0);
+    }
+    popMatrix();
+}
 }
