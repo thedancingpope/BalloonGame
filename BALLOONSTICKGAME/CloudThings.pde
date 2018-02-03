@@ -9,7 +9,7 @@ class CloudThings
   
   CloudThings() 
   {
-    newCloudPos();
+    newPosition();
   }
 
   void render()
@@ -44,26 +44,24 @@ class CloudThings
     if (phase != 5 && phase != 4)
     {
       y += speed;   
-      if (gotPowerUp)   
-        y += speed * 1.1f;        //speed up if you have the power up
       if (y - size > height)        // if reaching the bottom of the panel
         if(!phaseOut)
-          newCloudPos();
+          newPosition();
     } 
     else
     {
       y -= speed; 
       if ((y + size) < -cloudBottom)        // if reaching the top of the panel        
-        newCloudPos();
+        newPosition();
     }
-  } 
-
-  void newCloudPos()
+  }  
+ 
+  void newPosition()
   {
     size = random(15, 35);
     speed = random(3, 6);
     cloudType = int(random(0, 2));
-    x = random(30, 480);          
+    x = random(20, 480);          
     z = random(0, -80);
     if (phase != 5 && phase != 4)
       y = - cloudBottom - size;           // go to the top    

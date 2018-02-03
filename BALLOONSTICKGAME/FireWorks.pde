@@ -11,10 +11,10 @@ class FireWorks
     Circles = new Circles [circleCount];
     for (int i = 0; i < circleCount; i++)
       Circles[i] = new Circles();
-    newPos();
+    newPosition();
   }
 
-  void renderFireWorks()
+  void render()
   {
     int limit = 60;
     int midWidth = width / 2;
@@ -24,17 +24,17 @@ class FireWorks
     translate(newX, newY, 40);
     for (int i = 0; i < circleCount; i++) 
     {                 
-      Circles[i].renderCircles();
-      Circles[i].moveCircles();
+      Circles[i].render();
+      Circles[i].move();
       if (Circles[i].x < (midWidth - limit) || Circles[i].x > (midWidth + limit) || Circles[i].y < (midHeight - limit) || Circles[i].y > (midHeight + limit))
         Circles[i].newCircles();      
       if (frameCount % 30 == 0)
-        newPos();
+        newPosition();
     }
     popMatrix();
   }
 
-  void newPos()
+  void newPosition()
   {
     int range = width / 4;
     newX = random(-range, range);

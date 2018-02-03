@@ -6,8 +6,10 @@ class GamePhases
 
   String qButton, controls;
 
-  boolean BGparallax, beginParallax, spaceTransition;
-
+  boolean BGparallax, beginParallax, spaceTransition, gotPowerUp;
+  
+  PImage woods, cloudSky, bgCloud1, bgCloud2, cloudsToSpace;
+  
   Balloon Balloon;  
   CloudThings [] cloudList;
   BadGuy Enemy;
@@ -19,18 +21,22 @@ class GamePhases
   { 
     qButton = "Press Q for freedom.";
     controls = "Use A and D to steer.";
-    BGspeed = 2;
-    cloudCount = 10;
-    resetComponents();
+    woods = loadImage("ForestBackgroundOne.jpg");
+    cloudSky = loadImage("CloudBackgroundReg.jpg");
+    bgCloud1 = loadImage("BlueSky2.jpg");
+    bgCloud2 = loadImage("BlueSky2.jpg");
+    cloudsToSpace = loadImage("TallHorizon.png");
+    resetComponents();    
   } 
 
   void RunPhases()
   {
-    backgroundRender();
+    renderBackground();
+    moveBackground();
     if (phase < 4)
     {      
-      Balloon.drawBalloon();
-      Balloon.moveBalloon();
+      Balloon.render(gotPowerUp);
+      Balloon.move();
     }    
     if (phase > 1)
     {        
@@ -38,6 +44,8 @@ class GamePhases
       {
         cloudList[i].render();
         cloudList[i].move();
+        if (gotPowerUp)  
+          cloudList[i].move();
       }
       TimeStamp();
     }
@@ -75,9 +83,7 @@ class GamePhases
   /**--------------------------[Phase 1]----------------------------------------------------------*/
 
   void phase01()
-  {        
-    BGy += 5;
-
+  {  
     if (BGy < 200)
     {
       balX = int(map(BGy, 0, 200, 0, -250));
@@ -95,7 +101,6 @@ class GamePhases
       rightTrue = false;
       leftTrue = true;
     }
-
     if (BGy > 500)
     {
       phase = 2;
@@ -110,30 +115,23 @@ class GamePhases
   /**--------------------------[Phase 2]----------------------------------------------------------*/
 
   void phase02()
-  {  
-    BGy += BGspeed;
-    if (BGy >= 500)
-    {
-      BGy = 0;
-      if (beginParallax) 
-        BGparallax = !BGparallax;
-      else
-        beginParallax = true;
-    }
+  { 
+    PowerUp.render();
+    PowerUp.move();   
+    gotPowerUp = PowerUp.getPowerUp();
     Enemy.render();
-    Enemy.move();
-    PowerUp.ActualPowerUp();
-    PowerUp.PowerMove();
-    gotPowerUp = PowerUp.PowerGrab();
-
+    if(gotPowerUp)
+      Enemy.retreat();
+    else
+      Enemy.move();
+      
     if (timeSurvived >= 80) 
     {
-      phase = changePhase(3);
+      changePhase(3);
       BGy = 0;
-      
     }
-    if (caught) 
-      phase = changePhase(5);
+    if (Enemy.caughtCheck()) 
+      changePhase(5);
   }  
   /**--------------------------[Phase 3]----------------------------------------------------------*/
 
@@ -146,11 +144,7 @@ class GamePhases
       phaseOutCloud = 0;
       spaceTransition = true;
       BGy = height - cloudsToSpace.height; 
-    }
-    //move bg up to space first
-    if(BGy < 0)
-      BGy += BGspeed;    
-      
+    }    
     if(millis() > winTime + 10000f && millis() < winTime + waitLong)
     {           
       cloudList[phaseOutCloud].phaseOut = true;
@@ -172,18 +166,16 @@ class GamePhases
   /**--------------------------[Phase 4]----------------------------------------------------------*/
 
   void phase04()
-  {        
-    parallaxBg();
-    Win.GameOverMove();
-    Win.GameOverRender();
+  {  
+    Win.move();
+    Win.render();
   }
   /**--------------------------[Phase 5]----------------------------------------------------------*/
 
   void phase05()
   {
-    parallaxBg();
-    Loose.GameOverMove();  
-    Loose.GameOverRender();
+    Loose.move();  
+    Loose.render();
     //if (countDownTime < 0)
       //resetComponents();
   }
@@ -194,27 +186,51 @@ class GamePhases
     //balloon cloth piece lands on the ground
   }
 
-  int changePhase(int p)
+  void changePhase(int p)
   {
     endTime = timeSurvived;  
     BGparallax = true;
-    return p;
+    phase = p;
   }
 
   void parallaxBg()
   {
     beginParallax = true;
     BGy -= BGspeed;
-    if (BGy <= -500)
+    if (BGy <= -height)
     {
       BGy = 0; 
       BGparallax = !BGparallax;
     }
   }
 
-  void backgroundRender()
+  void moveBackground()
   {
+    if(phase == 1)
+      BGy += BGspeed * 2;
+    else if(phase == 2)
+    {
+      BGy += BGspeed;
+      if (BGy >= height)
+      {
+        BGy = 0;
+        if (beginParallax) 
+          BGparallax = !BGparallax;
+        else
+          beginParallax = true;
+      }
+    }
+    else if(phase == 3)
+    {
+      if(BGy < 0)
+        BGy += BGspeed;   
+    }
+    else if(phase == 4 || phase == 5)
+      parallaxBg();
+  }
 
+  void renderBackground()
+  {
     if (phase != 0 || phase != 1 || phase != 3)
     {   
       PImage BG1;
@@ -339,20 +355,39 @@ class GamePhases
     Balloon = new Balloon();
     Enemy = new BadGuy();
     PowerUp = new PowerUp(); 
+    cloudCount = 10;
     cloudList = new CloudThings[cloudCount];
     for (int i=0; i <cloudList.length; i++) 
       cloudList[i]=new CloudThings();
     phase = 0; 
     balX = 0;
     BGy = 0;
+    BGspeed = 2;    
     countDownTime = 0;
     BGparallax = true;
     beginParallax = false;    
     leftTrue = false;
     rightTrue = false;
     gotPowerUp = false;
-    caught = false;
     reset = false;
     spaceTransition = false;
   }
+  
+  void lighting()
+  {
+    pushMatrix();
+    ambientLight(205, 205, 205);                    // the color put out by the light on everything
+    if (phase < 4)
+    {
+      lightSpecular(205, 205, 205);                    //the light that will be removed on shiny parts
+      directionalLight(205, 205, 205, 1, 1, -2);      // directional light facing the balloon
+    }
+    specular(180, 180, 180);                        // removes the this color when lit up
+    shininess(9.0);
+    if (gotPowerUp)
+      ambient(244, 255, 126);
+    else 
+      ambient(150, 150, 0);    
+    popMatrix();
+}
 }

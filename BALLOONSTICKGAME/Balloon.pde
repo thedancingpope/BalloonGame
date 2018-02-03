@@ -16,27 +16,25 @@ class Balloon
     balZ = 0;
   }
 
-  void drawBalloon()
+  void render(boolean gotPowerUp)
   { 
     float ballInc = .02f; 
-
     if (gotPowerUp) 
     {
       if (balloonScale < 1.14f)
         balloonScale += ballInc;
-
       if (lineZ < 65)
         lineZ += 8;
-    } else 
+    } 
+    else 
     {
       if (balloonScale > 1.0f)
         balloonScale -= ballInc;
       if (lineZ > 10)
         lineZ -= 8;
     }
-
     pushMatrix();  
-    BalloonLighting();
+    GamePhases.lighting();
     pushMatrix();                      
     translate(width / 2, height / 2);                 
     scale(.4); 
@@ -47,11 +45,11 @@ class Balloon
     fill(50, 50, 0);
     drawCone(70, 17, 5, 100);        //draw the large cone
     drawCone(5, 100, 10, 110);       //draw the small cone
-    translate(0, -40, 0);                          //moves to just above the center
-    sphere(90);                                      //main sphere of balloon    
+    translate(0, -40, 0);                       
+    sphere(90);                                         
     noFill();
     stroke(0);                                    
-    strokeWeight(4);                               //width of the string
+    strokeWeight(4);                              
     line(-6, 136, 9, 6, 135, 8);              //draw the lines around the bottom of the balloon
     line(-6, 135, 8, -10, 135, 0);              //to look like it is tied around
     line(6, 135, 8, 10, 135, 0);                //the bottom of the balloon, used 3 lines  
@@ -61,27 +59,28 @@ class Balloon
     lineX = (width/2) + map(balX, -500, 500, -203, 203) + (rotZ * -2.1);//draws the start of the string based on where the bottom of the balloons cone is 
     lineY = 290 - abs(map(rotZ, -15, 15, -20, 20));
     popMatrix();
-    BalloonString.drawBalloonString(lineX, lineY, lineZ);
+    BalloonString.render(lineX, lineY, lineZ);
   } 
 
-  void moveBalloon()
+  void move()
   {
     int centerBalloon = 3;
     int incBalloon = 12;
     int rotLimit = 15;
-    int rotInc = 5;
+    int rotInc = 3;
 
     if (rightTrue)  
     {                
       if (balX < width) 
       {   
         balX += incBalloon;       
-        if (lastZ < rotLimit)               //only rotate if it hasn't reached its limit to rotate
+        if (lastZ < rotLimit)
           rotZ += rotInc;
         else
           rotZ = rotLimit;
       }
-    } else if (leftTrue)       
+    } 
+    else if (leftTrue)       
     {
       if (balX > -width)
       {
@@ -89,11 +88,12 @@ class Balloon
         if (lastZ > -rotLimit)
           rotZ -= rotInc;
         else
-          rotZ = -rotLimit;         // rotate until this point
+          rotZ = -rotLimit;
       }
-    } else if (!rightTrue && !leftTrue)     //if not pressing key 
+    } 
+    else if (!rightTrue && !leftTrue) //rotate back to center
     {
-      if (rotZ > 0)             //rotate back to center
+      if (rotZ > 0)            
         rotZ -= centerBalloon; 
       if (rotZ < 0)
         rotZ += centerBalloon;

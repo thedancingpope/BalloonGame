@@ -5,7 +5,7 @@ public abstract class GameOverAbstractClass
 
   int cols, rows;
 
-  public abstract void GameOverRender(); 
+  public abstract void render(); 
 
   public void initialGameOver()
   {           
@@ -17,7 +17,7 @@ public abstract class GameOverAbstractClass
     level = new float[cols][rows];
   } 
 
-  public void flyingCloth()
+  public void renderCloth()
   {
     int scale = 25;
     int range = 5;
@@ -25,7 +25,7 @@ public abstract class GameOverAbstractClass
     pushMatrix();
     noStroke();
     fill(50, 50, 0);  
-    BalloonLighting();
+    GamePhases.lighting();
     translate(clothX, clothY, 30);
     rotateX(flying);
     rotateY(1.6);
@@ -43,7 +43,7 @@ public abstract class GameOverAbstractClass
     popMatrix();
   }
 
-  public void GameOverMove()
+  public void move()
   {
     float  inc = 0.1f;    
     flying -= 0.03;
@@ -61,14 +61,14 @@ public abstract class GameOverAbstractClass
     }
 
     if (leftTrue && !rightTrue) 
-      clothX -= 8;        // move left
+      clothX -= 8;        
     if (rightTrue && !leftTrue) 
-      clothX += 8;        // move right
+      clothX += 8;        
 
-    if (clothX <= -1) 
-      clothX = 2;            // dont go past the edge of the screen on the left   
-    if ( clothX >= 501) 
-      clothX = 498;          // dont go past the edge of the screen on the right
+    if (clothX < 0) 
+      clothX = 2;              
+    if ( clothX > 500) 
+      clothX = 498; 
   }
 
 

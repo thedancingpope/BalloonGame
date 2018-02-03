@@ -8,13 +8,13 @@ class Circles
     newCircles();
   }
 
-  void renderCircles()
+  void render()
   {  
     noStroke();
     ellipse(x, y, size, size);
   }
 
-  void moveCircles()
+  void move()
   {
     x += dx;
     y += dy;

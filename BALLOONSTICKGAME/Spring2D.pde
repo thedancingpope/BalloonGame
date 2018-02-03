@@ -8,7 +8,7 @@ class Spring2D
     y = _y;
   }
 
-  void update(float targetX, float targetY) 
+  void move(float targetX, float targetY) 
   {
     float mass = 2.0;
     float stiffness = 0.2;
@@ -29,7 +29,7 @@ class Spring2D
     y += addY;
   }
 
-  void display(float _x, float _y, float _z) 
+  void render(float _x, float _y, float _z) 
   {
     pushMatrix();
     strokeWeight(3);

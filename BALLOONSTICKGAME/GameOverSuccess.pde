@@ -21,21 +21,21 @@ class GameOverSuccess extends GameOverAbstractClass
     Clothes[4] = new Clothes(0f, -50f, 0.3f);
   }  
 
-  void GameOverRender() 
+  void render() 
   {           
     fill(0);
     textSize(60);
     ambient(R, G, B);
     fill(R, G, B); 
     text("You Win!", 140, height / 2);       
-    FW.renderFireWorks();
+    FW.render();
     if (frameCount % 3 == 0)
       textColorChange();    
     for (int i = 0; i < clothCount; i++)
     {
       pushMatrix();
       translate(Clothes[i].x, Clothes[i].y);
-      flyingCloth();   
+      renderCloth();   
       popMatrix();
     }            
     movePieces();
@@ -55,7 +55,8 @@ class GameOverSuccess extends GameOverAbstractClass
           Clothes[i].x += lerp(0, range, Clothes[i].speed);                       
         if (Clothes[1].x > range)
           leftRight = false;
-      } else
+      } 
+      else
       {
         if (i % 2 == 0)
           Clothes[i].x += lerp(0, range, Clothes[i].speed);

@@ -5,9 +5,9 @@ class GameOverFail extends GameOverAbstractClass
     initialGameOver();
   }
 
-  void GameOverRender() 
+  void render() 
   {   
-    flyingCloth();
+    renderCloth();
     resetText();
   }
 }
