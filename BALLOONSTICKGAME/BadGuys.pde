@@ -1,11 +1,11 @@
 class BadGuy
 {
-  float x, y, enemyFollow, balY; 
+  float x, y, balY; 
 
   int speed, imgTolerance;
 
   PImage badCloud, angryCloud, enemyImg;
-  
+
   BadGuy() 
   {
     x = 0f;
@@ -25,11 +25,11 @@ class BadGuy
     noStroke();
     translate(x + imgTolerance, y + (height / 2));
     noLights();        
-    if(y <= 70)
+    if (y <= 70)
     {
       scale(.6);
       enemyImg = angryCloud;
-    }
+    } 
     else
     {
       scale(.4);
@@ -41,8 +41,8 @@ class BadGuy
 
   boolean caughtCheck()
   {
-    int gap = 15;
-    if (x >= (enemyFollow - gap) && x <= (enemyFollow + gap) && y <= balY)    
+    int gap = 30;
+    if (x >= (balX - gap) && x <= (balX + gap) && y <= balY)    
       return true;
     else
       return false;
@@ -50,15 +50,14 @@ class BadGuy
 
   void move()
   { 
-    enemyFollow = map(balX, -500, 500, -200, 200);
-    if(x < enemyFollow - 1)
+    if (x < balX - 1)
       x += speed;
-    else if(x > enemyFollow + 1)
+    else if (x > balX + 1)
       x -= speed;
     if (y > balY)
       y -= speed;
   }
-  
+
   void retreat()
   {
     y += 16;

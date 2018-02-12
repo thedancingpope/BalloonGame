@@ -6,7 +6,7 @@ class CloudThings
   int cloudBottom = 70;
 
   boolean phaseOut;
-  
+
   CloudThings() 
   {
     newPosition();
@@ -45,7 +45,7 @@ class CloudThings
     {
       y += speed;   
       if (y - size > height)        // if reaching the bottom of the panel
-        if(!phaseOut)
+        if (!phaseOut)
           newPosition();
     } 
     else
@@ -55,7 +55,7 @@ class CloudThings
         newPosition();
     }
   }  
- 
+
   void newPosition()
   {
     size = random(15, 35);
@@ -66,6 +66,6 @@ class CloudThings
     if (phase != 5 && phase != 4)
       y = - cloudBottom - size;           // go to the top    
     else    
-      y = height + cloudBottom + size;      // go to the bottom
+    y = height + cloudBottom + size;      // go to the bottom
   }
 } 

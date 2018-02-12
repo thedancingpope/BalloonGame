@@ -13,7 +13,7 @@ class PowerUp
   void render()
   {
     pushMatrix();
-    ambient(150, 150, 150);         
+    noLights();
     noStroke();
     translate((width / 2) + x, y, 25);
     pushMatrix(); 
@@ -26,7 +26,7 @@ class PowerUp
     drawNucleus(neutronColor); 
     translate(9, 0);
     drawNucleus(protonColor); 
-    popMatrix();  
+    popMatrix();     
     drawElectron(-1);
     drawElectron(1);              
     popMatrix();
@@ -57,14 +57,14 @@ class PowerUp
   void move()
   { 
     y += 7;
-    if (y >= height + 30)
+    if (y >= height + 40)
       newPosition();
   }
 
   void newPosition()
   {
     y = -400;
-    x = int(random(-250, 250));
+    x = int(random(-200, 200));
   }
 
   boolean getPowerUp() 
@@ -72,7 +72,7 @@ class PowerUp
     int balloonTolerance = 35;
     if (y >= 180 && y <= 320)
     {
-      if (x >= ((balX / 2) - balloonTolerance) && x <= ((balX / 2) + balloonTolerance))
+      if (x >= (balX - balloonTolerance) && x <= (balX + balloonTolerance))
         return true;
     }
     return false;

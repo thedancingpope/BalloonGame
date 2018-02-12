@@ -10,7 +10,7 @@
  Sincerely,  
  TheDancingPope
  
-
+ 
  @TheDancingPope
  @MeeeMooo
  */
@@ -31,7 +31,7 @@ void setup()
   textureMode(NORMAL);   
   textSize(20);
   stroke(0);
-  GamePhases = new GamePhases();  
+  GamePhases = new GamePhases();
 }
 
 void draw()
@@ -65,8 +65,7 @@ void keyReleased()
     reset = false;  
 
   if (key == 'q' || key == 'Q')    
-    if (phase == 0)
-      phase = 1;
+    GamePhases.setPhase1();
 
   if (key == 'p' || key == 'P')
     phase = 3;

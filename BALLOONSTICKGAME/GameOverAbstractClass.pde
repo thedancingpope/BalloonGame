@@ -68,7 +68,7 @@ public abstract class GameOverAbstractClass
     if (clothX < 0) 
       clothX = 2;              
     if ( clothX > 500) 
-      clothX = 498; 
+      clothX = 498;
   }
 
 

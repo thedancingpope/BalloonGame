@@ -3,7 +3,7 @@ class FireWorks
   float newX, newY;
 
   int circleCount = 10;
-  
+
   Circles [] Circles;
 
   FireWorks()
@@ -19,7 +19,7 @@ class FireWorks
     int limit = 60;
     int midWidth = width / 2;
     int midHeight = height / 2;
-    
+
     pushMatrix();
     translate(newX, newY, 40);
     for (int i = 0; i < circleCount; i++) 

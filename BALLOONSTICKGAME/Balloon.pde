@@ -10,68 +10,63 @@ class Balloon
   {
     BalloonString = new BalloonString();    
     lineZ = 10f;
-    balloonScale = 1.0f;
+    balloonScale = .4f;
     rotZ = 0;
     lastZ = 0;
     balZ = 0;
   }
 
-  void render(boolean gotPowerUp)
+  void render()
   { 
-    float ballInc = .02f; 
-    if (gotPowerUp) 
+    float ballInc = .02f;
+    float rotCompensation;
+    if (GamePhases.gotPowerUp) 
     {
-      if (balloonScale < 1.14f)
+      rotCompensation = -3.8;
+      if (balloonScale < .54f)
         balloonScale += ballInc;
-      if (lineZ < 65)
-        lineZ += 8;
+      if (lineZ < 40)
+        lineZ += 5;
     } 
     else 
     {
-      if (balloonScale > 1.0f)
+      rotCompensation = -3.5;
+      if (balloonScale > .4f)
         balloonScale -= ballInc;
-      if (lineZ > 10)
-        lineZ -= 8;
-    }
-    pushMatrix();  
+      if (lineZ > 15)
+        lineZ -= 5;
+    } 
+    lineX = map(balX, -200, 200, -215, 215) + (width/2) + (rotZ * rotCompensation);//draws the start of the string based on where the bottom of the balloons cone is 
+    lineY = 311 - abs(rotZ * 2);
+
     GamePhases.lighting();
-    pushMatrix();                      
-    translate(width / 2, height / 2);                 
-    scale(.4); 
-    scale(balloonScale);  
-    translate(balX, 0, 40);
-    rotateZ(map(rotZ, -15, 15, -1, 1)); 
+    pushMatrix(); 
     noStroke();                                 
     fill(50, 50, 0);
-    drawCone(70, 17, 5, 100);        //draw the large cone
-    drawCone(5, 100, 10, 110);       //draw the small cone
-    translate(0, -40, 0);                       
-    sphere(90);                                         
+    translate(balX + (width / 2), height / 2, 40);
+    rotateZ(map(rotZ, -15, 15, -1, 1)); 
+    scale(balloonScale);                       
+    sphere(90); 
+    drawCone(70, 57, 5, 140);        //draw the large cone
+    drawCone(5, 140, 10, 150);       //draw the small cone                                                                  
     noFill();
     stroke(0);                                    
-    strokeWeight(4);                              
-    line(-6, 136, 9, 6, 135, 8);              //draw the lines around the bottom of the balloon
-    line(-6, 135, 8, -10, 135, 0);              //to look like it is tied around
-    line(6, 135, 8, 10, 135, 0);                //the bottom of the balloon, used 3 lines  
-    scale(1.0);
-    popMatrix();
-    scale(balloonScale);
-    lineX = (width/2) + map(balX, -500, 500, -203, 203) + (rotZ * -2.1);//draws the start of the string based on where the bottom of the balloons cone is 
-    lineY = 290 - abs(map(rotZ, -15, 15, -20, 20));
-    popMatrix();
+    strokeWeight(4); 
+    drawCone(7, 137, 7, 141);     //draw the balloon tie
+    popMatrix();   
+
     BalloonString.render(lineX, lineY, lineZ);
   } 
 
   void move()
   {
-    int centerBalloon = 3;
-    int incBalloon = 12;
+    int incBalloon = 6;
     int rotLimit = 15;
     int rotInc = 3;
 
     if (rightTrue)  
     {                
-      if (balX < width) 
+      if (balX < 200) 
       {   
         balX += incBalloon;       
         if (lastZ < rotLimit)
@@ -82,7 +77,7 @@ class Balloon
     } 
     else if (leftTrue)       
     {
-      if (balX > -width)
+      if (balX > -200)
       {
         balX -= incBalloon;
         if (lastZ > -rotLimit)
@@ -94,9 +89,9 @@ class Balloon
     else if (!rightTrue && !leftTrue) //rotate back to center
     {
       if (rotZ > 0)            
-        rotZ -= centerBalloon; 
+        rotZ -= rotInc; 
       if (rotZ < 0)
-        rotZ += centerBalloon;
+        rotZ += rotInc;
     }  
     lastZ = rotZ;
   }
