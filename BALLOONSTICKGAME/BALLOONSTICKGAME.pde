@@ -16,7 +16,7 @@
  */
 int balX, phase; 
 
-boolean leftTrue, rightTrue, reset;
+boolean leftTrue, rightTrue, reset, debug;
 
 PFont font;
 
@@ -67,9 +67,19 @@ void keyReleased()
   if (key == 'q' || key == 'Q')    
     GamePhases.setPhase1();
 
-  if (key == 'p' || key == 'P')
+  if (key == '3')
+  {
     phase = 3;
-
-  if (key == 'l' || key == 'L')
+    debug = true;
+  }
+  else if(key == '4')
+  {
+    phase = 4;
+    debug = true;      
+  }
+  else if(key == '5')
+  {
     phase = 5;
+    debug = true;
+  }
 }

@@ -46,7 +46,7 @@ class GamePhases
         cloudList[i].move();
         if (gotPowerUp)  
           cloudList[i].move();
-      }
+      }      
       TimeStamp();
     }
 
@@ -327,14 +327,18 @@ class GamePhases
     if (phase == 2)
     {                   
       timeSurvived = int((millis() / 1000) - floatingTime);
-      text(timeSurvived, 100, 0);
+      if(!debug)
+          text(timeSurvived, 100, 0);
     } 
     else
     {
-      countDownTime = int((endTime * 2) - ((millis() / 1000) - floatingTime));          
-      text(countDownTime, 100, 0);         
-      fill(200, 25, 25);
-      text(endTime, 100, 17);
+      countDownTime = int((endTime * 2) - ((millis() / 1000) - floatingTime)); 
+      if(!debug)
+      {
+          text(countDownTime, 100, 0);         
+          fill(200, 25, 25);
+          text(endTime, 100, 17);
+      }
     }
     popMatrix();
   }
@@ -399,6 +403,7 @@ class GamePhases
     gotPowerUp = false;
     reset = false;
     spaceTransition = false;
+    debug = false;
   }
 
   void lighting()
