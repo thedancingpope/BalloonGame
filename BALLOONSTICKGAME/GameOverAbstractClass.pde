@@ -25,7 +25,7 @@ public abstract class GameOverAbstractClass
     pushMatrix();
     noStroke();
     fill(50, 50, 0);  
-    GamePhases.lighting();
+    Phases.lighting();
     translate(clothX, clothY, 30);
     rotateX(flying);
     rotateY(1.6);

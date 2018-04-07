@@ -60,6 +60,6 @@ class BadGuy
 
   void retreat()
   {
-    y += 16;
+    y += 14;
   }
 }

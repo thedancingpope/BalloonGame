@@ -20,7 +20,7 @@ class Balloon
   { 
     float ballInc = .02f;
     float rotCompensation;
-    if (GamePhases.gotPowerUp) 
+    if (Phases.gotPowerUp) 
     {
       rotCompensation = -3.8;
       if (balloonScale < .54f)
@@ -39,7 +39,7 @@ class Balloon
     lineX = map(balX, -200, 200, -215, 215) + (width/2) + (rotZ * rotCompensation);//draws the start of the string based on where the bottom of the balloons cone is 
     lineY = 311 - abs(rotZ * 2);
 
-    GamePhases.lighting();
+    Phases.lighting();
     pushMatrix(); 
     noStroke();                                 
     fill(50, 50, 0);

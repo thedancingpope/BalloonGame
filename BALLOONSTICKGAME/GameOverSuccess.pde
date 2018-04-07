@@ -22,23 +22,17 @@ class GameOverSuccess extends GameOverAbstractClass
   }  
 
   void render() 
-  {           
-    fill(0);
-    textSize(60);
-    ambient(R, G, B);
-    fill(R, G, B); 
-    text("You Win!", 140, height / 2);       
-    FW.render();
-    if (frameCount % 3 == 0)
-      textColorChange();    
+  {   
+    movePieces();
     for (int i = 0; i < clothCount; i++)
     {
       pushMatrix();
       translate(Clothes[i].x, Clothes[i].y);
       renderCloth();   
       popMatrix();
-    }            
-    movePieces();
+    }
+    FW.render();
+    winText();
     resetText();
   }
 
@@ -66,6 +60,17 @@ class GameOverSuccess extends GameOverAbstractClass
           leftRight = true;
       }
     }
+  }
+
+  void winText()
+  {
+    if (frameCount % 3 == 0)
+      textColorChange();
+    fill(0);
+    textSize(60);
+    ambient(R, G, B);
+    fill(R, G, B); 
+    text("You Win!", 140, height / 2);
   }
 
   void textColorChange()

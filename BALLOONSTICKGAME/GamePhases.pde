@@ -6,7 +6,7 @@ class GamePhases
 
   String qButton, controls;
 
-  boolean BGparallax, beginParallax, spaceTransition, gotPowerUp, startPhase1;
+  boolean BGparallax, beginParallax, spaceTransition, gotPowerUp, startPhase1, debug;
 
   PImage woods, cloudSky, bgCloud1, bgCloud2, cloudsToSpace;
 
@@ -65,11 +65,11 @@ class GamePhases
 
     if (phase >= 4)  
     {
-      if (reset)
+      if (reset || debug)
         resetComponents();
     }
   }    
-  /**--------------------------[Phase System Begin]----------------------------------------------------------*/
+  /**--------------------------[Phase 0]----------------------------------------------------------*/
 
   void phase00()
   {     
@@ -88,9 +88,15 @@ class GamePhases
     if (startPhase1)
     {
       if (balX > 0)
+      {
+        rightTrue = false; 
         leftTrue = true;
+      }        
       else if (balX < 0)
+      {
+        leftTrue = false;
         rightTrue = true;
+      }
       else if (balX == 0)
       {
         startPhase1 = false;
@@ -105,15 +111,15 @@ class GamePhases
         balX = int(map(BGy, 0, 200, 0, -100));
         leftTrue = true;
       } 
-      else if (BGy < 400)
+      else if (BGy < 450)
       {
-        balX = int(map(BGy, 200, 400, -100, 100));
+        balX = int(map(BGy, 200, 450, -100, 50));
         leftTrue = false;
         rightTrue = true;
-      } 
+      }
       else if (BGy <= 500)
       {
-        balX = int(map(BGy, 400, 500, 100, 0));
+        balX = int(map(BGy, 450, 500, 50, 0));
         rightTrue = false;
         leftTrue = true;
       }
@@ -212,6 +218,16 @@ class GamePhases
       phase = 1;
     }
   }
+
+  void debugPhase(int p)
+   {
+     phase = p;
+     debug = true;
+     if(p == 3)
+     {
+       spaceTransition = false;
+     }
+   }
 
   void changePhase(int p)
   {

@@ -16,11 +16,11 @@
  */
 int balX, phase; 
 
-boolean leftTrue, rightTrue, reset, debug;
+boolean leftTrue, rightTrue, reset;
 
 PFont font;
 
-GamePhases GamePhases;
+GamePhases Phases;
 
 void setup()
 {
@@ -31,12 +31,12 @@ void setup()
   textureMode(NORMAL);   
   textSize(20);
   stroke(0);
-  GamePhases = new GamePhases();
+  Phases = new GamePhases();
 }
 
 void draw()
 {
-  GamePhases.RunPhases();
+  Phases.RunPhases();
 }
 
 void keyPressed()
@@ -65,21 +65,18 @@ void keyReleased()
     reset = false;  
 
   if (key == 'q' || key == 'Q')    
-    GamePhases.setPhase1();
+    Phases.setPhase1();
 
   if (key == '3')
   {
-    phase = 3;
-    debug = true;
+    Phases.debugPhase(3);
   }
   else if(key == '4')
   {
-    phase = 4;
-    debug = true;      
+    Phases.debugPhase(4);      
   }
   else if(key == '5')
   {
-    phase = 5;
-    debug = true;
+    Phases.debugPhase(5);
   }
 }
