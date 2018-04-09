@@ -14,11 +14,11 @@ class GameOverSuccess extends GameOverAbstractClass
     initialGameOver();
     FW = new FireWorks();
     Clothes = new Clothes [clothCount];
-    Clothes[0] = new Clothes(0f, 0f, 0f);
-    Clothes[1] = new Clothes(0f, -20f, 0.1f);
-    Clothes[2] = new Clothes(0f, -30f, 0.2f);
-    Clothes[3] = new Clothes(0f, -40f, 0.5f);
-    Clothes[4] = new Clothes(0f, -50f, 0.3f);
+    Clothes[0] = new Clothes(new PVector(0, 0), 0f);//new Clothes(0f, 0f, 0f);
+    Clothes[1] = new Clothes(new PVector(0, -20), 0.1f);//new Clothes(0f, -20f, 0.1f);
+    Clothes[2] = new Clothes(new PVector(0, -30), 0.2f);//new Clothes(0f, -30f, 0.2f);
+    Clothes[3] = new Clothes(new PVector(0, -40), 0.5f);//new Clothes(0f, -40f, 0.5f);
+    Clothes[4] = new Clothes(new PVector(0, -50), 0.3f);//new Clothes(0f, -50f, 0.3f);
   }  
 
   void render() 
@@ -27,15 +27,14 @@ class GameOverSuccess extends GameOverAbstractClass
     for (int i = 0; i < clothCount; i++)
     {
       pushMatrix();
-      translate(Clothes[i].x, Clothes[i].y);
+      translate(Clothes[i].pos.x, Clothes[i].pos.y);
       renderCloth();   
       popMatrix();
     }
-    FW.render();
     winText();
     resetText();
   }
-
+  
   void movePieces()
   {
     int range = 23;               
@@ -44,19 +43,19 @@ class GameOverSuccess extends GameOverAbstractClass
       if (leftRight)
       {
         if (i % 2 == 0)
-          Clothes[i].x -= lerp(0, range, Clothes[i].speed);
+          Clothes[i].pos.x -= lerp(0, range, Clothes[i].speed);
         else
-          Clothes[i].x += lerp(0, range, Clothes[i].speed);                       
-        if (Clothes[1].x > range)
+          Clothes[i].pos.x += lerp(0, range, Clothes[i].speed);                       
+        if (Clothes[1].pos.x > range)
           leftRight = false;
       } 
       else
       {
         if (i % 2 == 0)
-          Clothes[i].x += lerp(0, range, Clothes[i].speed);
+          Clothes[i].pos.x += lerp(0, range, Clothes[i].speed);
         else
-          Clothes[i].x -= lerp(0, range, Clothes[i].speed);    
-        if (Clothes[1].x < -range)
+          Clothes[i].pos.x -= lerp(0, range, Clothes[i].speed);    
+        if (Clothes[1].pos.x < -range)
           leftRight = true;
       }
     }

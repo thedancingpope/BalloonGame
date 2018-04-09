@@ -1,11 +1,11 @@
 class Clothes
 {
-  float x, y, speed;
+  float speed;
+  PVector pos;
 
-  Clothes(float _x, float _y, float _s)
+  Clothes(PVector _p, float _s)
   {
-    x = _x;
-    y = _y;
+    pos = _p;
     speed = _s;
   }
 }

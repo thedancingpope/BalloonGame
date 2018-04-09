@@ -79,4 +79,8 @@ void keyReleased()
   {
     Phases.debugPhase(5);
   }
+  else if(key == '6')
+  {
+    Phases.debugPhase(6);
+  }
 }

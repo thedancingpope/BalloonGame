@@ -41,7 +41,7 @@ class CloudThings
 
   void move()
   { 
-    if (phase != 5 && phase != 4)
+    if (phase < 4)
     {
       y += speed;   
       if (y - size > height)        // if reaching the bottom of the panel
@@ -51,8 +51,9 @@ class CloudThings
     else
     {
       y -= speed; 
-      if ((y + size) < -cloudBottom)        // if reaching the top of the panel        
-        newPosition();
+      if ((y + size) < -cloudBottom)        // if reaching the top of the panel  
+          if (!phaseOut)
+            newPosition();
     }
   }  
 
