@@ -91,17 +91,17 @@ class GamePhases
   { 
     if (startPhase1)
     {
-      if (balX > 0)
+      if (balPos.x > 0)
       {
         rightTrue = false; 
         leftTrue = true;
       }        
-      else if (balX < 0)
+      else if (balPos.x < 0)
       {
         leftTrue = false;
         rightTrue = true;
       }
-      else if (balX == 0)
+      else if (balPos.x == 0)
       {
         startPhase1 = false;
         rightTrue = false; 
@@ -128,7 +128,7 @@ class GamePhases
       {
         phase = 2;
         floatingTime = int(millis() / 1000);  
-        balX = 0;
+        balPos.x = 0; //balX = 0;
         leftTrue = false;
         rightTrue = false;
         BGy = 0;
@@ -436,7 +436,7 @@ class GamePhases
       cloudList[i]=new CloudThings();
     phase = 0; 
     startPhase1 = false;
-    balX = 0;
+    balPos = new PVector(0, height / 2);
     BGy = 0;
     BGspeed = 2;    
     countDownTime = 0;
@@ -453,13 +453,13 @@ class GamePhases
   void lighting()
   {
     pushMatrix();
-    ambientLight(205, 205, 205);                    // the color put out by the light on everything
+    ambientLight(205, 205, 205);
     if (phase < 4)
     {
-      lightSpecular(205, 205, 205);                    //the light that will be removed on shiny parts
-      directionalLight(205, 205, 205, 1, 1, -2);      // directional light facing the balloon
+      lightSpecular(205, 205, 205);
+      directionalLight(205, 205, 205, 1, 1, -2);
     }
-    specular(180, 180, 180);                        // removes the this color when lit up
+    specular(180, 180, 180);
     shininess(9.0);
     if (gotPowerUp)
       ambient(244, 255, 126);

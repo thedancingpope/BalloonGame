@@ -1,17 +1,15 @@
 class BadGuy
 {
-  float x, y, balY; 
-
+  float balY; 
+  PVector pos;
   int speed, imgTolerance;
-
   PImage badCloud, angryCloud, enemyImg;
 
   BadGuy() 
   {
-    x = 0f;
-    y = 300f;
+    pos = new PVector(0, 300);
     imgTolerance = (width / 2) - 105;
-    balY = -65;
+    balY = -55;
     speed = 2;
     badCloud = loadImage("EvilCloud.png");
     badCloud = badCloud.get(183, 239, 700, 300);
@@ -23,9 +21,9 @@ class BadGuy
   {
     pushMatrix();
     noStroke();
-    translate(x + imgTolerance, y + (height / 2));
+    translate(pos.x + imgTolerance, pos.y + (height / 2));
     noLights();        
-    if (y <= 70)
+    if (pos.y <= 70)
     {
       scale(.6);
       enemyImg = angryCloud;
@@ -42,7 +40,7 @@ class BadGuy
   boolean caughtCheck()
   {
     int gap = 30;
-    if (x >= (balX - gap) && x <= (balX + gap) && y <= balY)    
+    if (pos.x >= (balPos.x - gap) && pos.x <= (balPos.x + gap) && pos.y <= balY)    
       return true;
     else
       return false;
@@ -50,16 +48,16 @@ class BadGuy
 
   void move()
   { 
-    if (x < balX - 1)
-      x += speed;
-    else if (x > balX + 1)
-      x -= speed;
-    if (y > balY)
-      y -= speed;
+    if (pos.x < balPos.x - 1)
+      pos.x += speed;
+    else if (pos.x > balPos.x + 1)
+      pos.x -= speed;
+    if (pos.y > balY)
+      pos.y -= speed;
   }
 
   void retreat()
   {
-    y += 14;
+    pos.y += 14;
   }
 }

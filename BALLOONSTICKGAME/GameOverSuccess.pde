@@ -31,6 +31,7 @@ class GameOverSuccess extends GameOverAbstractClass
       renderCloth();   
       popMatrix();
     }
+    FW.render();
     winText();
     resetText();
   }
@@ -63,13 +64,13 @@ class GameOverSuccess extends GameOverAbstractClass
 
   void winText()
   {
-    if (frameCount % 3 == 0)
-      textColorChange();
     fill(0);
     textSize(60);
     ambient(R, G, B);
     fill(R, G, B); 
     text("You Win!", 140, height / 2);
+    if (frameCount % 3 == 0)
+      textColorChange();
   }
 
   void textColorChange()

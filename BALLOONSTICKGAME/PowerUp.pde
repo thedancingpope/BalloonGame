@@ -1,13 +1,12 @@
 class PowerUp 
 {  
-  float x, y;
-
+  PVector pos;
   color protonColor = color(22, 128, 130);
   color neutronColor = color(23, 84, 55);
 
   PowerUp()
   {
-    newPosition();
+    pos = newPosition();
   }
 
   void render()
@@ -15,7 +14,7 @@ class PowerUp
     pushMatrix();
     noLights();
     noStroke();
-    translate((width / 2) + x, y, 25);
+    translate(pos.x + (width / 2), pos.y, 25);
     pushMatrix(); 
     rotateY(frameCount * .3f);
     translate(5, -10, -5);
@@ -44,7 +43,6 @@ class PowerUp
   {
     float electronSpeed = 0.5f;
     int inc = 60;
-
     pushMatrix();        
     rotateX(1);
     rotateY(dir);
@@ -56,23 +54,23 @@ class PowerUp
 
   void move()
   { 
-    y += 7;
-    if (y >= height + 40)
-      newPosition();
+    pos.y += 7;
+    if (pos.y >= height + 40)
+       pos = newPosition();
   }
 
-  void newPosition()
-  {
-    y = -400;
-    x = int(random(-200, 200));
+  PVector newPosition()
+  {    
+    int x = int(random(-200, 200));
+    return new PVector(x, -420);
   }
 
   boolean getPowerUp() 
   {
     int balloonTolerance = 35;
-    if (y >= 180 && y <= 320)
+    if (pos.y >= 180 && pos.y <= 320)
     {
-      if (x >= (balX - balloonTolerance) && x <= (balX + balloonTolerance))
+      if (pos.x >= (balPos.x - balloonTolerance) && pos.x <= (balPos.x + balloonTolerance))
         return true;
     }
     return false;

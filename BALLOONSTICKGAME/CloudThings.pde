@@ -1,7 +1,7 @@
 class CloudThings
 { 
-  float x, y, z, size, speed;
-
+  float size, speed;
+  PVector pos;
   int cloudType;  //large or small cloud type
   int cloudBottom = 70;
 
@@ -9,7 +9,7 @@ class CloudThings
 
   CloudThings() 
   {
-    newPosition();
+    pos = newPos();
   }
 
   void render()
@@ -19,7 +19,7 @@ class CloudThings
     ambient(255, 255, 255);
     fill(255);
     noStroke();
-    translate(x, y, z);
+    translate(pos.x, pos.y, pos.z);
     sphere(size);
     translate(size / 2, size / 2, size / 2);
     sphere(size);
@@ -43,30 +43,32 @@ class CloudThings
   { 
     if (phase < 4)
     {
-      y += speed;   
-      if (y - size > height)        // if reaching the bottom of the panel
+      pos.y += speed;   
+      if (pos.y - size > height)        // if reaching the bottom of the panel
         if (!phaseOut)
-          newPosition();
+          pos = newPos();
     } 
     else
     {
-      y -= speed; 
-      if ((y + size) < -cloudBottom)        // if reaching the top of the panel  
+      pos.y -= speed; 
+      if ((pos.y + size) < -cloudBottom)        // if reaching the top of the panel  
           if (!phaseOut)
-            newPosition();
+            pos = newPos();
     }
-  }  
-
-  void newPosition()
+  }
+  
+  PVector newPos()
   {
     size = random(15, 35);
     speed = random(3, 6);
     cloudType = int(random(0, 2));
-    x = random(20, 480);          
-    z = random(0, -80);
-    if (phase != 5 && phase != 4)
+    float x = random(20, 480);          
+    float z = random(0, -80);
+    float y;
+    if (phase < 4)
       y = - cloudBottom - size;           // go to the top    
     else    
-    y = height + cloudBottom + size;      // go to the bottom
+      y = height + cloudBottom + size;      // go to the bottom
+    return new PVector(x, y, z);
   }
 } 

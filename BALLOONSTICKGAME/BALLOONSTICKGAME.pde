@@ -14,10 +14,9 @@
  @TheDancingPope
  @MeeeMooo
  */
-int balX, phase; 
-
+int phase; 
+PVector balPos;
 boolean leftTrue, rightTrue, reset;
-
 PFont font;
 
 GamePhases Phases;

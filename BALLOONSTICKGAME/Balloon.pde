@@ -1,7 +1,7 @@
 class Balloon
 { 
-  float lineX, lineY, lineZ, balloonScale;  
-
+  float balloonScale;  
+  PVector linePos;
   int rotZ, lastZ, balZ;
 
   BalloonString BalloonString;
@@ -9,7 +9,7 @@ class Balloon
   Balloon()
   {
     BalloonString = new BalloonString();    
-    lineZ = 10f;
+    linePos = new PVector(0, 0, 10);
     balloonScale = .4f;
     rotZ = 0;
     lastZ = 0;
@@ -25,37 +25,36 @@ class Balloon
       rotCompensation = -3.8;
       if (balloonScale < .54f)
         balloonScale += ballInc;
-      if (lineZ < 40)
-        lineZ += 5;
+      if (linePos.z < 40)
+        linePos.z += 5;
     } 
     else 
     {
       rotCompensation = -3.5;
       if (balloonScale > .4f)
         balloonScale -= ballInc;
-      if (lineZ > 15)
-        lineZ -= 5;
+      if (linePos.z > 15)
+        linePos.z -= 5;
     } 
-    lineX = map(balX, -200, 200, -215, 215) + (width/2) + (rotZ * rotCompensation);//draws the start of the string based on where the bottom of the balloons cone is 
-    lineY = 311 - abs(rotZ * 2);
+    linePos.x = map(balPos.x, -200, 200, -215, 215) + (width/2) + (rotZ * rotCompensation); 
+    linePos.y = 311 - abs(rotZ * 2);
 
     Phases.lighting();
     pushMatrix(); 
     noStroke();                                 
     fill(50, 50, 0);
-    translate(balX + (width / 2), height / 2, 40);
+    translate(balPos.x + (width / 2), balPos.y, 40);
     rotateZ(map(rotZ, -15, 15, -1, 1)); 
     scale(balloonScale);                       
     sphere(90); 
     drawCone(70, 57, 5, 140);        //draw the large cone
     drawCone(5, 140, 10, 150);       //draw the small cone                                                                  
     noFill();
-    stroke(0);                                    
-    strokeWeight(4); 
+    stroke(0);        
     drawCone(7, 137, 7, 141);     //draw the balloon tie
     popMatrix();   
 
-    BalloonString.render(lineX, lineY, lineZ);
+    BalloonString.render(linePos);
   } 
 
   void move()
@@ -66,9 +65,9 @@ class Balloon
 
     if (rightTrue)  
     {                
-      if (balX < 200) 
+      if (balPos.x < 200) 
       {   
-        balX += incBalloon;       
+        balPos.x += incBalloon;       
         if (lastZ < rotLimit)
           rotZ += rotInc;
         else
@@ -77,9 +76,9 @@ class Balloon
     } 
     else if (leftTrue)       
     {
-      if (balX > -200)
+      if (balPos.x > -200)
       {
-        balX -= incBalloon;
+        balPos.x -= incBalloon;
         if (lastZ > -rotLimit)
           rotZ -= rotInc;
         else

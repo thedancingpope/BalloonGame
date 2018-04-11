@@ -1,7 +1,8 @@
 class Circles
 { 
-  float x, y, dx, dy, size, speed;
-
+  float dx, dy, size, speed;
+  PVector pos;
+  
   Circles()
   {        
     speed = 3;    
@@ -11,19 +12,18 @@ class Circles
   void render()
   {  
     noStroke();
-    ellipse(x, y, size, size);
+    ellipse(pos.x, pos.y, size, size);
   }
 
   void move()
   {
-    x += dx;
-    y += dy;
+    pos.x += dx;
+    pos.y += dy;
   }
 
   void newCircles()
   {
-    x = width / 2;
-    y = height / 2;
+    pos = new PVector(width / 2, height / 2);
     dx = random(-speed, speed);
     dy = random(-speed, speed);
     size = random(5, 20);
