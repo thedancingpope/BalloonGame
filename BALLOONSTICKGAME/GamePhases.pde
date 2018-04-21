@@ -1,15 +1,10 @@
 class GamePhases
 { 
   float BGy, BGspeed;
-
   int cloudCount, phaseOutCloud, timeSurvived, endTime, floatingTime, startPhase4Time, countDownTime, winTime;
-
   String qButton, controls;
-
   boolean BGparallax, beginParallax, spaceTransition, gotPowerUp, startPhase1, debug;
-
-  PImage woods, cloudSky, bgCloud1, bgCloud2, cloudsToSpace;
-
+  PImage woods, cloudSky, bgCloud1, bgCloud2, cloudsToSpace;  
   Balloon Balloon;  
   CloudThings [] cloudList;
   BadGuy Enemy;
@@ -466,5 +461,5 @@ class GamePhases
     else 
     ambient(150, 150, 0);    
     popMatrix();
-  }
+  } 
 }

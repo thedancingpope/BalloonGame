@@ -1,11 +1,11 @@
 class BalloonString
 {  
-  int springCount = 4;  
-
+  int springCount;
   Spring2D [] springs;
 
   BalloonString()
   {  
+    springCount = 4;
     springs = new Spring2D [springCount];
     for (int i = 0; i < springCount; i++)
       springs[i] = new Spring2D(width / 2, height / 2);

@@ -1,14 +1,12 @@
 class CloudThings
 { 
-  float size, speed;
   PVector pos;
-  int cloudType;  //large or small cloud type
-  int cloudBottom = 70;
-
+  int cloudType, cloudBottom, size, speed;
   boolean phaseOut;
 
   CloudThings() 
   {
+    cloudBottom = 70;
     pos = newPos();
   }
 
@@ -59,8 +57,8 @@ class CloudThings
   
   PVector newPos()
   {
-    size = random(15, 35);
-    speed = random(3, 6);
+    size = int(random(15, 35));
+    speed = int(random(3, 6));
     cloudType = int(random(0, 2));
     float x = random(20, 480);          
     float z = random(0, -80);

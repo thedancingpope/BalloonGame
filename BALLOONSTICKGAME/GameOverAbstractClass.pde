@@ -1,8 +1,7 @@
 public abstract class GameOverAbstractClass 
 {
-  float clothX, clothY, flying;
+  float flying;
   float [][] level;
-
   int cols, rows;
 
   public abstract void render(); 
@@ -10,8 +9,6 @@ public abstract class GameOverAbstractClass
   public void initialGameOver()
   {           
     flying = 0;
-    clothX = 300;
-    clothY = 250;
     cols = width / 40 + 1;
     rows = height / 40 + 1;
     level = new float[cols][rows];
@@ -26,7 +23,7 @@ public abstract class GameOverAbstractClass
     noStroke();
     fill(50, 50, 0);  
     Phases.lighting();
-    translate(clothX, clothY, 30);
+    translate(balPos.x + (width / 2), balPos.y, 30);
     rotateX(flying);
     rotateY(1.6);
     translate(-width / 4, -height / 4);  
@@ -54,24 +51,23 @@ public abstract class GameOverAbstractClass
       float xOff = 0;
       for (int x = 0; x < cols; x++) 
       {
-        level[x][y] = map(noise(xOff, yOff), 0, 1, -110, 110);      // makes it appear to fly 
+        level[x][y] = map(noise(xOff, yOff), 0, 1, -110, 110);
         xOff += inc;
       }
       yOff += inc;
     }
 
     if (leftTrue && !rightTrue) 
-      clothX -= 8;        
+      balPos.x -= 8;        
     if (rightTrue && !leftTrue) 
-      clothX += 8;        
+      balPos.x += 8;        
 
-    if (clothX < 0) 
-      clothX = 2;              
-    if ( clothX > 500) 
-      clothX = 498;
+    if(balPos.x < -225)
+      balPos.x = -223;              
+    if(balPos.x > 225) 
+      balPos.x = 223;
   }
-
-
+  
   public void resetText()
   {
     pushMatrix();

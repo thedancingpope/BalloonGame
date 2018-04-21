@@ -2,7 +2,7 @@ class Balloon
 { 
   float balloonScale;  
   PVector linePos;
-  int rotZ, lastZ, balZ;
+  int rotZ, lastZ;
 
   BalloonString BalloonString;
 
@@ -13,7 +13,6 @@ class Balloon
     balloonScale = .4f;
     rotZ = 0;
     lastZ = 0;
-    balZ = 0;
   }
 
   void render()

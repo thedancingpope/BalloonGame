@@ -1,12 +1,11 @@
 class Circles
 { 
-  float dx, dy, size, speed;
+  float dx, dy, size;
   PVector pos;
   
   Circles()
-  {        
-    speed = 3;    
-    newCircles();
+  {           
+    pos = newCircles();
   }
 
   void render()
@@ -21,11 +20,12 @@ class Circles
     pos.y += dy;
   }
 
-  void newCircles()
+  PVector newCircles()
   {
-    pos = new PVector(width / 2, height / 2);
+    int speed = 3;    
     dx = random(-speed, speed);
     dy = random(-speed, speed);
     size = random(5, 20);
+    return new PVector(width / 2, height / 2);
   }
 }

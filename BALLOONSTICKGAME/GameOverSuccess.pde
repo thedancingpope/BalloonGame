@@ -1,24 +1,24 @@
 class GameOverSuccess extends GameOverAbstractClass
 {
-  int R, G, B; 
-  int clothCount = 5;
-
-  boolean leftRight = true;
-
+  color textColor; 
+  int clothCount;
+  boolean leftRight;
   FireWorks FW;
   Clothes [] Clothes;
 
   GameOverSuccess()
   {  
-    textColorChange();
+    clothCount = 5;
+    leftRight = true;
+    textColor = colorChange();
     initialGameOver();
     FW = new FireWorks();
     Clothes = new Clothes [clothCount];
-    Clothes[0] = new Clothes(new PVector(0, 0), 0f);//new Clothes(0f, 0f, 0f);
-    Clothes[1] = new Clothes(new PVector(0, -20), 0.1f);//new Clothes(0f, -20f, 0.1f);
-    Clothes[2] = new Clothes(new PVector(0, -30), 0.2f);//new Clothes(0f, -30f, 0.2f);
-    Clothes[3] = new Clothes(new PVector(0, -40), 0.5f);//new Clothes(0f, -40f, 0.5f);
-    Clothes[4] = new Clothes(new PVector(0, -50), 0.3f);//new Clothes(0f, -50f, 0.3f);
+    Clothes[0] = new Clothes(new PVector(0, 0), 0f);
+    Clothes[1] = new Clothes(new PVector(0, -20), 0.1f);
+    Clothes[2] = new Clothes(new PVector(0, -30), 0.2f);
+    Clothes[3] = new Clothes(new PVector(0, -40), 0.5f);
+    Clothes[4] = new Clothes(new PVector(0, -50), 0.3f);
   }  
 
   void render() 
@@ -66,17 +66,18 @@ class GameOverSuccess extends GameOverAbstractClass
   {
     fill(0);
     textSize(60);
-    ambient(R, G, B);
-    fill(R, G, B); 
+    ambient(textColor);
+    fill(textColor); 
     text("You Win!", 140, height / 2);
     if (frameCount % 3 == 0)
-      textColorChange();
-  }
-
-  void textColorChange()
+      textColor = colorChange();
+  } 
+  
+  color colorChange()
   {
-    R = int(random(255));
-    G = int(random(255));
-    B = int(random(255));
-  }
+    int R = int(random(255));
+    int G = int(random(255));
+    int B = int(random(255));
+    return color(R, G, B);
+  }  
 }
