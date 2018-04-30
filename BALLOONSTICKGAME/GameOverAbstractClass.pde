@@ -14,19 +14,18 @@ public abstract class GameOverAbstractClass
     level = new float[cols][rows];
   } 
 
-  public void renderCloth()
+  public void Cloth()
   {
     int scale = 25;
     int range = 5;
-
     pushMatrix();
     noStroke();
     fill(50, 50, 0);  
     Phases.lighting();
-    translate(balPos.x + (width / 2), balPos.y, 30);
+    translate(balPos.x + (width/2), balPos.y, 60);
     rotateX(flying);
-    rotateY(1.6);
-    translate(-width / 4, -height / 4);  
+    rotateY(.1);    
+    translate(-width / 4,  -height / 4);
     for (int y = range; y < rows - range - 1; y++) 
     {
       beginShape(TRIANGLE_STRIP);
@@ -57,15 +56,15 @@ public abstract class GameOverAbstractClass
       yOff += inc;
     }
 
-    if (leftTrue && !rightTrue) 
+    if(leftTrue && !rightTrue) 
       balPos.x -= 8;        
-    if (rightTrue && !leftTrue) 
+    if(rightTrue && !leftTrue) 
       balPos.x += 8;        
 
     if(balPos.x < -225)
       balPos.x = -223;              
-    if(balPos.x > 225) 
-      balPos.x = 223;
+    if(balPos.x > 217) 
+      balPos.x = 215;
   }
   
   public void resetText()

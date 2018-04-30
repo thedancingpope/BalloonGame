@@ -18,7 +18,6 @@ int phase;
 PVector balPos;
 boolean leftTrue, rightTrue, reset;
 PFont font;
-
 GamePhases Phases;
 
 void setup()
@@ -40,46 +39,39 @@ void draw()
 
 void keyPressed()
 {
-  if (phase != 1)
+  if(phase != 1)
   {
-    if (key == 'a' || key == 'A')       
+    if(key == 'a' || key == 'A')       
       leftTrue = true;        
-    else if (key == 'd' || key == 'D') 
+    else if(key == 'd' || key == 'D') 
       rightTrue = true;
   }
-  if (key == 'r' || key == 'R')
+  if(key == 'r' || key == 'R')
     reset = true;
 }
 
 void keyReleased()
 {
-  if (phase != 1)
+  if(phase != 1)
   {  
-    if (key == 'a' || key == 'A') 
+    if(key == 'a' || key == 'A') 
       leftTrue = false;
-    else if (key == 'd' || key == 'D') 
+    else if(key == 'd' || key == 'D') 
       rightTrue = false;
   }
-  if (key == 'r' || key == 'R')
-    reset = false;  
+  if(key == 'r' || key == 'R')
+    reset = false;
+    
+  if(phase == 0)
+    if(key == 'q' || key == 'Q')    
+      Phases.setPhase1();
 
-  if (key == 'q' || key == 'Q')    
-    Phases.setPhase1();
-
-  if (key == '3')
-  {
+  if(key == '3')
     Phases.debugPhase(3);
-  }
   else if(key == '4')
-  {
-    Phases.debugPhase(4);      
-  }
+    Phases.debugPhase(4);   
   else if(key == '5')
-  {
     Phases.debugPhase(5);
-  }
   else if(key == '6')
-  {
     Phases.debugPhase(6);
-  }
 }

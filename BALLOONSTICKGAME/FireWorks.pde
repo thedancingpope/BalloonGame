@@ -5,54 +5,31 @@ class FireWorks
   int circleCount;
   Circles [] Circles;
 
-  FireWorks()
+  FireWorks(color c)
   {
-    circleCount = 10;
+    circleCount = int(random(10, 16));
     Circles = new Circles [circleCount];
     for (int i = 0; i < circleCount; i++)
-      Circles[i] = new Circles();
-    pos = newPosition();
-    fwColor = colorChange();
+      Circles[i] = new Circles();  
+    int range = width / 4;
+    float x = random(-range, range);    
+    float y = random(-range, range);
+    pos = new PVector(x, y, 40);
+    fwColor = c;
   }
 
   void render()
   {
-    int limit = 60;
-    int midWidth = width / 2;
-    int midHeight = height / 2;
-
     pushMatrix();
     translate(pos.x, pos.y, pos.z);
+    noLights();
+    noStroke();
     for (int i = 0; i < circleCount; i++) 
-    {  
-      noLights();
+    {        
       fill(fwColor);
       Circles[i].render();
-      Circles[i].move();
-      if (Circles[i].pos.x < (midWidth - limit) || Circles[i].pos.x > (midWidth + limit) || Circles[i].pos.y < (midHeight - limit) || Circles[i].pos.y > (midHeight + limit))
-        Circles[i] = new Circles();      
-      if (frameCount % 30 == 0)
-      {        
-        pos = newPosition(); 
-        fwColor = colorChange();
-      }
+      Circles[i].move();         
     }
     popMatrix();
-  }
-  
-  color colorChange()
-  {
-    int R = int(random(255));
-    int G = int(random(255));
-    int B = int(random(255));
-    return color(R,G, B);
-  }
-  
-  PVector newPosition()
-  {
-    int range = width / 4;
-    float x = random(-range, range);    
-    float y = random(-range, range);
-    return new PVector(x, y, 40);
   }
 }

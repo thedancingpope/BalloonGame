@@ -5,12 +5,15 @@ class Circles
   
   Circles()
   {           
-    pos = newCircles();
+    int speed = 3;    
+    dx = random(-speed, speed);
+    dy = random(-speed, speed);
+    size = random(5, 20);
+    pos = new PVector(width / 2, height / 2);
   }
 
   void render()
-  {  
-    noStroke();
+  {    
     ellipse(pos.x, pos.y, size, size);
   }
 
@@ -18,14 +21,5 @@ class Circles
   {
     pos.x += dx;
     pos.y += dy;
-  }
-
-  PVector newCircles()
-  {
-    int speed = 3;    
-    dx = random(-speed, speed);
-    dy = random(-speed, speed);
-    size = random(5, 20);
-    return new PVector(width / 2, height / 2);
   }
 }

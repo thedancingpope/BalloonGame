@@ -21,7 +21,7 @@ class BadGuy
     noStroke();
     translate(pos.x + imgTolerance, pos.y);
     noLights();        
-    if (pos.y <= balPos.y + yTolerance)
+    if(pos.y <= balPos.y + yTolerance)
     {
       scale(.6);
       enemyImg = angryCloud;
@@ -38,24 +38,21 @@ class BadGuy
   boolean caughtCheck()
   {
     int gap = 30;
-    if (pos.x >= (balPos.x - gap) && pos.x <= (balPos.x + gap) && pos.y <= balPos.y - yTolerance)    
+    if(pos.x >= (balPos.x - gap) && pos.x <= (balPos.x + gap) && pos.y <= balPos.y - yTolerance)    
       return true;
     else
       return false;
   }
 
   void move()
-  { 
-    if (pos.x < balPos.x - 1)
-      pos.x += 3;
-    else if (pos.x > balPos.x + 1)
-      pos.x -= 3;
-    if (pos.y > balPos.y - yTolerance)
+  {
+    pos.x = lerp(pos.x, balPos.x, .15);
+    if(pos.y > balPos.y - yTolerance)
       pos.y -= 2;
   }
 
   void retreat()
   {
-    pos.y += 14;
+    pos.y += 10;
   }
 }

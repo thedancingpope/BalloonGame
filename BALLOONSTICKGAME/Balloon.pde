@@ -3,7 +3,6 @@ class Balloon
   float balloonScale;  
   PVector linePos;
   int rotZ, lastZ;
-
   BalloonString BalloonString;
 
   Balloon()
@@ -19,20 +18,20 @@ class Balloon
   { 
     float ballInc = .02f;
     float rotCompensation;
-    if (Phases.gotPowerUp) 
+    if(Phases.gotPowerUp) 
     {
       rotCompensation = -3.8;
-      if (balloonScale < .54f)
+      if(balloonScale < .54f)
         balloonScale += ballInc;
-      if (linePos.z < 40)
+      if(linePos.z < 40)
         linePos.z += 5;
     } 
     else 
     {
       rotCompensation = -3.5;
-      if (balloonScale > .4f)
+      if(balloonScale > .4f)
         balloonScale -= ballInc;
-      if (linePos.z > 15)
+      if(linePos.z > 15)
         linePos.z -= 5;
     } 
     linePos.x = map(balPos.x, -200, 200, -215, 215) + (width/2) + (rotZ * rotCompensation); 
@@ -62,33 +61,33 @@ class Balloon
     int rotLimit = 15;
     int rotInc = 3;
 
-    if (rightTrue)  
+    if(rightTrue)  
     {                
-      if (balPos.x < 200) 
+      if(balPos.x < 200) 
       {   
         balPos.x += incBalloon;       
-        if (lastZ < rotLimit)
+        if(lastZ < rotLimit)
           rotZ += rotInc;
         else
           rotZ = rotLimit;
       }
     } 
-    else if (leftTrue)       
+    else if(leftTrue)       
     {
-      if (balPos.x > -200)
+      if(balPos.x > -200)
       {
         balPos.x -= incBalloon;
-        if (lastZ > -rotLimit)
+        if(lastZ > -rotLimit)
           rotZ -= rotInc;
         else
           rotZ = -rotLimit;
       }
     } 
-    else if (!rightTrue && !leftTrue) //rotate back to center
+    else if(!rightTrue && !leftTrue)
     {
-      if (rotZ > 0)            
+      if(rotZ > 0)            
         rotZ -= rotInc; 
-      if (rotZ < 0)
+      if(rotZ < 0)
         rotZ += rotInc;
     }  
     lastZ = rotZ;
@@ -100,11 +99,11 @@ class Balloon
     float angle = 0.0f;
 
     beginShape(QUAD_STRIP);                     
-    for (int i = 0; i < 92; i++)                   //there are 92 sides on the cone to smooth it out    
+    for (int i = 0; i < 92; i++)  
     {                                              
-      vertex(XZ1*cos(angle), Y1, XZ1*sin(angle));      //draw the top of the cone at vertex(x, y, z)
-      vertex(XZ2*cos(angle), Y2, XZ2*sin(angle));       //draw the bottom of the cone at vertex(x, y, z)
-      angle += angleIncrement;                       //increases the angle to draw the base of the cones
+      vertex(XZ1*cos(angle), Y1, XZ1*sin(angle));
+      vertex(XZ2*cos(angle), Y2, XZ2*sin(angle));
+      angle += angleIncrement;
     }                                                 
     endShape();
   }

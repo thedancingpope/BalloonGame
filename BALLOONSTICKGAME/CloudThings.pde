@@ -25,7 +25,7 @@ class CloudThings
     sphere(size);
     translate(size, 0);
     sphere(size);
-    if (cloudType > 0)
+    if(cloudType > 0)
     {
       translate(0, -size, -size);
       sphere(size);
@@ -39,18 +39,18 @@ class CloudThings
 
   void move()
   { 
-    if (phase < 4)
+    if(phase < 4)
     {
       pos.y += speed;   
-      if (pos.y - size > height)        // if reaching the bottom of the panel
-        if (!phaseOut)
+      if(pos.y - size > height)        // ifreaching the bottom of the panel
+        if(!phaseOut)
           pos = newPos();
     } 
     else
     {
       pos.y -= speed; 
-      if ((pos.y + size) < -cloudBottom)        // if reaching the top of the panel  
-          if (!phaseOut)
+      if((pos.y + size) < -cloudBottom)        // if reaching the top of the panel  
+          if(!phaseOut)
             pos = newPos();
     }
   }
@@ -63,7 +63,7 @@ class CloudThings
     float x = random(20, 480);          
     float z = random(0, -80);
     float y;
-    if (phase < 4)
+    if(phase < 4)
       y = - cloudBottom - size;           // go to the top    
     else    
       y = height + cloudBottom + size;      // go to the bottom

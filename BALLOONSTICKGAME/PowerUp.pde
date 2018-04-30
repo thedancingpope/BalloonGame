@@ -54,23 +54,23 @@ class PowerUp
 
   void move()
   { 
-    pos.y += 7;
-    if (pos.y >= height + 40)
+    pos.y += 10;
+    if(pos.y >= height)
        pos = newPosition();
   }
 
   PVector newPosition()
   {    
-    int x = int(random(-200, 200));
-    return new PVector(x, -420);
+    int x = int(random(-220, 220));
+    return new PVector(x, -200);
   }
 
   boolean getPowerUp() 
   {
     int balloonTolerance = 35;
-    if (pos.y >= 180 && pos.y <= 320)
+    if(pos.y >= 180 && pos.y <= 320)
     {
-      if (pos.x >= (balPos.x - balloonTolerance) && pos.x <= (balPos.x + balloonTolerance))
+      if(pos.x >= (balPos.x - balloonTolerance) && pos.x <= (balPos.x + balloonTolerance))
         return true;
     }
     return false;
