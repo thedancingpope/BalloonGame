@@ -1,14 +1,13 @@
 class Balloon
 { 
-  float balloonScale;  
-  PVector linePos;
-  int rotZ, lastZ;
+  float balloonScale, rotZ, lastZ;  
+  PVector stringPos;
   BalloonString BalloonString;
 
   Balloon()
   {
     BalloonString = new BalloonString();    
-    linePos = new PVector(0, 0, 10);
+    stringPos = new PVector(0, 0, 10);
     balloonScale = .4f;
     rotZ = 0;
     lastZ = 0;
@@ -23,19 +22,19 @@ class Balloon
       rotCompensation = -3.8;
       if(balloonScale < .54f)
         balloonScale += ballInc;
-      if(linePos.z < 40)
-        linePos.z += 5;
+      if(stringPos.z < 40)
+        stringPos.z += 5;
     } 
     else 
     {
       rotCompensation = -3.5;
       if(balloonScale > .4f)
         balloonScale -= ballInc;
-      if(linePos.z > 15)
-        linePos.z -= 5;
+      if(stringPos.z > 15)
+        stringPos.z -= 5;
     } 
-    linePos.x = map(balPos.x, -200, 200, -215, 215) + (width/2) + (rotZ * rotCompensation); 
-    linePos.y = 311 - abs(rotZ * 2);
+    stringPos.x = map(balPos.x, -200, 200, -215, 215) + (width/2) + (rotZ * rotCompensation); 
+    stringPos.y = 311 - abs(rotZ * 2);
 
     Phases.lighting();
     pushMatrix(); 
@@ -52,23 +51,21 @@ class Balloon
     drawCone(7, 137, 7, 141);     //draw the balloon tie
     popMatrix();   
 
-    BalloonString.render(linePos); } 
+    BalloonString.render(stringPos); 
+  } 
 
   void move()
   {
     int incBalloon = 6;
-    int rotLimit = 15;
-    int rotInc = 3;
+    float rotLimit = 15;
+    float rotInc = .2f;
 
     if(rightTrue && !leftTrue)  
     {                
       if(balPos.x < 200) 
       {   
         balPos.x += incBalloon;       
-        if(lastZ < rotLimit)
-          rotZ += rotInc;
-        else
-          rotZ = rotLimit;
+        rotZ = lerp(rotZ, rotLimit, rotInc);
       }
     } 
     if(leftTrue && !rightTrue)       
@@ -76,18 +73,12 @@ class Balloon
       if(balPos.x > -200)
       {
         balPos.x -= incBalloon;
-        if(lastZ > -rotLimit)
-          rotZ -= rotInc;
-        else
-          rotZ = -rotLimit;
+        rotZ = lerp(rotZ, -rotLimit, rotInc);
       }
     } 
     if(!rightTrue && !leftTrue)
     {
-      if(rotZ > 0)            
-        rotZ -= rotInc; 
-      if(rotZ < 0)
-        rotZ += rotInc;
+      rotZ = lerp(rotZ, 0, rotInc);
     }  
     lastZ = rotZ;
   }

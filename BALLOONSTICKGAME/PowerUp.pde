@@ -53,8 +53,8 @@ class PowerUp
   }
 
   void move()
-  { 
-    pos.y += 10;
+  {
+    pos.y += 8;
     if(pos.y >= height)
        pos = newPosition();
   }

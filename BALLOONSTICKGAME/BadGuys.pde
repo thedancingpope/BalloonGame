@@ -38,7 +38,7 @@ class BadGuy
   boolean caughtCheck()
   {
     int gap = 30;
-    if(pos.x >= (balPos.x - gap) && pos.x <= (balPos.x + gap) && pos.y <= balPos.y - yTolerance)    
+    if(pos.x >= (balPos.x - gap) && pos.x <= (balPos.x + gap) && pos.y <= 205)    
       return true;
     else
       return false;
@@ -47,7 +47,7 @@ class BadGuy
   void move()
   {
     pos.x = lerp(pos.x, balPos.x, .15);
-    if(pos.y > balPos.y - yTolerance)
+    if(pos.y > 200)
       pos.y -= 2;
   }
 
