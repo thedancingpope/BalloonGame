@@ -1,16 +1,15 @@
 class GameOverFail extends GameOverAbstractClass 
-{    
+{  
+  Clothes Cloth;
+  
   GameOverFail()
   {  
-    initialGameOver();
+    Cloth = new Clothes(new PVector(0, 0), 0f);
   }
 
   void render() 
-  {  
-    pushMatrix();
-    //translate(balPos.x + (width / 2) - (width / 4), balPos.y - (height / 4), 40);
-    Cloth();
-    popMatrix();
+  {
+    Cloth.render();
     resetText();
   }
 }

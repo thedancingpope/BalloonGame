@@ -52,8 +52,7 @@ class Balloon
     drawCone(7, 137, 7, 141);     //draw the balloon tie
     popMatrix();   
 
-    BalloonString.render(linePos);
-  } 
+    BalloonString.render(linePos); } 
 
   void move()
   {
@@ -61,7 +60,7 @@ class Balloon
     int rotLimit = 15;
     int rotInc = 3;
 
-    if(rightTrue)  
+    if(rightTrue && !leftTrue)  
     {                
       if(balPos.x < 200) 
       {   
@@ -72,7 +71,7 @@ class Balloon
           rotZ = rotLimit;
       }
     } 
-    else if(leftTrue)       
+    if(leftTrue && !rightTrue)       
     {
       if(balPos.x > -200)
       {
@@ -83,7 +82,7 @@ class Balloon
           rotZ = -rotLimit;
       }
     } 
-    else if(!rightTrue && !leftTrue)
+    if(!rightTrue && !leftTrue)
     {
       if(rotZ > 0)            
         rotZ -= rotInc; 

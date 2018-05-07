@@ -215,8 +215,8 @@ class GamePhases
   /**--------------------------[Phase 5]----------------------------------------------------------*/
 
   void phase06()
-  {
-    Loose.move();  
+  { 
+    Loose.move();
     Loose.render();
     //if(countDownTime < 0)
     //resetComponents();
