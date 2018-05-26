@@ -151,7 +151,8 @@ class GamePhases
     if(timeSurvived >= 80) 
     {
       setPhaseTime(3);
-      changePhase(3);
+      changePhase(3);     
+      startPhase3 = false;
       BGy = 0;
     }
     if(Enemy.caughtCheck()) 
@@ -434,9 +435,9 @@ class GamePhases
     pushMatrix();
     stroke(0, 0, 0);
     fill(0, 0, 0);
-    ambient(0, 0, 0);
+    noLights();
     textSize(20);
-    translate (56, 425, 80);             
+    translate (56, 425, 90);             
     text("Survived: ", 0, textY);
     countDownTime = int((timeSurvived * 2) - ((millis() / 1000) - phaseStartTime[2]));
     if(phase == 2)

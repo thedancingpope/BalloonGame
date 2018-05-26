@@ -1,7 +1,7 @@
 class GameOverSuccess extends GameOverAbstractClass
 {
   color textColor; 
-  int clothCount, fwCount, fwMax, waitTime, previousTime;
+  int clothCount, fwCount;
   boolean leftRight;
   FireWorks [] FW;
   Clothes [] Cloth;
@@ -11,9 +11,10 @@ class GameOverSuccess extends GameOverAbstractClass
     clothCount = 5;
     leftRight = true;
     textColor = colorChange();
-    fwMax = 5;
-    FW = new FireWorks [fwMax];    
-    setFireWorks();
+    fwCount = 5;
+    FW = new FireWorks [fwCount];
+    for(int i = 0; i < fwCount; i++)
+      setFireWorks(i);
     Cloth = new Clothes [clothCount];
     Cloth[0] = new Clothes(new PVector(0, 0), 0f);
     Cloth[1] = new Clothes(new PVector(0, -20), 0.1f);
@@ -23,14 +24,16 @@ class GameOverSuccess extends GameOverAbstractClass
   }  
 
   void render() 
-  { 
-    if((millis() - previousTime) / 1000 > waitTime)
-      setFireWorks();
+  {
     movePieces();
     for(int i = 0; i < clothCount; i++)
       Cloth[i].render();
     for(int j = 0; j < fwCount; j++)
+    {
+      if(FW[j].lifeTime <= 0)
+        setFireWorks(j); 
       FW[j].render();
+    }
     winText();
     resetText();
   }
@@ -61,16 +64,11 @@ class GameOverSuccess extends GameOverAbstractClass
     }
   }
 
-  void setFireWorks()
-  { 
-    previousTime = millis();
-    waitTime = int(random(1, 4));
-    fwCount = int(random(2, fwMax + 1));
-    for(int i = 0; i < fwCount; i++)
-    {
-      color c = colorChange(); 
-      FW[i] = new FireWorks(c);
-    }
+  void setFireWorks(int n)
+  {
+    int t = int(random(30, 130));
+    color c = colorChange(); 
+    FW[n] = new FireWorks(c, t);
   }
 
   void winText()
@@ -80,7 +78,7 @@ class GameOverSuccess extends GameOverAbstractClass
     ambient(textColor);
     fill(textColor); 
     text("You Win!", 140, height / 2);
-    if(frameCount % 3 == 0)
+    if(frameCount % 4 == 0)
       textColor = colorChange();
   } 
 

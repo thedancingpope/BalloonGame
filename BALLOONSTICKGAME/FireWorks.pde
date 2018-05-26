@@ -1,10 +1,10 @@
 class FireWorks extends GameObjectAbstract
 {
   color fwColor;
-  int circleCount;
+  int circleCount, lifeTime;
   Circles [] Circles;
 
-  FireWorks(color c)
+  FireWorks(color c, int time)
   {
     circleCount = int(random(10, 16));
     Circles = new Circles [circleCount];
@@ -14,6 +14,7 @@ class FireWorks extends GameObjectAbstract
     float x = random(-range, range);    
     float y = random(-range, range);
     pos = new PVector(x, y, 40);
+    lifeTime = time;
     fwColor = c;
   }
 
@@ -30,5 +31,6 @@ class FireWorks extends GameObjectAbstract
       Circles[i].move();
     }
     popMatrix();
+    lifeTime --;      
   }
 }
