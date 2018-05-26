@@ -34,11 +34,11 @@ class GameOverSuccess extends GameOverAbstractClass
     winText();
     resetText();
   }
-  
+
   void movePieces()
   {
     int range = 23;    
-    for (int i = 1; i < clothCount; i++)
+    for(int i = 1; i < clothCount; i++)
     {
       if(leftRight)
       {
@@ -69,7 +69,7 @@ class GameOverSuccess extends GameOverAbstractClass
     for(int i = 0; i < fwCount; i++)
     {
       color c = colorChange(); 
-      FW[i] = new FireWorks(c);      
+      FW[i] = new FireWorks(c);
     }
   }
 
@@ -83,12 +83,12 @@ class GameOverSuccess extends GameOverAbstractClass
     if(frameCount % 3 == 0)
       textColor = colorChange();
   } 
-  
+
   color colorChange()
   {
     int R = int(random(255));
     int G = int(random(255));
     int B = int(random(255));
     return color(R, G, B);
-  }  
+  }
 }

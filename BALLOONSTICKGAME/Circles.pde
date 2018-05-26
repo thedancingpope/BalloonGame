@@ -1,8 +1,7 @@
-class Circles
+class Circles extends GameObjectAbstract
 { 
   float dx, dy, size;
-  PVector pos;
-  
+
   Circles()
   {           
     int speed = 3;    

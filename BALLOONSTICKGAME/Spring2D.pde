@@ -1,11 +1,10 @@
-class Spring2D 
+class Spring2D extends GameObjectAbstract
 {      
   float addX, addY;
-  PVector pos;
-  
+
   Spring2D(float _x, float _y) 
   {
-    pos = new PVector(_x, _y);    
+    pos = new PVector(_x, _y);
   }
 
   void move(float targetX, float targetY) 

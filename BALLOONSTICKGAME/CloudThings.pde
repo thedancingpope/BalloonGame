@@ -1,6 +1,5 @@
-class CloudThings
+class CloudThings extends GameObjectAbstract
 { 
-  PVector pos;
   int cloudType, cloudBottom, size, speed;
   boolean phaseOut;
 
@@ -49,12 +48,12 @@ class CloudThings
     else
     {
       pos.y -= speed; 
-      if((pos.y + size) < -cloudBottom)        // if reaching the top of the panel  
-          if(!phaseOut)
-            pos = newPos();
+      if((pos.y + size) < -cloudBottom)        // ifreaching the top of the panel  
+        if(!phaseOut)
+          pos = newPos();
     }
   }
-  
+
   PVector newPos()
   {
     size = int(random(15, 35));
@@ -66,7 +65,7 @@ class CloudThings
     if(phase < 4)
       y = - cloudBottom - size;           // go to the top    
     else    
-      y = height + cloudBottom + size;      // go to the bottom
+    y = height + cloudBottom + size;      // go to the bottom
     return new PVector(x, y, z);
   }
 } 

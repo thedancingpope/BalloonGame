@@ -15,7 +15,7 @@ class GamePhases
 
   GamePhases()
   { 
-    qButton = "Press Q for freedom.";
+    qButton = "Press Q forfreedom.";
     controls = "Use A and D to steer.";
     woods = loadImage("ForestBackgroundOne.jpg");
     cloudSky = loadImage("CloudBackgroundReg.jpg");
@@ -37,7 +37,7 @@ class GamePhases
     }    
     if(phase > 1)
     {        
-      for (int i = 0; i < cloudCount; i++)
+      for(int i = 0; i < cloudCount; i++)
       {
         cloudList[i].render();
         cloudList[i].move();
@@ -68,7 +68,7 @@ class GamePhases
         resetComponents();
     }
     if(reset && debug)
-        resetComponents();
+      resetComponents();
   }    
   /**--------------------------[Phase 0]----------------------------------------------------------*/
 
@@ -92,12 +92,12 @@ class GamePhases
       {
         rightTrue = false; 
         leftTrue = true;
-      }        
+      } 
       else if(balPos.x < 0)
       {
         leftTrue = false;
         rightTrue = true;
-      }
+      } 
       else if(balPos.x == 0)
       {
         startPhase1 = false;
@@ -116,7 +116,7 @@ class GamePhases
       {
         leftTrue = false;
         rightTrue = true;
-      }
+      } 
       else if(BGy <= 500)
       {
         rightTrue = false;
@@ -157,7 +157,7 @@ class GamePhases
     if(Enemy.caughtCheck()) 
     {  
       setPhaseTime(6); 
-      changePhase(6);      
+      changePhase(6);
     }
   }  
   /**--------------------------[Phase 3]----------------------------------------------------------*/
@@ -177,7 +177,7 @@ class GamePhases
         if(phaseOutCloud < cloudCount - 1)
           phaseOutCloud ++;
     } 
-    if(BGy >= 0)
+    if(BGy >= height)
     {
       setPhaseTime(4);
       phase = 4;
@@ -199,10 +199,11 @@ class GamePhases
     }
     Win.move();
     Win.render();
-    if(BGy <= -1300)
+    if(BGy <= -1300 - height)
     {
       setPhaseTime(5);
       phase = 5;  
+      BGparallax = true;
     }
   }
   /**--------------------------[Phase 5]----------------------------------------------------------*/
@@ -226,42 +227,42 @@ class GamePhases
   {
     //balloon cloth piece lands on the ground
   }
-  
+
 
   void setPhase1()
   {
-     startPhase1 = true;
-     setPhaseTime(1);
-     phase = 1;
+    startPhase1 = true;
+    setPhaseTime(1);
+    phase = 1;
   }
 
   void debugPhase(int p)
-   {
-     resetComponents();
-     phase = p;
-     debug = true;
-     if(p == 3)
-     {       
-       startPhase3 = false;
-       textY = 0;
-     }
-     if(p == 4)
-     {
-       for(int i = 0; i < cloudCount; i++)
-         cloudList[i].phaseOut = true;
-       phaseOutCloud = cloudCount - 1; 
-       textY = 50;
-     }
-     if(p == 5)
-     {
-       textY = 50;
-     }
-     setPhaseTime(p);     
-   }
+  {
+    resetComponents();
+    phase = p;
+    debug = true;
+    if(p == 3)
+    {       
+      startPhase3 = false;
+      textY = 0;
+    }
+    if(p == 4)
+    {
+      for(int i = 0; i < cloudCount; i++)
+        cloudList[i].phaseOut = true;
+      phaseOutCloud = cloudCount - 1; 
+      textY = 50;
+    }
+    if(p == 5)
+    {
+      textY = 50;
+    }
+    setPhaseTime(p);
+  }
 
   void setPhaseTime(int p)
   {
-     phaseStartTime[p] = millis() / 1000f;   
+    phaseStartTime[p] = millis() / 1000f;
   }
 
   void changePhase(int p)
@@ -272,8 +273,15 @@ class GamePhases
   }
 
   void renderBackground()
-  {
-    if(phase == 2 || phase == 5 || phase == 6)
+  {    
+    pushMatrix();   
+    translate(0, BGy, 0); 
+    if(phase == 0 || phase == 1)
+    {
+      drawBG(woods, true);
+      drawBG(cloudSky, false);
+    }
+    if(phase == 2)
     {   
       PImage BG1;
       PImage BG2;
@@ -298,36 +306,42 @@ class GamePhases
           BG2 = bgCloud2;          
           switchBG = false;
         }
-      }      
-      pushMatrix();   
-      translate(0, BGy, 0);
+      }  
       drawBG(BG1, switchBG);
       drawBG(BG2, !switchBG);
-      popMatrix();
-    }  
-    if(phase == 0 || phase == 1)
-    {         
-      pushMatrix();   
-      translate(0, BGy, 0);
-      drawBG(woods, true);
-      drawBG(cloudSky, false);
-      popMatrix();
-    }
+    } 
     if(phase == 3 || phase == 4)
     {
-      pushMatrix();   
-      translate(0, BGy, 0);
-      noStroke();
-      textureWrap(NORMAL);
-      beginShape(QUADS);
-      texture(cloudsToSpace);                  
-      vertex(0, 0, 0, 0);
-      vertex(width, 0, 1, 0);
-      vertex(width, cloudsToSpace.height, 1, 1);
-      vertex(0, cloudsToSpace.height, 0, 1);
-      endShape();
-      popMatrix();
+      BGPanel(cloudsToSpace, 0, width, 0, cloudsToSpace.height);
+      if(phase == 4 && BGy <= -1300)
+      {
+        pushMatrix(); 
+        translate(0, 1300);
+        BGPanel(bgCloud1, 0, width, height, height + height);
+        popMatrix();
+      }
     }
+    if(phase == 5 || phase == 6)
+    {
+      PImage BG1;
+      PImage BG2;
+      boolean switchBG;
+      if(BGparallax)
+      {
+        BG1 = bgCloud1;
+        BG2 = bgCloud2;          
+        switchBG = true;
+      } 
+      else
+      {
+        BG1 = bgCloud1;
+        BG2 = bgCloud2;          
+        switchBG = false;
+      }
+      drawBG(BG1, switchBG);
+      drawBG(BG2, !switchBG);
+    }
+    popMatrix();
   }
 
   void moveBackground()
@@ -348,26 +362,22 @@ class GamePhases
     } 
     else if(phase == 3)
     {
-      if(BGy < 0)
+      if(BGy <= 0)
         BGy += BGspeed;
-    }
+    } 
     else if(phase == 4)
     {
-      if(BGy > -1300)
+      if(BGy >= -1300 - height)
         BGy -= BGspeed;
-    }
+    } 
     else if(phase == 5 || phase == 6)
-      parallaxBg();
-  }
-
-  void parallaxBg()
-  {
-    beginParallax = true;
-    BGy -= BGspeed;
-    if(BGy <= -height)
     {
-      BGy = 0; 
-      BGparallax = !BGparallax;
+      BGy -= BGspeed;
+      if(BGy <= -height)
+      {
+        BGy = 0; 
+          BGparallax = !BGparallax;
+      }
     }
   }
 
@@ -384,7 +394,6 @@ class GamePhases
     {
       bgHeight1 = -height;
       bgHeight2 = 0;
-
       if(phase == 5 || phase == 6)
       {
         if(BGy <= 0)
@@ -393,16 +402,21 @@ class GamePhases
           bgHeight2 = height + height;
         }
       }
-    }    
+    }
+    BGPanel(picBG, 0, width, bgHeight1, bgHeight2);
+  }
+
+  void BGPanel(PImage img,int x1, int x2, int y1, int y2)
+  {
     pushMatrix();       
     noStroke();
     textureWrap(NORMAL);
     beginShape(QUADS);
-    texture(picBG);                  
-    vertex(0, bgHeight1, 0, 0);
-    vertex(width, bgHeight1, 1, 0);
-    vertex(width, bgHeight2, 1, 1);
-    vertex(0, bgHeight2, 0, 1);
+    texture(img);                  
+    vertex(x1, y1, 0, 0);
+    vertex(x2, y1, 1, 0);
+    vertex(x2, y2, 1, 1);
+    vertex(x1, y2, 0, 1);
     endShape();
     popMatrix();
   }
@@ -430,11 +444,11 @@ class GamePhases
       timeSurvived = int((millis() / 1000) - phaseStartTime[2]);
       if(!debug)
         text(timeSurvived, 100, 0);
-    }
+    } 
     else if(phase > 2 && phase < 6)
     {      
       text("Win!", 100, textY);
-    }
+    } 
     else
     { 
       text(countDownTime, 100, 0);         
@@ -452,7 +466,7 @@ class GamePhases
     Enemy = new BadGuy();
     PowerUp = new PowerUp();     
     cloudList = new CloudThings[cloudCount];
-    for (int i=0; i <cloudList.length; i++) 
+    for(int i=0; i <cloudList.length; i++) 
       cloudList[i]=new CloudThings();
     phase = 0; 
     startPhase1 = false;
@@ -489,5 +503,5 @@ class GamePhases
     else 
     ambient(150, 150, 0);    
     popMatrix();
-  } 
+  }
 }

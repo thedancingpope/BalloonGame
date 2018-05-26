@@ -61,7 +61,7 @@ void keyReleased()
   }
   if(key == 'r' || key == 'R')
     reset = false;
-    
+
   if(phase == 0)
     if(key == 'q' || key == 'Q')    
       Phases.setPhase1();

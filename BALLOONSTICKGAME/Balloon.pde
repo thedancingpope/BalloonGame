@@ -51,7 +51,7 @@ class Balloon
     drawCone(7, 137, 7, 141);     //draw the balloon tie
     popMatrix();   
 
-    BalloonString.render(stringPos); 
+    BalloonString.render(stringPos);
   } 
 
   void move()
@@ -89,7 +89,7 @@ class Balloon
     float angle = 0.0f;
 
     beginShape(QUAD_STRIP);                     
-    for (int i = 0; i < 92; i++)  
+    for(int i = 0; i < 92; i++)  
     {                                              
       vertex(XZ1*cos(angle), Y1, XZ1*sin(angle));
       vertex(XZ2*cos(angle), Y2, XZ2*sin(angle));

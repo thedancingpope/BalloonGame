@@ -1,9 +1,8 @@
-class Clothes
+class Clothes extends GameObjectAbstract
 {
   float flying, speed;
   float [][] level;
   int cols, rows;
-  PVector pos;
 
   Clothes(PVector _p, float _s)
   {
@@ -14,7 +13,7 @@ class Clothes
     rows = height / 40 + 1;
     level = new float[cols][rows];
   }  
-   
+
   void render()
   {
     int scale = 25;
@@ -39,7 +38,7 @@ class Clothes
     translate(balPos.x + pos.x + (width/2), balPos.y + pos.y, 60);
     rotateX(flying);
     rotateY(.1);    
-    translate(-width / 4,  -height / 4);
+    translate(-width / 4, -height / 4);
     for(int y = range; y < rows - range - 1; y++) 
     {
       beginShape(TRIANGLE_STRIP);

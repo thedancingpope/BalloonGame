@@ -1,6 +1,5 @@
-class PowerUp 
-{  
-  PVector pos;
+class PowerUp extends GameObjectAbstract
+{
   color protonColor = color(22, 128, 130);
   color neutronColor = color(23, 84, 55);
 
@@ -55,8 +54,8 @@ class PowerUp
   void move()
   {
     pos.y += 8;
-    if(pos.y >= height)
-       pos = newPosition();
+    if (pos.y >= height)
+      pos = newPosition();
   }
 
   PVector newPosition()
@@ -68,9 +67,9 @@ class PowerUp
   boolean getPowerUp() 
   {
     int balloonTolerance = 35;
-    if(pos.y >= 180 && pos.y <= 320)
+    if (pos.y >= 180 && pos.y <= 320)
     {
-      if(pos.x >= (balPos.x - balloonTolerance) && pos.x <= (balPos.x + balloonTolerance))
+      if (pos.x >= (balPos.x - balloonTolerance) && pos.x <= (balPos.x + balloonTolerance))
         return true;
     }
     return false;

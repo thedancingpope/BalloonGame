@@ -1,7 +1,7 @@
 public abstract class GameOverAbstractClass 
 {
   public abstract void render(); 
-  
+
   public void move()
   {
     if(leftTrue && !rightTrue) 
@@ -14,7 +14,7 @@ public abstract class GameOverAbstractClass
     if(balPos.x > 217) 
       balPos.x = 215;
   }
-  
+
   public void resetText()
   {
     pushMatrix();

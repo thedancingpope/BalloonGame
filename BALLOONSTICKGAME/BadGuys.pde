@@ -1,7 +1,6 @@
-class BadGuy
+class BadGuy extends GameObjectAbstract
 {
   float yTolerance; 
-  PVector pos;
   PImage badCloud, angryCloud, enemyImg;
 
   BadGuy() 
