@@ -1,4 +1,4 @@
 public abstract class GameObjectAbstract
 {
-  PVector pos;
+  PVector pos, velocity, acceleration;
 }

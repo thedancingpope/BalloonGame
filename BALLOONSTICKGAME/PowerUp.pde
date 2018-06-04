@@ -2,74 +2,86 @@ class PowerUp extends GameObjectAbstract
 {
   color protonColor = color(22, 128, 130);
   color neutronColor = color(23, 84, 55);
-
+  PGraphics powerUpLayer;
+  
   PowerUp()
   {
+    powerUpLayer = createGraphics(width, height, P3D);
     pos = newPosition();
+    velocity = new PVector(0, 6);
   }
 
   void render()
-  {
-    pushMatrix();
-    noLights();
-    noStroke();
-    translate(pos.x + (width / 2), pos.y, 25);
-    pushMatrix(); 
-    rotateY(frameCount * .3f);
-    translate(5, -10, -5);
+  {    
+    move();
+    powerUpLayer.beginDraw();
+    powerUpLayer.background(protonColor, 0);
+    powerUpLayer.noLights();
+    powerUpLayer.noStroke();
+    powerUpLayer.pushMatrix(); 
+    powerUpLayer.translate(pos.x, pos.y, 25);
+    powerUpLayer.pushMatrix(); 
+    powerUpLayer.rotateY(frameCount * .3f);
+    powerUpLayer.translate(5, -10, -5);
     drawNucleus(neutronColor);           
-    translate(-9, 0);
+    powerUpLayer.translate(-9, 0);
     drawNucleus(protonColor);  
-    translate(0, 9, 9);
+    powerUpLayer.translate(0, 9, 9);
     drawNucleus(neutronColor); 
-    translate(9, 0);
+    powerUpLayer.translate(9, 0);
     drawNucleus(protonColor); 
-    popMatrix();     
+    powerUpLayer.popMatrix();     
     drawElectron(-1);
-    drawElectron(1);              
-    popMatrix();
+    drawElectron(1);    
+    powerUpLayer.popMatrix();
+    powerUpLayer.endDraw();
+    image(powerUpLayer, 0, 0);
   }    
 
   void drawNucleus(color nucleusColor)
   {
-    pushMatrix(); 
-    fill(nucleusColor);  
-    sphere(8);
-    popMatrix();
+    powerUpLayer.pushMatrix();    
+    powerUpLayer.noLights();
+    powerUpLayer.noStroke();
+    powerUpLayer.fill(nucleusColor);  
+    powerUpLayer.sphere(8);
+    powerUpLayer.popMatrix();
   }
 
   void drawElectron(int dir)
   {
     float electronSpeed = 0.5f;
     int inc = 60;
-    pushMatrix();        
-    rotateX(1);
-    rotateY(dir);
-    translate(0, sin(frameCount * electronSpeed) * -inc, cos(frameCount * electronSpeed) * inc);
-    fill(0);
-    sphere(2);
-    popMatrix();
+    powerUpLayer.pushMatrix();        
+    powerUpLayer.rotateX(1);
+    powerUpLayer.rotateY(dir);
+    powerUpLayer.translate(0, sin(frameCount * electronSpeed) * -inc, cos(frameCount * electronSpeed) * inc);
+    powerUpLayer.fill(0);
+    powerUpLayer.sphere(2);
+    powerUpLayer.popMatrix();
   }
 
   void move()
   {
-    pos.y += 8;
-    if (pos.y >= height)
-      pos = newPosition();
+    pos.add(velocity);
+    if(phase != 3)
+      if (pos.y >= height)
+        pos = newPosition();
   }
 
   PVector newPosition()
   {    
-    int x = int(random(-220, 220));
-    return new PVector(x, -200);
+    float x = random(10, width - 10);
+    return new PVector(x, -125);
   }
 
   boolean getPowerUp() 
   {
-    int balloonTolerance = 35;
-    if (pos.y >= 180 && pos.y <= 320)
+    int balHeight = 70;
+    if (pos.y >= (balPos.y - balHeight) && pos.y <= (balPos.y + balHeight))
     {
-      if (pos.x >= (balPos.x - balloonTolerance) && pos.x <= (balPos.x + balloonTolerance))
+      int radius = 30;
+      if (pos.x >= (balPos.x - radius) && pos.x <= (balPos.x + radius))
         return true;
     }
     return false;

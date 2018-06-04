@@ -1,15 +1,12 @@
-/* Current Info: We're looking at adding several new features to the game, in order to move it closer to completion.
+/*Current Info: We're looking at adding several new features to the game, in order to move it closer to completion.
  With the main body of the game's code now finished, the remaining changes are mostly cosmetic, and in keeping with
  certain visual themes and patterns already established. Here are some changes we're floating around:
- -Stratosphere animation:
- -Extended background.
  -Balloon popping animation.
  -Music
  -Balloon hitting ground (animation).
  
  Sincerely,  
- TheDancingPope
- 
+ TheDancingPope 
  
  @TheDancingPope
  @MeeeMooo
@@ -18,13 +15,14 @@ int phase;
 PVector balPos;
 boolean leftTrue, rightTrue, reset;
 PFont font;
+PGraphics gameScene;
 GamePhases Phases;
 
 void setup()
 {
   size(500, 500, P3D);
   frameRate(25);
-  font = loadFont("ArialRoundedMTBold-36.vlw");
+  font = loadFont("SitkaText-Bold-48.vlw");
   textFont(font);
   textureMode(NORMAL);   
   textSize(20);
@@ -66,7 +64,9 @@ void keyReleased()
     if(key == 'q' || key == 'Q')    
       Phases.setPhase1();
 
-  if(key == '3')
+  if(key == '2')
+    Phases.debugPhase(2);
+  else if(key == '3')
     Phases.debugPhase(3);
   else if(key == '4')
     Phases.debugPhase(4);   

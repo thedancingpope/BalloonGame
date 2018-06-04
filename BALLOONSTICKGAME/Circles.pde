@@ -1,24 +1,20 @@
 class Circles extends GameObjectAbstract
 { 
-  float dx, dy, size;
+  float size;
 
   Circles()
-  {           
-    int speed = 3;    
-    dx = random(-speed, speed);
-    dy = random(-speed, speed);
-    size = random(5, 20);
+  { 
+    int speed = 2;    
     pos = new PVector(width / 2, height / 2);
-  }
-
-  void render()
-  {    
-    ellipse(pos.x, pos.y, size, size);
+    velocity = new PVector(0, 0);
+    acceleration = new PVector(random(-speed, speed), random(-speed, speed));
+    size = random(5, 10);
   }
 
   void move()
   {
-    pos.x += dx;
-    pos.y += dy;
+    velocity.add(acceleration);
+    pos.add(velocity);
+    acceleration.mult(0.1);
   }
 }

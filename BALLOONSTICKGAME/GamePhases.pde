@@ -1,22 +1,20 @@
 class GamePhases
 { 
-  float BGy, BGspeed, textY;
-  float [] phaseStartTime;
-  int cloudCount, phaseOutCloud, timeSurvived, finishTime, countDownTime;
-  String qButton, controls;
+  float BGy, BGspeed;
+  int cloudCount, phaseOutCloud;
   boolean BGparallax, beginParallax, gotPowerUp, startPhase1, startPhase3, debug;
   PImage woods, cloudSky, bgCloud1, bgCloud2, cloudsToSpace;  
+  PGraphics sceneBG, backClouds, frontClouds, instructionsLayer;
   Balloon Balloon;  
   CloudThings [] cloudList;
   BadGuy Enemy;
   PowerUp PowerUp;
   GameOverSuccess Win;
   GameOverFail Loose;
+  TextCanvas Canvas;
 
   GamePhases()
   { 
-    qButton = "Press Q forfreedom.";
-    controls = "Use A and D to steer.";
     woods = loadImage("ForestBackgroundOne.jpg");
     cloudSky = loadImage("CloudBackgroundReg.jpg");
     bgCloud1 = loadImage("BlueSky2.jpg");
@@ -27,28 +25,10 @@ class GamePhases
   } 
 
   void RunPhases()
-  {
-    renderBackground();
-    moveBackground();
-    if(phase < 4)
-    {      
-      Balloon.render();
-      Balloon.move();
-    }    
-    if(phase > 1)
-    {        
-      for(int i = 0; i < cloudCount; i++)
-      {
-        cloudList[i].render();
-        cloudList[i].move();
-        if(gotPowerUp)  
-          cloudList[i].move();
-      }      
-      TimeStamp();
-    }
-
-    if(phase == 0)    
-      phase00();
+  { 
+    renderBackground();    
+    Balloon.move(); 
+    
     if(phase == 1)    
       phase01();
     if(phase == 2)    
@@ -60,7 +40,15 @@ class GamePhases
     if(phase == 5)    
       phase05();
     if(phase == 6)    
-      phase06();
+      phase06();       
+    if(phase < 4)
+      Balloon.render();
+    if(phase > 1)     
+      image(frontClouds, 0, 0);
+    if(phase == 0)
+      image(instructionsLayer, 0, 0);
+      
+    Canvas.render();
 
     if(phase >= 4)  
     {
@@ -69,41 +57,32 @@ class GamePhases
     }
     if(reset && debug)
       resetComponents();
-  }    
-  /**--------------------------[Phase 0]----------------------------------------------------------*/
-
-  void phase00()
-  {     
-    pushMatrix();
-    fill(255);
-    textSize(20);
-    text(qButton, 50, 100);
-    text(controls, 50, 50);  
-    popMatrix();
-    startPhase1 = false;
-  }
+  } 
+  
   /**--------------------------[Phase 1]----------------------------------------------------------*/
 
   void phase01()
   { 
+    int center = 5;
+    
     if(startPhase1)
     {
-      if(balPos.x > 0)
+      if(balPos.x > (width / 2) + center)
       {
         rightTrue = false; 
         leftTrue = true;
       } 
-      else if(balPos.x < 0)
+      else if(balPos.x < (width / 2) - center)
       {
         leftTrue = false;
         rightTrue = true;
       } 
-      else if(balPos.x == 0)
+      else if(balPos.x < ((width / 2) + center) && balPos.x > ((width / 2) - center))
       {
         startPhase1 = false;
         rightTrue = false; 
         leftTrue = false;
-        setPhaseTime(1);
+        Canvas.setStartTime(1);
       }
     } 
     else
@@ -117,21 +96,24 @@ class GamePhases
         leftTrue = false;
         rightTrue = true;
       } 
-      else if(BGy <= 500)
+      else if(BGy < 480)
       {
         rightTrue = false;
         leftTrue = true;
       }
-      if(BGy > 500)
+      else if(BGy > 480)
       {
-        setPhaseTime(2);  
-        phase = 2; 
-        balPos.x = 0;
         leftTrue = false;
         rightTrue = false;
+      }
+      if(BGy > 500)
+      {
+        Canvas.setStartTime(2);  
+        phase = 2; 
         BGy = 0;
         beginParallax = false;
         BGparallax = true;
+        phaseAllCloudsOut();
       }
     }
   }
@@ -139,70 +121,124 @@ class GamePhases
 
   void phase02()
   { 
+    if(phaseOutCloud >= 0)
+    {
+      if((millis() / 1000f) > (Canvas.phaseStartTime(2) + 1f))
+      {
+        cloudList[phaseOutCloud].phaseOut = false;
+        if(frameCount % 20 == 0)
+            phaseOutCloud --;
+      }
+    }
+    
+    backClouds.beginDraw();      
+    backClouds.background(255, 0);
+    for(int i = 0; i < cloudCount / 2; i++)
+    {
+      if(!cloudList[i].phaseOut)
+      {
+        cloudList[i].move();
+        if(gotPowerUp)
+          cloudList[i].moveWithPowerUp();
+        cloudList[i].render(backClouds);
+      }
+    }
+    backClouds.endDraw();     
+    frontClouds.beginDraw();
+    frontClouds.background(255, 0);        
+    for(int j = cloudCount / 2; j < cloudCount; j++)
+    {
+      if(!cloudList[j].phaseOut)
+      {
+        cloudList[j].move();
+        if(gotPowerUp)
+          cloudList[j].moveWithPowerUp();
+        cloudList[j].render(frontClouds); 
+      }
+    }
+    frontClouds.endDraw();
+    image(backClouds, 0, 0);
+    
     PowerUp.render();
-    PowerUp.move();   
-    gotPowerUp = PowerUp.getPowerUp();
-    Enemy.render();
+    gotPowerUp = PowerUp.getPowerUp();    
     if(gotPowerUp)
       Enemy.retreat();
     else
       Enemy.move();
-
-    if(timeSurvived >= 80) 
+    Enemy.render();
+    
+    if((millis() / 1000) - Canvas.phaseStartTime(2) >= 80 || (debug && (millis() / 1000) - Canvas.phaseStartTime(2) >= 10)) 
     {
-      setPhaseTime(3);
+      Canvas.setStartTime(3);
       changePhase(3);     
       startPhase3 = false;
-      BGy = 0;
     }
     if(Enemy.caughtCheck()) 
     {  
-      setPhaseTime(6); 
+      Canvas.setStartTime(6); 
       changePhase(6);
     }
   }  
   /**--------------------------[Phase 3]----------------------------------------------------------*/
 
   void phase03()
-  {  
+  {
+    if(phaseOutCloud != cloudCount)
+    {
+      if((millis() / 1000f) > (Canvas.phaseStartTime(3) + 15f))
+      {           
+        cloudList[phaseOutCloud].phaseOut = true;
+        if(frameCount % 20 == 0)     
+          phaseOutCloud ++;
+      } 
+    }    
+    cloudLayers();
+    
     if(!startPhase3)
     {
-      phaseOutCloud = 0;
-      startPhase3 = true;
-      BGy = height - cloudsToSpace.height;
-    }    
-    if((millis() / 1000f) > (phaseStartTime[3] + 10f))
-    {           
-      cloudList[phaseOutCloud].phaseOut = true;
-      if(frameCount % 20 == 0)
-        if(phaseOutCloud < cloudCount - 1)
-          phaseOutCloud ++;
-    } 
-    if(BGy >= height)
+      gotPowerUp = false;
+      phaseOutCloud = 0;      
+      if(BGy >= 500)
+      {
+        startPhase3 = true;
+        BGy = -cloudsToSpace.height;
+        Canvas.setStartTime(3);
+      }
+    }
+    if(PowerUp.pos.y < height)
+      PowerUp.render();
+    if(Enemy.pos.y < height)
     {
-      setPhaseTime(4);
+      Enemy.retreat();
+      Enemy.render();
+    }
+    if(BGy >= 0 && (millis() / 1000f) > (Canvas.phaseStartTime(3) + 15f))
+    {
+      Canvas.setStartTime(4);
       phase = 4;
+      phaseOutCloud = cloudCount - 1;
     }
   }
   /**--------------------------[Phase 4]----------------------------------------------------------*/
 
   void phase04()
   {  
-    if(phaseOutCloud != 0)
+    if(phaseOutCloud >= 0)
     {
-      if((millis() / 1000f) > (phaseStartTime[4] + 10f))
+      if((millis() / 1000f) > (Canvas.phaseStartTime(4) + 8f))
       {
         cloudList[phaseOutCloud].phaseOut = false;
         if(frameCount % 20 == 0)
-          if(phaseOutCloud > 0)
             phaseOutCloud --;
       }
     }
-    Win.move();
+    
+    cloudLayers();
     Win.render();
+    
     if(BGy <= -1300 - height)
     {
-      setPhaseTime(5);
+      Canvas.setStartTime(5);
       phase = 5;  
       BGparallax = true;
     }
@@ -211,14 +247,14 @@ class GamePhases
 
   void phase05()
   {
-    Win.move();
+    cloudLayers();
     Win.render();
   }
   /**--------------------------[Phase 5]----------------------------------------------------------*/
 
   void phase06()
   { 
-    Loose.move();
+    cloudLayers();
     Loose.render();
     //if(countDownTime < 0)
     //resetComponents();
@@ -229,11 +265,49 @@ class GamePhases
     //balloon cloth piece lands on the ground
   }
 
-
+  void phaseAllCloudsOut()
+  {    
+    for(int i = 0; i < cloudCount; i++)
+      cloudList[i].phaseOut = true;
+    phaseOutCloud = cloudCount - 1;
+  }
+  
+  void phaseAllCloudsIn()
+  {    
+    for(int i = 0; i < cloudCount; i++)
+      cloudList[i].phaseOut = false;
+    phaseOutCloud = 0;
+  }
+  
+  void cloudLayers()
+  {
+    backClouds.beginDraw();      
+    backClouds.background(255, 0);
+    for(int i = 0; i < (cloudCount / 2); i++)
+    {
+      cloudList[i].move();
+      if(gotPowerUp)
+        cloudList[i].moveWithPowerUp();
+      cloudList[i].render(backClouds);
+    }
+    backClouds.endDraw();     
+    frontClouds.beginDraw();
+    frontClouds.background(255, 0);        
+    for(int j = (cloudCount / 2); j < cloudCount; j++)
+    {
+      cloudList[j].move();
+      if(gotPowerUp)
+        cloudList[j].moveWithPowerUp();
+      cloudList[j].render(frontClouds); 
+    }
+    frontClouds.endDraw();
+    image(backClouds, 0, 0);
+  }
+  
   void setPhase1()
   {
     startPhase1 = true;
-    setPhaseTime(1);
+    Canvas.setStartTime(1);
     phase = 1;
   }
 
@@ -242,47 +316,51 @@ class GamePhases
     resetComponents();
     phase = p;
     debug = true;
+    
+    if(p == 2)
+    {
+      phaseAllCloudsIn();
+      BGy = 250;
+    }
     if(p == 3)
-    {       
-      startPhase3 = false;
-      textY = 0;
+    {             
+      phaseAllCloudsIn();
+      beginParallax = true;
     }
     if(p == 4)
     {
-      for(int i = 0; i < cloudCount; i++)
-        cloudList[i].phaseOut = true;
-      phaseOutCloud = cloudCount - 1; 
-      textY = 50;
+      phaseAllCloudsOut();
     }
     if(p == 5)
     {
-      textY = 50;
-    }
-    setPhaseTime(p);
-  }
-
-  void setPhaseTime(int p)
-  {
-    phaseStartTime[p] = millis() / 1000f;
+      phaseAllCloudsIn();
+    }    
+    
+    Canvas.setText();
+    Canvas.setStartTime(p);
   }
 
   void changePhase(int p)
   {
-    finishTime = timeSurvived;  
     BGparallax = true;
     phase = p;
   }
 
   void renderBackground()
   {    
-    pushMatrix();   
-    translate(0, BGy, 0); 
+    moveBackground();  
+    background(255);
+    sceneBG.beginDraw();
+    sceneBG.background(0, 0);
+    sceneBG.pushMatrix();   
+    sceneBG.translate(0, BGy); 
+    
     if(phase == 0 || phase == 1)
     {
       drawBG(woods, true);
       drawBG(cloudSky, false);
     }
-    if(phase == 2)
+    if(phase == 2 || (phase == 3 && !startPhase3))
     {   
       PImage BG1;
       PImage BG2;
@@ -311,16 +389,27 @@ class GamePhases
       drawBG(BG1, switchBG);
       drawBG(BG2, !switchBG);
     } 
-    if(phase == 3 || phase == 4)
+    if(phase == 3 && startPhase3)
     {
-      BGPanel(cloudsToSpace, 0, width, 0, cloudsToSpace.height);
-      if(phase == 4 && BGy <= -1300)
+      if(BGy <= -1300)
       {
-        pushMatrix(); 
-        translate(0, 1300);
-        BGPanel(bgCloud1, 0, width, height, height + height);
-        popMatrix();
+        sceneBG.pushMatrix(); 
+        sceneBG.translate(0, 1300 + height);
+        BGPanel(bgCloud2, 0, width, 0, height);
+        sceneBG.popMatrix();
       }
+      BGPanel(cloudsToSpace, 0, width, 0, cloudsToSpace.height);
+    }
+    if(phase == 4)
+    {
+      if(BGy <= -1300)
+      {
+        sceneBG.pushMatrix(); 
+        sceneBG.translate(0, 1300);
+        BGPanel(bgCloud1, 0, width, height, height + height);
+        sceneBG.popMatrix();
+      }
+      BGPanel(cloudsToSpace, 0, width, 0, cloudsToSpace.height);      
     }
     if(phase == 5 || phase == 6)
     {
@@ -342,7 +431,10 @@ class GamePhases
       drawBG(BG1, switchBG);
       drawBG(BG2, !switchBG);
     }
-    popMatrix();
+    
+    sceneBG.popMatrix();    
+    sceneBG.endDraw();
+    image(sceneBG, 0, 0); 
   }
 
   void moveBackground()
@@ -363,8 +455,7 @@ class GamePhases
     } 
     else if(phase == 3)
     {
-      if(BGy <= 0)
-        BGy += BGspeed;
+      BGy += BGspeed;
     } 
     else if(phase == 4)
     {
@@ -407,56 +498,19 @@ class GamePhases
     BGPanel(picBG, 0, width, bgHeight1, bgHeight2);
   }
 
-  void BGPanel(PImage img,int x1, int x2, int y1, int y2)
+  void BGPanel(PImage img, int x1, int x2, int y1, int y2)
   {
-    pushMatrix();       
-    noStroke();
-    textureWrap(NORMAL);
-    beginShape(QUADS);
-    texture(img);                  
-    vertex(x1, y1, 0, 0);
-    vertex(x2, y1, 1, 0);
-    vertex(x2, y2, 1, 1);
-    vertex(x1, y2, 0, 1);
-    endShape();
-    popMatrix();
-  }
-
-  void TimeStamp()
-  {    
-    float i = ((millis() / 1000f) - phaseStartTime[phase]) / 1.5f;
-    if(i >= 0.0f && i <= 1.0f)
-    {
-      if(phase == 3)
-        textY = lerp(0, 50, i);
-      if(phase == 5)
-        textY = lerp(50, 0, i);
-    }
-    pushMatrix();
-    stroke(0, 0, 0);
-    fill(0, 0, 0);
-    noLights();
-    textSize(20);
-    translate (56, 425, 90);             
-    text("Survived: ", 0, textY);
-    countDownTime = int((timeSurvived * 2) - ((millis() / 1000) - phaseStartTime[2]));
-    if(phase == 2)
-    {                   
-      timeSurvived = int((millis() / 1000) - phaseStartTime[2]);
-      if(!debug)
-        text(timeSurvived, 100, 0);
-    } 
-    else if(phase > 2 && phase < 6)
-    {      
-      text("Win!", 100, textY);
-    } 
-    else
-    { 
-      text(countDownTime, 100, 0);         
-      fill(200, 25, 25);
-      text(timeSurvived, 100, 17);
-    }
-    popMatrix();
+    sceneBG.pushMatrix(); 
+    sceneBG.noStroke();
+    sceneBG.textureWrap(NORMAL);
+    sceneBG.beginShape(QUADS);
+    sceneBG.texture(img);   
+    sceneBG.vertex(x1, y2, 0, img.height);          
+    sceneBG.vertex(x1, y1, 0, 0);
+    sceneBG.vertex(x2, y1, img.width, 0); 
+    sceneBG.vertex(x2, y2, img.width, img.height);    
+    sceneBG.endShape();
+    sceneBG.popMatrix();
   }
 
   void resetComponents()
@@ -466,19 +520,21 @@ class GamePhases
     Balloon = new Balloon();
     Enemy = new BadGuy();
     PowerUp = new PowerUp();     
+    Canvas = new TextCanvas();
     cloudList = new CloudThings[cloudCount];
     for(int i=0; i <cloudList.length; i++) 
       cloudList[i]=new CloudThings();
     phase = 0; 
     startPhase1 = false;
     startPhase3 = false;
-    balPos = new PVector(0, height / 2);
+    balPos = new PVector(width / 2, height / 2); 
+    sceneBG = createGraphics(width, height, P3D);
+    backClouds = createGraphics(width, height, P3D);
+    frontClouds = createGraphics(width, height, P3D);
+    instructionsLayer = createGraphics(width, height, P3D);
     BGy = 0;
     BGspeed = 2; 
-    textY = 0;
-    phaseStartTime = new float [7];
-    setPhaseTime(0);
-    countDownTime = 0;
+    Canvas.setStartTime(0);
     BGparallax = true;
     beginParallax = false;    
     leftTrue = false;
@@ -486,23 +542,5 @@ class GamePhases
     gotPowerUp = false;
     reset = false;
     debug = false;
-  }
-
-  void lighting()
-  {
-    pushMatrix();
-    ambientLight(205, 205, 205);
-    if(phase < 4)
-    {
-      lightSpecular(205, 205, 205);
-      directionalLight(205, 205, 205, 1, 1, -2);
-    }
-    specular(180, 180, 180);
-    shininess(9.0);
-    if(gotPowerUp)
-      ambient(244, 255, 126);
-    else 
-    ambient(150, 150, 0);    
-    popMatrix();
   }
 }

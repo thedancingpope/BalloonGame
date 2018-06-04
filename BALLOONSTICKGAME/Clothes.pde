@@ -14,7 +14,7 @@ class Clothes extends GameObjectAbstract
     level = new float[cols][rows];
   }  
 
-  void render()
+  void render(PGraphics layer)
   {
     int scale = 25;
     int range = 5;
@@ -31,24 +31,25 @@ class Clothes extends GameObjectAbstract
       }
       yOff += inc;
     }
-    pushMatrix();
-    noStroke();
-    fill(50, 50, 0);  
-    Phases.lighting();
-    translate(balPos.x + pos.x + (width/2), balPos.y + pos.y, 60);
-    rotateX(flying);
-    rotateY(.1);    
-    translate(-width / 4, -height / 4);
+    layer.pushMatrix();
+    layer.noStroke();
+    layer.fill(50, 50, 0);  
+    layer.ambientLight(205, 205, 205);
+    layer.ambient(244, 255, 126);
+    layer.translate(balPos.x + pos.x, balPos.y + pos.y, 60);
+    layer.rotateX(flying);
+    layer.rotateY(.1);    
+    layer.translate(-width / 4, -height / 4);
     for(int y = range; y < rows - range - 1; y++) 
     {
-      beginShape(TRIANGLE_STRIP);
+      layer.beginShape(TRIANGLE_STRIP);
       for(int x = range; x < cols - range; x++) 
       {             
-        vertex(x * scale, y *scale, level[x][y]);
-        vertex(x * scale, (y + 1) * scale, level[x][y+1]);
+        layer.vertex(x * scale, y *scale, level[x][y]);
+        layer.vertex(x * scale, (y + 1) * scale, level[x][y+1]);
       }
-      endShape();
+      layer.endShape();
     }
-    popMatrix();
+    layer.popMatrix();
   }
 }

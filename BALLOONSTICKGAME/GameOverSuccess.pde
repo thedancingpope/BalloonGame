@@ -1,8 +1,9 @@
-class GameOverSuccess extends GameOverAbstractClass
+class GameOverSuccess
 {
   color textColor; 
   int clothCount, fwCount;
   boolean leftRight;
+  PGraphics winTextLayer, clothesLayer;
   FireWorks [] FW;
   Clothes [] Cloth;
 
@@ -11,6 +12,8 @@ class GameOverSuccess extends GameOverAbstractClass
     clothCount = 5;
     leftRight = true;
     textColor = colorChange();
+    clothesLayer = createGraphics(width, height, P3D);
+    winTextLayer = createGraphics(width, height, P3D);
     fwCount = 5;
     FW = new FireWorks [fwCount];
     for(int i = 0; i < fwCount; i++)
@@ -25,17 +28,23 @@ class GameOverSuccess extends GameOverAbstractClass
 
   void render() 
   {
-    movePieces();
-    for(int i = 0; i < clothCount; i++)
-      Cloth[i].render();
     for(int j = 0; j < fwCount; j++)
     {
-      if(FW[j].lifeTime <= 0)
-        setFireWorks(j); 
-      FW[j].render();
+      if(FW[j].alive())
+        FW[j].render(); 
+      else
+        setFireWorks(j);
     }
     winText();
-    resetText();
+    movePieces();
+    for(int i = 0; i < clothCount; i++)
+      {
+        clothesLayer.beginDraw();
+        clothesLayer.background(205, 205, 205, 0);        
+        Cloth[i].render(clothesLayer);
+        clothesLayer.endDraw();
+        image(clothesLayer, 0, 0); 
+      }
   }
 
   void movePieces()
@@ -73,12 +82,16 @@ class GameOverSuccess extends GameOverAbstractClass
 
   void winText()
   {
-    fill(0);
-    textSize(60);
-    ambient(textColor);
-    fill(textColor); 
-    text("You Win!", 140, height / 2);
-    if(frameCount % 4 == 0)
+    winTextLayer.beginDraw();
+    winTextLayer.background(textColor, 0);
+    winTextLayer.fill(0);
+    winTextLayer.textSize(60);
+    winTextLayer.noLights();
+    winTextLayer.fill(textColor); 
+    winTextLayer.text("You Win!", 140, height / 2);
+    winTextLayer.endDraw();
+    image(winTextLayer, 0, 0);
+    if(frameCount % 5 == 0)
       textColor = colorChange();
   } 
 
