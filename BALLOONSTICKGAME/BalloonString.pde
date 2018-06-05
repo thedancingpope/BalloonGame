@@ -28,6 +28,7 @@ class BalloonString
     }
     stringLayer.popMatrix();
     stringLayer.endDraw();
-    image(stringLayer, 0, 0);
+    if(gameLayers[6])
+      image(stringLayer, 0, 0);
   }  
 }

@@ -14,7 +14,8 @@ class GameOverFail
     clothLayer.beginDraw();
     clothLayer.background(205, 205, 205, 0);  
     Cloth.render(clothLayer);
-    clothLayer.endDraw();
-    image(clothLayer, 0, 0);
+    clothLayer.endDraw();    
+    if(gameLayers[7])
+      image(clothLayer, 0, 0);
   }
 }

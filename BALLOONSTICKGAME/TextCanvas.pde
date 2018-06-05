@@ -51,8 +51,9 @@ class TextCanvas extends GameObjectAbstract
       int countDown = int((timeSurvived * 2) - ((millis() / 1000) - phaseStartingTime[2]));      
       textLayer.text(countDown, pos.x + 100, pos.y + 20);      
     }
-    textLayer.endDraw();
-    image(textLayer, 0, 0);
+    textLayer.endDraw();  
+    if(gameLayers[9])
+      image(textLayer, 0, 0);
   }
   
   void move()

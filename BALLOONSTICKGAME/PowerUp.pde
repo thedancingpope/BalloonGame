@@ -34,8 +34,9 @@ class PowerUp extends GameObjectAbstract
     drawElectron(-1);
     drawElectron(1);    
     powerUpLayer.popMatrix();
-    powerUpLayer.endDraw();
-    image(powerUpLayer, 0, 0);
+    powerUpLayer.endDraw();  
+    if(gameLayers[2])
+      image(powerUpLayer, 0, 0);
   }    
 
   void drawNucleus(color nucleusColor)

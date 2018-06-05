@@ -43,9 +43,9 @@ class GamePhases
       phase06();       
     if(phase < 4)
       Balloon.render();
-    if(phase > 1)     
+    if(phase > 1 && gameLayers[8])     
       image(frontClouds, 0, 0);
-    if(phase == 0)
+    if(phase == 0 && gameLayers[9])
       image(instructionsLayer, 0, 0);
       
     Canvas.render();
@@ -157,7 +157,8 @@ class GamePhases
       }
     }
     frontClouds.endDraw();
-    image(backClouds, 0, 0);
+    if(gameLayers[1])
+      image(backClouds, 0, 0);
     
     PowerUp.render();
     gotPowerUp = PowerUp.getPowerUp();    
@@ -301,7 +302,8 @@ class GamePhases
       cloudList[j].render(frontClouds); 
     }
     frontClouds.endDraw();
-    image(backClouds, 0, 0);
+    if(gameLayers[1])
+      image(backClouds, 0, 0);
   }
   
   void setPhase1()
@@ -434,7 +436,8 @@ class GamePhases
     
     sceneBG.popMatrix();    
     sceneBG.endDraw();
-    image(sceneBG, 0, 0); 
+    if(gameLayers[0])
+      image(sceneBG, 0, 0); 
   }
 
   void moveBackground()

@@ -43,8 +43,9 @@ class FireWorks extends GameObjectAbstract
       fireWorksLayer.ellipse(Circles[i].pos.x, Circles[i].pos.y, Circles[i].size, Circles[i].size);
     }
     fireWorksLayer.popMatrix();
-    fireWorksLayer.endDraw();
-    image(fireWorksLayer, 0, 0);
+    fireWorksLayer.endDraw();    
+    if(gameLayers[4])
+      image(fireWorksLayer, 0, 0);
     lifeTime --;      
   }
 }

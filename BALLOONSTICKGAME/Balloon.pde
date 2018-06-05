@@ -48,7 +48,8 @@ class Balloon extends GameObjectAbstract
     balloonLayer.popMatrix(); 
     balloonLayer.noLights();
     balloonLayer.endDraw();
-    image(balloonLayer, 0, 0);
+    if(gameLayers[7])    
+      image(balloonLayer, 0, 0);
   } 
 
   void move()

@@ -41,7 +41,8 @@ class BadGuy extends GameObjectAbstract
     enemyLayer.image(enemyImg, -enemyImg.width / 2, imgGap);
     enemyLayer.popMatrix();
     enemyLayer.endDraw();
-    image(enemyLayer, 0, 0);
+    if(gameLayers[3])
+      image(enemyLayer, 0, 0);
   }
 
   boolean caughtCheck()

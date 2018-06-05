@@ -42,8 +42,9 @@ class GameOverSuccess
         clothesLayer.beginDraw();
         clothesLayer.background(205, 205, 205, 0);        
         Cloth[i].render(clothesLayer);
-        clothesLayer.endDraw();
-        image(clothesLayer, 0, 0); 
+        clothesLayer.endDraw();  
+        if(gameLayers[7])
+          image(clothesLayer, 0, 0); 
       }
   }
 
@@ -89,8 +90,9 @@ class GameOverSuccess
     winTextLayer.noLights();
     winTextLayer.fill(textColor); 
     winTextLayer.text("You Win!", 140, height / 2);
-    winTextLayer.endDraw();
-    image(winTextLayer, 0, 0);
+    winTextLayer.endDraw();      
+    if(gameLayers[5])
+      image(winTextLayer, 0, 0);
     if(frameCount % 5 == 0)
       textColor = colorChange();
   } 
