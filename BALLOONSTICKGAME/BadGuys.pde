@@ -48,7 +48,7 @@ class BadGuy extends GameObjectAbstract
   boolean caughtCheck()
   {
     int gap = 50;
-    if(pos.x >= (balPos.x - gap) && pos.x <= (balPos.x + gap) && pos.y <= balPos.y + 10)    
+    if(pos.x >= (balPos.x - gap) && pos.x <= (balPos.x + gap) && pos.y <= balPos.y + 5)    
       return true;
     else
       return false;
@@ -69,13 +69,15 @@ class BadGuy extends GameObjectAbstract
   {
     if(pos.y > balPos.y)
       acceleration.sub(moveUp);
-    if(pos.y <= balPos.y + 10)
-      acceleration.mult(.5);
+    if(pos.y <= balPos.y)
+      acceleration.y *= .8f;
     if(acceleration.y > 0)
-      acceleration.mult(.5);
+      acceleration.mult(.5f);
     steer();    
     velocity.add(acceleration);
-    velocity.limit(3f);    
+    velocity.limit(3f); 
+    if(pos.y <= balPos.y - 10)
+      velocity.y *= .2f;   
     pos.add(velocity);
   }
 

@@ -45,7 +45,14 @@ class LayerToggle
     layerList.textSize(20);
     layerList.background(255, 50, 100, 0);
     layerList.fill(255, 50, 100);
+    layerList.text("Debug current phase: " + phase, 20, 25);
+    if(isCaught)
+      layerList.text("caught!!", 20, 50); 
+    if(gotPowerUp)
+      layerList.text("Power Up!!", 20, 75);
+    layerList.text("Press buttons '2' - '6' for phases, 'r' to reset", 20, height - 70);
     layerList.text("Current layers", 300, 25);
+    
     for(int i = 0; i < layersUsed.length; i++)
     {
       String temp = layerCheck(layersUsed[i]);

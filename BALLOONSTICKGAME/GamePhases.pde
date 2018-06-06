@@ -2,7 +2,7 @@ class GamePhases
 { 
   float BGy, BGspeed;
   int cloudCount, phaseOutCloud;
-  boolean BGparallax, beginParallax, gotPowerUp, startPhase1, startPhase3, debug;
+  boolean BGparallax, beginParallax, startPhase1, startPhase3, debug;
   PImage woods, cloudSky, bgCloud1, bgCloud2, cloudsToSpace;  
   PGraphics sceneBG, backClouds, frontClouds, instructionsLayer;
   Balloon Balloon;  
@@ -168,13 +168,14 @@ class GamePhases
       Enemy.move();
     Enemy.render();
     
-    if((millis() / 1000) - Canvas.phaseStartTime(2) >= 80 || (debug && (millis() / 1000) - Canvas.phaseStartTime(2) >= 10)) 
+    if((millis() / 1000) - Canvas.phaseStartTime(2) >= 80) 
     {
       Canvas.setStartTime(3);
       changePhase(3);     
       startPhase3 = false;
     }
-    if(Enemy.caughtCheck()) 
+    isCaught = Enemy.caughtCheck();
+    if(isCaught && !Layers.debugLayers) 
     {  
       Canvas.setStartTime(6); 
       changePhase(6);
@@ -346,6 +347,11 @@ class GamePhases
   {
     BGparallax = true;
     phase = p;
+  }
+
+  boolean checkCaught()
+  {
+     return isCaught;
   }
 
   void renderBackground()
@@ -543,6 +549,7 @@ class GamePhases
     leftTrue = false;
     rightTrue = false;
     gotPowerUp = false;
+    isCaught = false;
     reset = false;
     debug = false;
   }

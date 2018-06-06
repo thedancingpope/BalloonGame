@@ -13,7 +13,7 @@
  */
 int phase; 
 PVector balPos;
-boolean leftTrue, rightTrue, reset, shift;
+boolean leftTrue, rightTrue, isCaught, gotPowerUp, reset, shift;
 boolean [] gameLayers;
 PFont font;
 PGraphics gameScene;
@@ -68,18 +68,7 @@ void keyReleased()
     reset = false;
   if(phase == 0)
     if(key == 'q' || key == 'Q')    
-      Phases.setPhase1();
-
-  if(key == '2')
-    Phases.debugPhase(2);
-  else if(key == '3')
-    Phases.debugPhase(3);
-  else if(key == '4')
-    Phases.debugPhase(4);   
-  else if(key == '5')
-    Phases.debugPhase(5);
-  else if(key == '6')
-    Phases.debugPhase(6);
+      Phases.setPhase1(); 
     
   if(keyCode == SHIFT)
     shift = false;
@@ -107,6 +96,16 @@ void keyReleased()
     if(key == 'c' || key == 'C')
       gameLayers[8] = !gameLayers[8];
     if(key == 't' || key == 'T')
-      gameLayers[9] = !gameLayers[9];     
+      gameLayers[9] = !gameLayers[9];
+    if(key == '2')
+      Phases.debugPhase(2);
+    if(key == '3')
+      Phases.debugPhase(3);
+    if(key == '4')
+      Phases.debugPhase(4);   
+    if(key == '5')
+      Phases.debugPhase(5);
+    if(key == '6')
+      Phases.debugPhase(6);
   }
 }

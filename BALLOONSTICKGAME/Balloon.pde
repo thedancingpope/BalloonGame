@@ -3,7 +3,6 @@ class Balloon extends GameObjectAbstract
   float balloonScale, rotZ, lastZ;
   PVector stringPos;
   PGraphics balloonLayer;
-  boolean powerUp;
   BalloonString BalloonString;
 
   Balloon()
@@ -16,7 +15,6 @@ class Balloon extends GameObjectAbstract
     balloonScale = .4f;
     rotZ = 0.0f;
     lastZ = 0.0f;
-    powerUp = false;
   }
 
   void render()
@@ -29,7 +27,7 @@ class Balloon extends GameObjectAbstract
     balloonLayer.directionalLight(205, 205, 205, 1, 1, -2);    
     balloonLayer.specular(180, 180, 180);
     balloonLayer.shininess(9.0);
-    if(powerUp)
+    if(gotPowerUp)
       balloonLayer.ambient(244, 255, 126);
     else 
       balloonLayer.ambient(150, 150, 0); 
@@ -123,9 +121,8 @@ class Balloon extends GameObjectAbstract
     balPos.add(velocity);
     rotZ = z * .1f;
     lastZ = rotZ;
-    powerUp = Phases.gotPowerUp;
     float ballInc = .02f;
-    if(powerUp) 
+    if(gotPowerUp) 
     {
       if(balloonScale < .54f)
         balloonScale += ballInc;

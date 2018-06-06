@@ -25,8 +25,8 @@ class TextCanvas extends GameObjectAbstract
     if(phase == 0)
     {
       textLayer.fill(255);
-      textLayer.text(qButton, 30, 100);
       textLayer.text(controls, 30, 50);
+      textLayer.text(qButton, 30, 80);
     }
     if(phase > 1)
     {
