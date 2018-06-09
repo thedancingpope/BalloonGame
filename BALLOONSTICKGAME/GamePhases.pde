@@ -4,7 +4,7 @@ class GamePhases
   int cloudCount, phaseOutCloud;
   boolean BGparallax, beginParallax, startPhase1, startPhase3, debug;
   PImage woods, cloudSky, bgCloud1, bgCloud2, cloudsToSpace;  
-  PGraphics sceneBG, backClouds, frontClouds, instructionsLayer;
+  PGraphics sceneBG, backClouds, frontClouds;
   Balloon Balloon;  
   CloudThings [] cloudList;
   BadGuy Enemy;
@@ -45,8 +45,6 @@ class GamePhases
       Balloon.render();
     if(phase > 1 && gameLayers[8])     
       image(frontClouds, 0, 0);
-    if(phase == 0 && gameLayers[9])
-      image(instructionsLayer, 0, 0);
       
     Canvas.render();
 
@@ -540,7 +538,6 @@ class GamePhases
     sceneBG = createGraphics(width, height, P3D);
     backClouds = createGraphics(width, height, P3D);
     frontClouds = createGraphics(width, height, P3D);
-    instructionsLayer = createGraphics(width, height, P3D);
     BGy = 0;
     BGspeed = 2; 
     Canvas.setStartTime(0);

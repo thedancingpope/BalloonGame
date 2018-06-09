@@ -2,7 +2,7 @@ class LayerToggle
 {
   int layers;
   boolean debugLayers;
-  PGraphics layerList;
+  PGraphics debugLayer;
   
   LayerToggle()
   {
@@ -10,7 +10,7 @@ class LayerToggle
     gameLayers = new boolean [layers];
     for(int i = 0; i < layers; i++)    
       gameLayers[i] = true;
-    layerList = createGraphics(width, height, P3D);
+    debugLayer = createGraphics(width, height, P3D);
   }
   
   boolean displayDebug()
@@ -27,7 +27,7 @@ class LayerToggle
   {
     int [] layersUsed;
     if(phase == 0)
-      layersUsed = new int [] {0, 6, 7};
+      layersUsed = new int [] {0, 6, 7, 9};
     else if(phase == 1)
       layersUsed = new int [] {0, 6, 7};
     else if(phase == 2)
@@ -41,25 +41,25 @@ class LayerToggle
     else
       layersUsed = new int [] {0, 1, 7, 8, 9};
 
-    layerList.beginDraw();
-    layerList.textSize(20);
-    layerList.background(255, 50, 100, 0);
-    layerList.fill(255, 50, 100);
-    layerList.text("Debug current phase: " + phase, 20, 25);
+    debugLayer.beginDraw();
+    debugLayer.textSize(20);
+    debugLayer.background(255, 50, 100, 0);
+    debugLayer.fill(255, 50, 100);
+    debugLayer.text("Debug current phase: " + phase, 20, 25);
     if(isCaught)
-      layerList.text("caught!!", 20, 50); 
+      debugLayer.text("Caught!!", 20, 50); 
     if(gotPowerUp)
-      layerList.text("Power Up!!", 20, 75);
-    layerList.text("Press buttons '2' - '6' for phases, 'r' to reset", 20, height - 70);
-    layerList.text("Current layers", 300, 25);
+      debugLayer.text("Power Up!!", 20, 75);
+    debugLayer.text("Press buttons '2' - '6' for phases, 'r' to reset", 20, height - 70);
+    debugLayer.text("Current layers", 300, 25);
     
     for(int i = 0; i < layersUsed.length; i++)
     {
       String temp = layerCheck(layersUsed[i]);
-      layerList.text(temp, 300, 50 + (i * 25));
+      debugLayer.text(temp, 300, 50 + (i * 25));
     }
-    layerList.endDraw();
-    image(layerList, 0, 0);
+    debugLayer.endDraw();
+    image(debugLayer, 0, 0);
   }
   
   String layerCheck(int _l)

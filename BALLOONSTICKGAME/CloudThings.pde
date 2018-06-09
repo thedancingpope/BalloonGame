@@ -16,7 +16,7 @@ class CloudThings extends GameObjectAbstract
     layer.noLights();
     layer.lights();
     layer.ambient(255, 255, 255);
-    layer.fill(255, 210);
+    layer.fill(255, 200);
     layer.noStroke();
     layer.translate(pos.x, pos.y, pos.z);
     layer.sphere(size);

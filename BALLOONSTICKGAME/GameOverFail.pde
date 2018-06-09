@@ -12,7 +12,11 @@ class GameOverFail
   void render() 
   {
     clothLayer.beginDraw();
-    clothLayer.background(205, 205, 205, 0);  
+    clothLayer.background(205, 205, 205, 0);
+    clothLayer.noStroke();
+    clothLayer.fill(50, 50, 0);  
+    clothLayer.ambientLight(205, 205, 205);
+    clothLayer.ambient(244, 255, 126);    
     Cloth.render(clothLayer);
     clothLayer.endDraw();    
     if(gameLayers[7])

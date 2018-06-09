@@ -20,10 +20,10 @@ class GameOverSuccess
       setFireWorks(i);
     Cloth = new Clothes [clothCount];
     Cloth[0] = new Clothes(new PVector(0, 0), 0f);
-    Cloth[1] = new Clothes(new PVector(0, -20), 0.1f);
-    Cloth[2] = new Clothes(new PVector(0, -30), 0.2f);
-    Cloth[3] = new Clothes(new PVector(0, -50), 0.5f);
-    Cloth[4] = new Clothes(new PVector(0, -40), 0.3f);
+    Cloth[1] = new Clothes(new PVector(0, -20), 0.2f);
+    Cloth[2] = new Clothes(new PVector(0, -30), 0.5f);
+    Cloth[3] = new Clothes(new PVector(0, -40), 0.5f);
+    Cloth[4] = new Clothes(new PVector(0, -50), 0.2f);
   }  
 
   void render() 
@@ -37,40 +37,44 @@ class GameOverSuccess
     }
     winText();
     movePieces();
+    clothesLayer.beginDraw();
+    clothesLayer.background(205, 205, 205, 0);
+    clothesLayer.noStroke();
+    clothesLayer.fill(50, 50, 0);  
+    clothesLayer.ambientLight(205, 205, 205);
+    clothesLayer.ambient(244, 255, 126);
     for(int i = 0; i < clothCount; i++)
-      {
-        clothesLayer.beginDraw();
-        clothesLayer.background(205, 205, 205, 0);        
-        Cloth[i].render(clothesLayer);
-        clothesLayer.endDraw();  
-        if(gameLayers[7])
-          image(clothesLayer, 0, 0); 
-      }
+      Cloth[i].render(clothesLayer);
+    clothesLayer.endDraw();  
+    if(gameLayers[7])
+      image(clothesLayer, 0, 0); 
   }
 
   void movePieces()
   {
-    int range = 23;    
+    int range = 25;    
     for(int i = 1; i < clothCount; i++)
     {
-      if(leftRight)
+      if(Cloth[i].leftRight)
       {
         if(i % 2 == 0)
-          Cloth[i].pos.x -= lerp(0, range, Cloth[i].speed);
+          Cloth[i].velocity.sub(Cloth[i].acceleration);
         else
-          Cloth[i].pos.x += lerp(0, range, Cloth[i].speed);                       
+          Cloth[i].velocity.add(Cloth[i].acceleration);
         if(Cloth[1].pos.x > range)
-          leftRight = false;
+          Cloth[i].leftRight = !Cloth[i].leftRight;
       } 
       else
       {
         if(i % 2 == 0)
-          Cloth[i].pos.x += lerp(0, range, Cloth[i].speed);
+          Cloth[i].velocity.add(Cloth[i].acceleration);
         else
-          Cloth[i].pos.x -= lerp(0, range, Cloth[i].speed);    
+          Cloth[i].velocity.sub(Cloth[i].acceleration);
         if(Cloth[1].pos.x < -range)
-          leftRight = true;
+          Cloth[i].leftRight = !Cloth[i].leftRight;
       }
+      Cloth[i].velocity.limit(6f);
+      Cloth[i].pos.add(Cloth[i].velocity);
     }
   }
 

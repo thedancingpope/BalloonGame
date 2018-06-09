@@ -1,17 +1,20 @@
 class Clothes extends GameObjectAbstract
 {
-  float flying, speed;
+  float flying;
   float [][] level;
   int cols, rows;
+  boolean leftRight;
 
   Clothes(PVector _p, float _s)
   {
     pos = _p;
-    speed = _s;
+    velocity =  new PVector(0, 0);
+    acceleration = new PVector(_s, 0);   
     flying = 0;
     cols = width / 40 + 1;
     rows = height / 40 + 1;
     level = new float[cols][rows];
+    leftRight = false;
   }  
 
   void render(PGraphics layer)
@@ -32,10 +35,6 @@ class Clothes extends GameObjectAbstract
       yOff += inc;
     }
     layer.pushMatrix();
-    layer.noStroke();
-    layer.fill(50, 50, 0);  
-    layer.ambientLight(205, 205, 205);
-    layer.ambient(244, 255, 126);
     layer.translate(balPos.x + pos.x, balPos.y + pos.y, 60);
     layer.rotateX(flying);
     layer.rotateY(.1);    

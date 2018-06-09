@@ -22,6 +22,7 @@ LayerToggle Layers;
 
 void setup()
 {
+  //size(displayWidth, displayHeight, P3D); //when using a phone
   size(500, 500, P3D);
   frameRate(25);
   font = loadFont("SitkaText-Bold-48.vlw");
